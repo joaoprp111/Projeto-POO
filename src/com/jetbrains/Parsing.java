@@ -15,20 +15,32 @@ public class Parsing {
             linhaPartida = linha.split(":", 2);
             switch(linhaPartida[0]){
                 case "Utilizador":
-                    Utilizador u = parseUtilizador(linhaPartida[1]); // criar um Utilizador
-                    System.out.println(u.toString()); //enviar para o ecrÃ¡n apenas para teste }
+                    if (linhaPartida[1].charAt(0) == '<') System.out.println("Linha inválida!");
+                    else {
+                        Utilizador u = parseUtilizador(linhaPartida[1]); // criar um Utilizador
+                        System.out.println(u.toString()); //enviar para o ecrÃ¡n apenas para teste }
+                    }
                     break;
                case "Loja":
-                   Loja l = parseLoja(linhaPartida[1]);
-                   System.out.println(l.toString());
+                   if (linhaPartida[1].charAt(0) == '<') System.out.println("Linha inválida!");
+                   else {
+                       Loja l = parseLoja(linhaPartida[1]);
+                       System.out.println(l.toString());
+                   }
                    break;
                 case "Voluntario":
-                    Voluntario v = parseVoluntario(linhaPartida[1]);
-                    System.out.println(v.toString());
+                    if (linhaPartida[1].charAt(0) == '<') System.out.println("Linha inválida!");
+                    else {
+                        Voluntario v = parseVoluntario(linhaPartida[1]);
+                        System.out.println(v.toString());
+                    }
                     break;
                 case "Transportadora":
-                    Transportadora t = parseTransportadora(linhaPartida[1]);
-                    System.out.println(t.toString());
+                    if (linhaPartida[1].charAt(0) == '<') System.out.println("Linha inválida!");
+                    else {
+                        Transportadora t = parseTransportadora(linhaPartida[1]);
+                        System.out.println(t.toString());
+                    }
                 default:
                     break;
             }

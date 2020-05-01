@@ -1,5 +1,6 @@
 package com.jetbrains;
 import java.lang.StringBuilder;
+import java.util.Objects;
 
 public class Voluntario{
     private String id;
@@ -9,6 +10,16 @@ public class Voluntario{
     private double raio;
     private boolean disponivel;
     private boolean quer_fazer_entrega;
+
+    /*
+     * Construtor por omissão
+     */
+    public Voluntario(){
+        this.id = new String();
+        this.nome = new String();
+        this.coordX = this.coordY = this.raio = 0.0;
+        this.disponivel = this.quer_fazer_entrega = false; /* por omissão */
+    }
 
     /*
      * Construtor parametrizado
@@ -101,6 +112,22 @@ public class Voluntario{
      */
 
     /**
+     *                       Atualiza a localização em x
+     * @param coordX         Coordenada em x
+     */
+    public void setCoordX(double coordX){
+        this.coordX = coordX;
+    }
+
+    /**
+     *                       Atualiza a localização em y
+     * @param coordY         Coordenada em Y
+     */
+    public void setCoordY(double coordY){
+        this.coordY = coordY;
+    }
+
+    /**
      *                          Atualiza o estado de disponibilidade do voluntário
      * @param disponivel        Novo estado
      */
@@ -131,6 +158,24 @@ public class Voluntario{
         sb.append(", quer_fazer_entrega=").append(quer_fazer_entrega);
         sb.append('}');
         return sb.toString();
+    }
+
+    /**
+     *              Verifica se dois objetos são iguais
+     * @param o     Objeto com o qual vamos comparar
+     * @return      Booleano a informar se são ou não iguais
+     */
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Voluntario that = (Voluntario) o;
+        return Double.compare(that.getCoordX(), this.coordX) == 0 &&
+                Double.compare(that.getCoordY(), this.coordY) == 0 &&
+                Double.compare(that.getRaio(), this.raio) == 0 &&
+                this.disponivel == that.isDisponivel() &&
+                this.quer_fazer_entrega == that.Quer_fazer_entrega() &&
+                Objects.equals(this.id, that.getId()) &&
+                Objects.equals(this.nome, that.getNome());
     }
 
     /**

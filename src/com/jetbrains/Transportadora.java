@@ -1,5 +1,7 @@
 package com.jetbrains;
 
+import java.util.Objects;
+
 public class Transportadora{
     private String codigo;
     private String nome;
@@ -8,6 +10,16 @@ public class Transportadora{
     private String nif;
     private double raio;
     private double preco; /* Preço por km */
+
+    /*
+     * Construtor por omissao
+     */
+    public Transportadora(){
+        this.codigo = new String();
+        this.nome = new String();
+        this.coordX = this.coordY = this.raio = this.preco = 0.0;
+        this.nif = new String();
+    }
 
     /*
      * Construtor parametrizado
@@ -23,11 +35,24 @@ public class Transportadora{
     }
 
     /*
+     * Construtor por cópia
+     */
+    public Transportadora(Transportadora t) {
+        this.codigo = t.getCodigo();
+        this.nome = t.getNome();
+        this.coordX = t.getCoordX();
+        this.coordY = t.getCoordY();
+        this.nif = t.getNif();
+        this.raio = t.getRaio();
+        this.preco = t.getPreco();
+    }
+
+    /*
      * Getters
      */
 
     /**
-     * @brief               Devolve o código da empresa
+     *                      Devolve o código da empresa
      * @return              Código
      */
     public String getCodigo() {
@@ -35,7 +60,7 @@ public class Transportadora{
     }
 
     /**
-     * @brief               Devolve o nome da empresa
+     *                      Devolve o nome da empresa
      * @return              Nome
      */
     public String getNome() {
@@ -43,7 +68,7 @@ public class Transportadora{
     }
 
     /**
-     * @brief               Devolve a coordenada x
+     *                      Devolve a coordenada x
      * @return              Coordenada x
      */
     public double getCoordX() {
@@ -51,7 +76,7 @@ public class Transportadora{
     }
 
     /**
-     * @brief               Devolve a coordenada y
+     *                      Devolve a coordenada y
      * @return              Coordenada y
      */
     public double getCoordY() {
@@ -59,7 +84,7 @@ public class Transportadora{
     }
 
     /**
-     * @brief               Devolve o nif da empresa
+     *                      Devolve o nif da empresa
      * @return              NIF
      */
     public String getNif() {
@@ -67,7 +92,7 @@ public class Transportadora{
     }
 
     /**
-     * @brief               Devolve o raio de transporte
+     *                      Devolve o raio de transporte
      * @return              Raio
      */
     public double getRaio() {
@@ -75,15 +100,43 @@ public class Transportadora{
     }
 
     /**
-     * @brief               Devolve o valor do preço por km
+     *                      Devolve o valor do preço por km
      * @return              Preço
      */
     public double getPreco() {
         return preco;
     }
 
+    /*
+     * Setters
+     */
+
     /**
-     * @brief               Transforma o conteúdo de um objeto numa String
+     *                       Atualiza a localização em x
+     * @param coordX         Coordenada em x
+     */
+    public void setCoordX(double coordX){
+        this.coordX = coordX;
+    }
+
+    /**
+     *                       Atualiza a localização em y
+     * @param coordY         Coordenada em Y
+     */
+    public void setCoordY(double coordY){
+        this.coordY = coordY;
+    }
+
+    /**
+     *                      Atualiza o preço por km
+     * @param preco         Preço novo
+     */
+    public void setPreco(double preco){
+        this.preco = preco;
+    }
+
+    /**
+     *                      Transforma o conteúdo de um objeto numa String
      * @return              String com a informação do objeto
      */
     public String toString() {
@@ -97,5 +150,31 @@ public class Transportadora{
         sb.append(", preco=").append(preco);
         sb.append('}');
         return sb.toString();
+    }
+
+    /**
+     *              Verifica se dois objetos são iguais
+     * @param o     Objeto com o qual vamos comparar
+     * @return      Booleano a informar se são ou não iguais
+     */
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Transportadora that = (Transportadora) o;
+        return Double.compare(that.getCoordX(), this.coordX) == 0 &&
+                Double.compare(that.getCoordY(), this.coordY) == 0 &&
+                Double.compare(that.getRaio(), this.raio) == 0 &&
+                Double.compare(that.getPreco(), this.preco) == 0 &&
+                Objects.equals(this.codigo, that.getCodigo()) &&
+                Objects.equals(this.nome, that.getNome()) &&
+                Objects.equals(this.nif, that.getNif());
+    }
+
+    /**
+     *                      Clona uma empresa transportadora
+     * @return              Empresa clone
+     */
+    public Transportadora clone(){
+        return new Transportadora(this);
     }
 }

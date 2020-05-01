@@ -1,5 +1,7 @@
 package com.jetbrains;
 
+import java.util.Objects;
+
 public class Loja{
     private String codigo;
     private String nome;
@@ -7,6 +9,17 @@ public class Loja{
     private double coordY;
     private int numEncomendasPorEntregar;
     private boolean existeEncomendaParaEntrega;
+
+    /*
+     * Construtor por omissão
+     */
+    public Loja(){
+        this.codigo = new String();
+        this.nome = new String();
+        this.coordX = this.coordY = 0.0;
+        this.numEncomendasPorEntregar = 0;
+        this.existeEncomendaParaEntrega = false;
+    }
 
     /*
      * Construtor parametrizado
@@ -21,11 +34,23 @@ public class Loja{
     }
 
     /*
+     * Construtor de cópia
+     */
+    public Loja(Loja l){
+        this.codigo = l.getCodigo();
+        this.nome = l.getNome();
+        this.coordX = l.getCoordX();
+        this.coordY = l.getCoordY();
+        this.numEncomendasPorEntregar = l.getNumEncomendasPorEntregar();
+        this.existeEncomendaParaEntrega = l.ExisteEncomendaParaEntrega();
+    }
+
+    /*
      * Getters
      */
 
     /**
-     * @brief               Devolve o código da loja
+     *                      Devolve o código da loja
      * @return              Código
      */
     public String getCodigo() {
@@ -33,7 +58,7 @@ public class Loja{
     }
 
     /**
-     * @brief               Devolve o nome da loja
+     *                      Devolve o nome da loja
      * @return              Nome
      */
     public String getNome() {
@@ -41,7 +66,7 @@ public class Loja{
     }
 
     /**
-     * @brief               Devolve a coordenada X da loja
+     *                      Devolve a coordenada X da loja
      * @return              Coordenada X
      */
     public double getCoordX() {
@@ -49,7 +74,7 @@ public class Loja{
     }
 
     /**
-     * @brief               Devolve a coordenada Y da loja
+     *                      Devolve a coordenada Y da loja
      * @return              Coordenada Y
      */
     public double getCoordY() {
@@ -57,7 +82,7 @@ public class Loja{
     }
 
     /**
-     * @brief               Devolve o número de encomendas por entregar
+     *                      Devolve o número de encomendas por entregar
      * @return              Número de encomendas por entregar
      */
     public int getNumEncomendasPorEntregar() {
@@ -65,7 +90,7 @@ public class Loja{
     }
 
     /**
-     * @brief               Verifica se a loja já tem pelo menos uma encomenda pronta a ser entregue
+     *                      Verifica se a loja já tem pelo menos uma encomenda pronta a ser entregue
      * @return              true se sim, false se não
      */
     public boolean ExisteEncomendaParaEntrega() {
@@ -77,7 +102,23 @@ public class Loja{
      */
 
     /**
-     * @brief                                   Atualiza o número de encomendas prontas para entregar
+     *                       Atualiza a localização em x
+     * @param coordX         Coordenada em x
+     */
+    public void setCoordX(double coordX){
+        this.coordX = coordX;
+    }
+
+    /**
+     *                       Atualiza a localização em y
+     * @param coordY         Coordenada em Y
+     */
+    public void setCoordY(double coordY){
+        this.coordY = coordY;
+    }
+
+    /**
+     *                                          Atualiza o número de encomendas prontas para entregar
      * @param numEncomendasPorEntregar          Novo valor
      */
     public void setNumEncomendasPorEntregar(int numEncomendasPorEntregar) {
@@ -85,15 +126,15 @@ public class Loja{
     }
 
     /**
-     * @brief                                   Atualiza estado da loja em relação às encomendas, para informar se podem ser transportadas ou não
-     * @param numEncomendasPorEntregar          Novo estado (em booleano)
+     *                                          Atualiza estado da loja em relação às encomendas, para informar se podem ser transportadas ou não
+     * @param existeEncomendaParaEntrega          Novo estado (em booleano)
      */
     public void setExisteEncomendaParaEntrega(boolean existeEncomendaParaEntrega) {
         this.existeEncomendaParaEntrega = existeEncomendaParaEntrega;
     }
 
     /**
-     * @brief               Transforma o conteúdo de um objeto numa String
+     *                      Transforma o conteúdo de um objeto numa String
      * @return              String com a informação do objeto
      */
     public String toString() {
@@ -106,5 +147,30 @@ public class Loja{
         sb.append(", existeEncomendaParaEntrega=").append(existeEncomendaParaEntrega);
         sb.append('}');
         return sb.toString();
+    }
+
+    /**
+     *              Verifica se dois objetos são iguais
+     * @param o     Objeto com o qual vamos comparar
+     * @return      Booleano a informar se são ou não iguais
+     */
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Loja loja = (Loja) o;
+        return Double.compare(loja.getCoordX(), this.coordX) == 0 &&
+                Double.compare(loja.getCoordY(), this.coordY) == 0 &&
+                this.numEncomendasPorEntregar == loja.getNumEncomendasPorEntregar() &&
+                this.existeEncomendaParaEntrega == loja.ExisteEncomendaParaEntrega() &&
+                Objects.equals(this.codigo, loja.getCodigo()) &&
+                Objects.equals(this.nome, loja.getNome());
+    }
+
+    /**
+     *                      Clona uma loja
+     * @return              Loja clone
+     */
+    public Loja clone(){
+        return new Loja(this);
     }
 }

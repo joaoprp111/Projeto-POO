@@ -199,14 +199,14 @@ public class Encomenda{
         boolean encontrado = false;
 
         for(LinhaEncomenda le: this.linhas){
-            if(le.getRef().equals(codProd) == true){
+            if(le.getRef().equals(codProd)){
                 pos = i;
                 encontrado = true;
             }
             i++;
         }
 
-        if(encontrado == true) this.linhas.remove(pos);
+        if(encontrado) this.linhas.remove(pos);
 
     }
 }
