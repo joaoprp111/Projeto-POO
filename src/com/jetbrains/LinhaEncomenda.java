@@ -1,12 +1,10 @@
 package com.jetbrains;
 
 public class LinhaEncomenda{
-    private String ref;
+    private String cod;
     private String desc;
-    private double preco;
-    private int qtd;
-    private double taxa;
-    private double desconto;
+    private double qtd;
+    private double valorUnitario;
 
     /**
      * Construtores de LinhaEncomenda.
@@ -19,101 +17,70 @@ public class LinhaEncomenda{
      * Construtor por omissao de LinhaEncomenda.
      */
     public LinhaEncomenda(){
-        this.ref = new String();
+        this.cod = new String();
         this.desc = new String();
-        this.preco = 0.0;
-        this.qtd = 0;
-        this.taxa = 0.0;
-        this.desconto = 0.0;
+        this.qtd = 0.0;
+        this.valorUnitario = 0.0;
     }
 
     /**
      * Construtor parametrizado de LinhaEncomenda.
      */
-    public LinhaEncomenda(String ref, String desc, double preco, int qtd, double taxa, double desconto){
-        this.ref = ref;
+    public LinhaEncomenda(String ref, String desc, double preco, double qtd){
+        this.cod = ref;
         this.desc = desc;
-        this.preco = preco;
+        this.valorUnitario = preco;
         this.qtd = qtd;
-        this.taxa = taxa;
-        this.desconto = desconto;
     }
 
     /**
      * Construtor de copia de LinhaEncomenda.
      */
     public LinhaEncomenda(LinhaEncomenda le){
-        this.ref = le.getRef();
+        this.cod = le.getCod();
         this.desc = le.getDesc();
-        this.preco = le.getPreco();
+        this.valorUnitario = le.getValorUnitario();
         this.qtd = le.getQtd();
-        this.taxa = le.getTaxa();
-        this.desconto = le.getDesconto();
     }
 
     /**
      * Metodos de instancia
      */
 
-    public String getRef(){
-        return this.ref;
+    public String getCod(){
+        return this.cod;
     }
 
     public String getDesc(){
         return this.desc;
     }
 
-    public double getPreco(){
-        return this.preco;
+    public double getValorUnitario(){
+        return this.valorUnitario;
     }
 
-    public int getQtd(){
+    public double getQtd(){
         return this.qtd;
     }
 
-    public double getTaxa(){
-        return this.taxa;
-    }
-
-    public double getDesconto(){
-        return this.desconto;
-    }
-
-    public void setRef(String ref){
-        this.ref = ref;
+    public void setCod(String ref){
+        this.cod = ref;
     }
 
     public void setDesc(String desc){
         this.desc = desc;
     }
 
-    public void setPreco(double p){
-        this.preco = p;
+    public void setValorUnitario(double v){
+        this.valorUnitario = v;
     }
 
-    public void setQtd(int q){
+    public void setQtd(double q){
         this.qtd = q;
     }
 
-    public void setTaxa(double t){
-        this.taxa = t;
-    }
-
-    public void setDesconto(double desconto){
-        this.desconto = desconto;
-    }
-
     public double calculaValorLinhaEnc(){
-        double p = (this.preco * this.qtd);
-        p -= p * this.desconto;
-        p *= 1 + this.taxa;
-        return p;
-    }
-
-    public double calculaValorDesconto(){
-        double p = (this.preco * this.qtd);
-        p *= this.taxa;
-        return (this.calculaValorLinhaEnc() - p);
+        return (this.valorUnitario * this.qtd);
     }
 
     public LinhaEncomenda clone(){
@@ -124,22 +91,18 @@ public class LinhaEncomenda{
         if(obj==this) return true;
         if(obj==null || obj.getClass() != this.getClass()) return false;
         LinhaEncomenda le = (LinhaEncomenda) obj;
-        return le.getRef().equals(this.ref) &&
+        return le.getCod().equals(this.cod) &&
                 le.getDesc().equals(this.desc) &&
-                le.getPreco() == this.preco &&
-                le.getQtd() == this.qtd &&
-                le.getTaxa() == this.taxa &&
-                le.getDesconto() == this.desconto;
+                Double.compare(le.getValorUnitario(), this.valorUnitario) == 0 &&
+                Double.compare(le.getQtd(), this.qtd) == 0;
     }
 
     public String toString(){
         StringBuilder sb = new StringBuilder();
-        sb.append("Referencia: ").append(this.ref).append(" ");
+        sb.append("CodProd: ").append(this.cod).append(" ");
         sb.append("Descricao: ").append(this.desc).append(" ");
-        sb.append("Preco: ").append(this.preco).append(" ");
+        sb.append("Preco: ").append(this.valorUnitario).append(" ");
         sb.append("Quantidade: ").append(this.qtd).append(" ");
-        sb.append("Taxa: ").append(this.taxa).append(" ");
-        sb.append("Desconto: ").append(this.desconto).append(" | ");
 
         return sb.toString();
     }
