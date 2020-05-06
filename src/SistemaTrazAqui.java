@@ -1,58 +1,76 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 import java.util.stream.Collectors;
 
 public class SistemaTrazAqui {
     /* Estrutura provisória */
-    private List<Utilizador> users;
-    private List<Voluntario> voluntarios;
-    private List<Loja> lojas;
-    private List<Transportadora> transportadoras;
-    private List<Encomenda> encomendas;
+    private Map<String, Utilizador> users;
+    private Map<String, Voluntario> voluntarios;
+    private Map<String, Loja> lojas;
+    private Map<String, Transportadora> transportadoras;
+    private Map<String, Encomenda> encomendas;
     private List<String> aceites;
 
     public SistemaTrazAqui(){
-        this.users = new ArrayList<>();
-        this.voluntarios = new ArrayList<>();
-        this.lojas = new ArrayList<>();
-        this.transportadoras = new ArrayList<>();
-        this.encomendas = new ArrayList<>();
+        this.users = new TreeMap<>();
+        this.voluntarios = new TreeMap<>();
+        this.lojas = new TreeMap<>();
+        this.transportadoras = new TreeMap<>();
+        this.encomendas = new TreeMap<>();
         this.aceites = new ArrayList<>();
     }
 
-    public SistemaTrazAqui(SistemaTrazAqui s){
-        this.users = s.getUsers();
-        this.voluntarios = s.getVoluntarios();
-        this.lojas = s.getLojas();
-        this.transportadoras = s.getTransportadoras();
-        this.encomendas = s.getEncomendas();
-        this.aceites = s.getAceites();
-    }
-
     /* Getters */
-    public List<Utilizador> getUsers(){
-        return this.users.stream()
-                         .map(Utilizador::clone).collect(Collectors.toCollection(ArrayList::new));
+    public Map<String, Utilizador> getUsers(){
+        Map<String, Utilizador> res = new TreeMap<>();
+
+        for(Map.Entry<String,Utilizador> p : this.users.entrySet()){
+            res.putIfAbsent(p.getKey(), p.getValue().clone());
+        }
+
+        return res;
     }
 
-    public List<Voluntario> getVoluntarios(){
-        return this.voluntarios.stream()
-                .map(Voluntario::clone).collect(Collectors.toCollection(ArrayList::new));
+    public Map<String, Voluntario> getVoluntarios(){
+        Map<String, Voluntario> res = new TreeMap<>();
+
+        for(Map.Entry<String,Voluntario> p : this.voluntarios.entrySet()){
+            res.putIfAbsent(p.getKey(), p.getValue().clone());
+        }
+
+        return res;
     }
 
-    public List<Loja> getLojas(){
-        return this.lojas.stream()
-                .map(Loja::clone).collect(Collectors.toCollection(ArrayList::new));
+    public Map<String, Loja> getLojas(){
+        Map<String, Loja> res = new TreeMap<>();
+
+        for(Map.Entry<String,Loja> p : this.lojas.entrySet()){
+            res.putIfAbsent(p.getKey(), p.getValue().clone());
+        }
+
+        return res;
     }
 
-    public List<Transportadora> getTransportadoras(){
-        return this.transportadoras.stream()
-                .map(Transportadora::clone).collect(Collectors.toCollection(ArrayList::new));
+    public Map<String, Transportadora> getTransportadoras(){
+        Map<String, Transportadora> res = new TreeMap<>();
+
+        for(Map.Entry<String,Transportadora> p : this.transportadoras.entrySet()){
+            res.putIfAbsent(p.getKey(), p.getValue().clone());
+        }
+
+        return res;
     }
 
-    public List<Encomenda> getEncomendas(){
-        return this.encomendas.stream()
-                .map(Encomenda::clone).collect(Collectors.toCollection(ArrayList::new));
+    public Map<String, Encomenda> getEncomendas(){
+        Map<String, Encomenda> res = new TreeMap<>();
+
+        for(Map.Entry<String,Encomenda> p : this.encomendas.entrySet()){
+            res.putIfAbsent(p.getKey(), p.getValue().clone());
+        }
+
+        return res;
     }
 
     public List<String> getAceites(){
@@ -61,7 +79,7 @@ public class SistemaTrazAqui {
         return res;
     }
 
-    public void parse(){
+    public void loadFromLogs(){
         Parsing p = new Parsing();
         List<String> linhas = p.lerFicheiro("logs_20200416.txt");
         linhas = linhas.stream().skip(43).collect(Collectors.toList()); /* Este comando dá skip nas primeiras 43 linhas do ficheiro de logs, que é informação não útil para o programa */
@@ -71,23 +89,23 @@ public class SistemaTrazAqui {
             switch(linhaPartida[0]){
                 case "Utilizador":
                     Utilizador u = p.parseUtilizador(linhaPartida[1]); // criar um Utilizador
-                    users.add(u.clone());
+                    users.putIfAbsent(u.getId(), u.clone());
                     break;
                 case "Loja":
                     Loja l = p.parseLoja(linhaPartida[1]);
-                    lojas.add(l.clone());
+                    lojas.putIfAbsent(l.getCodigo(), l.clone());;
                     break;
                 case "Voluntario":
                     Voluntario v = p.parseVoluntario(linhaPartida[1]);
-                    voluntarios.add(v.clone());
+                    voluntarios.putIfAbsent(v.getId(), v.clone());
                     break;
                 case "Transportadora":
                     Transportadora t = p.parseTransportadora(linhaPartida[1]);
-                    transportadoras.add(t.clone());
+                    transportadoras.putIfAbsent(t.getCodigo(), t.clone());
                     break;
                 case "Encomenda":
                     Encomenda e = p.parseEncomenda(linhaPartida[1]);
-                    encomendas.add(e.clone());
+                    encomendas.putIfAbsent(e.getCodEnc(), e.clone());
                     break;
                 case "Aceite":
                     aceites.add(linhaPartida[1]);
@@ -122,9 +140,5 @@ public class SistemaTrazAqui {
                this.transportadoras.equals(that.getTransportadoras()) &&
                this.encomendas.equals(that.getEncomendas()) &&
                this.aceites.equals(that.getAceites());
-    }
-
-    public SistemaTrazAqui clone(){
-        return new SistemaTrazAqui(this);
     }
 }

@@ -1,5 +1,3 @@
-import java.util.Objects;
-
 public class Loja{
     private String codigo;
     private String nome;
@@ -160,8 +158,8 @@ public class Loja{
                 Double.compare(loja.getCoordY(), this.coordY) == 0 &&
                 this.numEncomendasPorEntregar == loja.getNumEncomendasPorEntregar() &&
                 this.existeEncomendaParaEntrega == loja.ExisteEncomendaParaEntrega() &&
-                Objects.equals(this.codigo, loja.getCodigo()) &&
-                Objects.equals(this.nome, loja.getNome());
+                this.codigo.equals(loja.getCodigo()) &&
+                this.nome.equals(loja.getNome());
     }
 
     /**
