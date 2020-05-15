@@ -1,86 +1,47 @@
 import java.lang.StringBuilder;
 import java.util.Objects;
 
-public class Voluntario{
-    private String id;
-    private String nome;
-    private double coordX;
-    private double coordY;
+public class Voluntario extends Entidade{
     private double raio;
     private boolean disponivel;
     private boolean quer_fazer_entrega;
+    private boolean aceitoMeds;
 
     /*
      * Construtor por omissão
      */
     public Voluntario(){
-        this.id = new String();
-        this.nome = new String();
-        this.coordX = this.coordY = this.raio = 0.0;
+        super();
+        this.raio = 0.0;
         this.disponivel = this.quer_fazer_entrega = false; /* por omissão */
+        this.aceitoMeds = false;
     }
 
     /*
      * Construtor parametrizado
      */
-    public Voluntario(String id, String nome, double coordX, double coordY, double raio) {
-        this.id = id;
-        this.nome = nome;
-        this.coordX = coordX;
-        this.coordY = coordY;
+    public Voluntario(String id, String nome, GPS gps, double raio, boolean disponivel, boolean quer_fazer_entrega, boolean aceitoMeds) {
+        super(id, nome, gps);
         this.raio = raio;
-        this.disponivel = false; /* No ínicio assume-se que não está disponível, consoante o fluxo do programa podemos alterar este campo */
-        this.quer_fazer_entrega = false; /* Mesma decisão do campo anterior */
+        this.disponivel = disponivel;
+        this.quer_fazer_entrega = quer_fazer_entrega;
+        this.aceitoMeds = aceitoMeds;
     }
 
     /*
      * Construtor de cópia
      */
     public Voluntario(Voluntario v){
-        this.id = v.getId();
-        this.nome = v.getNome();
-        this.coordX = v.getCoordX();
-        this.coordY = v.getCoordY();
+        super(v);
         this.raio = v.getRaio();
         this.disponivel = v.isDisponivel();
         this.quer_fazer_entrega = v.Quer_fazer_entrega();
+        this.aceitoMeds = v.aceitoTransporteMedicamentos();
     }
 
     /*
      * Getters
      */
-
-    /**
-     *                      Devolve o identificador do voluntário
-     * @return              Identificador
-     */
-    public String getId() {
-        return id;
-    }
-
-    /**
-     *                      Devolve o nome do voluntário
-     * @return              Nome
-     */
-    public String getNome() {
-        return nome;
-    }
-
-    /**
-     *                      Devolve a coordenada x do voluntário
-     * @return              Coordenada x
-     */
-    public double getCoordX() {
-        return coordX;
-    }
-
-    /**
-     *                      Devolve a coordenada y do voluntário
-     * @return              Coordenada y
-     */
-    public double getCoordY() {
-        return coordY;
-    }
 
     /**
      *                      Devolve o raio limite de ação do voluntário
@@ -106,25 +67,13 @@ public class Voluntario{
         return quer_fazer_entrega;
     }
 
+    public boolean aceitoTransporteMedicamentos(){
+        return this.aceitoMeds;
+    }
+
     /*
      * Setters
      */
-
-    /**
-     *                       Atualiza a localização em x
-     * @param coordX         Coordenada em x
-     */
-    public void setCoordX(double coordX){
-        this.coordX = coordX;
-    }
-
-    /**
-     *                       Atualiza a localização em y
-     * @param coordY         Coordenada em Y
-     */
-    public void setCoordY(double coordY){
-        this.coordY = coordY;
-    }
 
     /**
      *                          Atualiza o estado de disponibilidade do voluntário
@@ -142,16 +91,17 @@ public class Voluntario{
         this.quer_fazer_entrega = quer_fazer_entrega;
     }
 
+    public void aceitaMedicamentos(boolean state){
+        this.aceitoMeds = state;
+    }
+
     /**
      *                      Transforma o conteúdo de um objeto numa String
      * @return              String com a informação do objeto
      */
     public String toString() {
-        StringBuilder sb = new StringBuilder("Voluntario{");
-        sb.append("id='").append(id).append('\'');
-        sb.append(", nome='").append(nome).append('\'');
-        sb.append(", coordX=").append(coordX);
-        sb.append(", coordY=").append(coordY);
+        StringBuilder sb = new StringBuilder();
+        sb.append(super.toString());
         sb.append(", raio=").append(raio);
         sb.append(", disponivel=").append(disponivel);
         sb.append(", quer_fazer_entrega=").append(quer_fazer_entrega);
@@ -167,14 +117,11 @@ public class Voluntario{
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
+        if(!super.equals(o)) return false;
         Voluntario that = (Voluntario) o;
-        return Double.compare(that.getCoordX(), this.coordX) == 0 &&
-                Double.compare(that.getCoordY(), this.coordY) == 0 &&
-                Double.compare(that.getRaio(), this.raio) == 0 &&
+        return Double.compare(that.getRaio(), this.getRaio()) == 0 &&
                 this.disponivel == that.isDisponivel() &&
-                this.quer_fazer_entrega == that.Quer_fazer_entrega() &&
-                Objects.equals(this.id, that.getId()) &&
-                Objects.equals(this.nome, that.getNome());
+                this.quer_fazer_entrega == that.Quer_fazer_entrega();
     }
 
     /**

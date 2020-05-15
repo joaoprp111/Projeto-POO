@@ -1,10 +1,6 @@
 import java.util.Objects;
 
-public class Transportadora{
-    private String codigo;
-    private String nome;
-    private double coordX;
-    private double coordY;
+public class Transportadora extends Entidade{
     private String nif;
     private double raio;
     private double preco; /* Preço por km */
@@ -13,20 +9,16 @@ public class Transportadora{
      * Construtor por omissao
      */
     public Transportadora(){
-        this.codigo = new String();
-        this.nome = new String();
-        this.coordX = this.coordY = this.raio = this.preco = 0.0;
-        this.nif = new String();
+        super();
+        this.nif = "";
+        this.preco = 0.0;
     }
 
     /*
      * Construtor parametrizado
      */
-    public Transportadora(String codigo, String nome, double coordX, double coordY, String nif, double raio, double preco) {
-        this.codigo = codigo;
-        this.nome = nome;
-        this.coordX = coordX;
-        this.coordY = coordY;
+    public Transportadora(String codigo, String nome, GPS gps, String nif, double raio, double preco) {
+        super(codigo, nome, gps);
         this.nif = nif;
         this.raio = raio;
         this.preco = preco;
@@ -36,10 +28,7 @@ public class Transportadora{
      * Construtor por cópia
      */
     public Transportadora(Transportadora t) {
-        this.codigo = t.getCodigo();
-        this.nome = t.getNome();
-        this.coordX = t.getCoordX();
-        this.coordY = t.getCoordY();
+        super(t);
         this.nif = t.getNif();
         this.raio = t.getRaio();
         this.preco = t.getPreco();
@@ -48,38 +37,6 @@ public class Transportadora{
     /*
      * Getters
      */
-
-    /**
-     *                      Devolve o código da empresa
-     * @return              Código
-     */
-    public String getCodigo() {
-        return codigo;
-    }
-
-    /**
-     *                      Devolve o nome da empresa
-     * @return              Nome
-     */
-    public String getNome() {
-        return nome;
-    }
-
-    /**
-     *                      Devolve a coordenada x
-     * @return              Coordenada x
-     */
-    public double getCoordX() {
-        return coordX;
-    }
-
-    /**
-     *                      Devolve a coordenada y
-     * @return              Coordenada y
-     */
-    public double getCoordY() {
-        return coordY;
-    }
 
     /**
      *                      Devolve o nif da empresa
@@ -110,22 +67,6 @@ public class Transportadora{
      */
 
     /**
-     *                       Atualiza a localização em x
-     * @param coordX         Coordenada em x
-     */
-    public void setCoordX(double coordX){
-        this.coordX = coordX;
-    }
-
-    /**
-     *                       Atualiza a localização em y
-     * @param coordY         Coordenada em Y
-     */
-    public void setCoordY(double coordY){
-        this.coordY = coordY;
-    }
-
-    /**
      *                      Atualiza o preço por km
      * @param preco         Preço novo
      */
@@ -138,11 +79,8 @@ public class Transportadora{
      * @return              String com a informação do objeto
      */
     public String toString() {
-        StringBuilder sb = new StringBuilder("Transportadora{");
-        sb.append("codigo='").append(codigo).append('\'');
-        sb.append(", nome='").append(nome).append('\'');
-        sb.append(", coordX=").append(coordX);
-        sb.append(", coordY=").append(coordY);
+        StringBuilder sb = new StringBuilder();
+        sb.append(super.toString());
         sb.append(", nif='").append(nif).append('\'');
         sb.append(", raio=").append(raio);
         sb.append(", preco=").append(preco);
@@ -158,13 +96,10 @@ public class Transportadora{
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
+        if(!super.equals(o)) return false;
         Transportadora that = (Transportadora) o;
-        return Double.compare(that.getCoordX(), this.coordX) == 0 &&
-                Double.compare(that.getCoordY(), this.coordY) == 0 &&
-                Double.compare(that.getRaio(), this.raio) == 0 &&
+        return Double.compare(that.getRaio(), this.raio) == 0 &&
                 Double.compare(that.getPreco(), this.preco) == 0 &&
-                Objects.equals(this.codigo, that.getCodigo()) &&
-                Objects.equals(this.nome, that.getNome()) &&
                 Objects.equals(this.nif, that.getNif());
     }
 
