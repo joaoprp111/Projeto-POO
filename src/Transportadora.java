@@ -1,6 +1,6 @@
 import java.util.Objects;
 
-public class Transportadora extends Entidade{
+public abstract class Transportadora extends Entidade{
     private String nif;
     private double raio;
     private double preco; /* Preço por km */
@@ -103,11 +103,5 @@ public class Transportadora extends Entidade{
                 Objects.equals(this.nif, that.getNif());
     }
 
-    /**
-     *                      Clona uma empresa transportadora
-     * @return              Empresa clone
-     */
-    public Transportadora clone(){
-        return new Transportadora(this);
-    }
+    public abstract Transportadora clone();
 }

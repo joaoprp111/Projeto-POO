@@ -18,10 +18,10 @@ public class Loja extends Entidade{
     /*
      * Construtor parametrizado
      */
-    public Loja(String codigo, String nome, GPS gps, boolean infoFilas, Collection<Encomenda> encs) {
+    public Loja(String codigo, String nome, GPS gps) {
         super(codigo, nome, gps);
-        this.infoFilas = infoFilas;
-        setEncs(encs);
+        this.infoFilas = false;
+        this.encs = new ArrayList<>();
     }
 
     /*

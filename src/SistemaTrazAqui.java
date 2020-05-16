@@ -81,8 +81,8 @@ public class SistemaTrazAqui {
         return res;
     }
 
-    public void setUtilizador(String id, String nome, double x, double y){
-        Utilizador u = new Utilizador(id, nome, x, y);
+    public void setUtilizador(String id, String nome, GPS gps){
+        Utilizador u = new Utilizador(id, nome, gps);
         users.putIfAbsent(id, u.clone());
     }
 
@@ -96,7 +96,7 @@ public class SistemaTrazAqui {
             switch(linhaPartida[0]){
                 case "Utilizador":
                     Utilizador u = p.parseUtilizador(linhaPartida[1]); // criar um Utilizador
-                    users.putIfAbsent(u.getId(), u.clone());
+                    users.putIfAbsent(u.getCodigo(), u.clone());
                     break;
                 case "Loja":
                     Loja l = p.parseLoja(linhaPartida[1]);
@@ -104,7 +104,7 @@ public class SistemaTrazAqui {
                     break;
                 case "Voluntario":
                     Voluntario v = p.parseVoluntario(linhaPartida[1]);
-                    voluntarios.putIfAbsent(v.getId(), v.clone());
+                    voluntarios.putIfAbsent(v.getCodigo(), v.clone());
                     break;
                 case "Transportadora":
                     Transportadora t = p.parseTransportadora(linhaPartida[1]);
@@ -182,7 +182,8 @@ public class SistemaTrazAqui {
             v.showMessage("\n\nConfirmar os dados? (1) Sim (2) Não > ");
             confirmado = i.lerInt();
             if(confirmado == 1){
-                Utilizador novo = new Utilizador(id, nome, x, y);
+                GPS gps = new GPS(x, y);
+                Utilizador novo = new Utilizador(id, nome, gps);
                 users.put(id, novo.clone());
             }
         }

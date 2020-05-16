@@ -20,12 +20,12 @@ public class Voluntario extends Entidade{
     /*
      * Construtor parametrizado
      */
-    public Voluntario(String id, String nome, GPS gps, double raio, boolean disponivel, boolean quer_fazer_entrega, boolean aceitoMeds) {
+    public Voluntario(String id, String nome, GPS gps, double raio) {
         super(id, nome, gps);
         this.raio = raio;
-        this.disponivel = disponivel;
-        this.quer_fazer_entrega = quer_fazer_entrega;
-        this.aceitoMeds = aceitoMeds;
+        this.disponivel = false;
+        this.quer_fazer_entrega = false;
+        this.aceitoMeds = false;
     }
 
     /*
