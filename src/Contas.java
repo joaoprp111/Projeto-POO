@@ -44,21 +44,22 @@ public class Contas {
         this.passwords = new HashMap<>(passwords);
     }
 
-    public boolean adicionarRegisto(String email, String password){
-        Vista v = new Vista();
-        boolean res = false;
-        String[] parse = email.split("@");
-        if(this.emails.containsKey(parse[0])) v.showMessage("Este email já está associado a uma conta!\n");
-        else{
-            this.emails.put(parse[0], email);
-            this.passwords.put(parse[0], password);
-            res = true;
-        }
-        return res;
+    public void adicionarRegisto(String codigo, String email, String password){
+        emails.put(codigo, email);
+        passwords.put(codigo, password);
     }
 
     public boolean loginCorreto(String email, String password){
         String[] parse = email.split("@");
         return (this.emails.containsKey(parse[0]) && this.passwords.containsKey(parse[0]));
+    }
+
+    public boolean existeConta(String codigo){
+        return emails.containsKey(codigo); /* Se existe nos emails também existe nas passwords */
+    }
+
+    public void info(){
+        for(Map.Entry<String, String> par : emails.entrySet()) System.out.println(par);
+        for(Map.Entry<String, String> par : passwords.entrySet()) System.out.println(par);
     }
 }

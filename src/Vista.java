@@ -1,6 +1,7 @@
 public class Vista {
 
     public void menuInicial(){
+        clear();
         System.out.println("\n|-------------------------------------------------------------------------------------------------|");
         System.out.println("|-------------------------------------------------------------------------------------------------|");
         System.out.println("|                                           Traz Aqui!                                            |");
@@ -25,9 +26,19 @@ public class Vista {
     }
 
     public void criarConta(){
+        clear();
         System.out.println("\n|-------------------------------------------------------------------------------------------------|");
         System.out.println("|                                           Criar conta                                           |");
         System.out.println("|-------------------------------------------------------------------------------------------------|");
+    }
+
+    public void tipoDeConta(){
+        System.out.println("\n(1) Utilizador");
+        System.out.println("\n(2) Voluntario");
+        System.out.println("\n(3) Loja");
+        System.out.println("\n(4) Transportadora");
+        System.out.println("\n(0) Voltar");
+        System.out.println("\n> Opção: ");
     }
 
     public void login(){

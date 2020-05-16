@@ -74,6 +74,10 @@ public class SistemaTrazAqui {
         return res;
     }
 
+    public void contas(){
+        registos.info();
+    }
+
     public Collection<String> getAceites(){
         return new ArrayList<>(this.aceites);
     }
@@ -94,18 +98,34 @@ public class SistemaTrazAqui {
                 case "Utilizador":
                     Utilizador u = p.parseUtilizador(linhaPartida[1]); // criar um Utilizador
                     users.add(u.clone());
+                    String codigo = u.getCodigo();
+                    StringBuilder sb = new StringBuilder(codigo);
+                    sb.append("@gmail.com");
+                    registos.adicionarRegisto(codigo, sb.toString(),codigo);
                     break;
                 case "Loja":
                     Loja l = p.parseLoja(linhaPartida[1]);
                     lojas.add(l.clone());
+                    String idLoja = l.getCodigo();
+                    StringBuilder sbL = new StringBuilder(idLoja);
+                    sbL.append("@gmail.com");
+                    registos.adicionarRegisto(idLoja, sbL.toString(),idLoja);
                     break;
                 case "Voluntario":
                     Voluntario v = p.parseVoluntario(linhaPartida[1]);
                     voluntarios.add(v.clone());
+                    String idV = v.getCodigo();
+                    StringBuilder sbV = new StringBuilder(idV);
+                    sbV.append("@gmail.com");
+                    registos.adicionarRegisto(idV, sbV.toString(),idV);
                     break;
                 case "Transportadora":
                     Transportadora t = p.parseTransportadora(linhaPartida[1]);
                     transportadoras.add(t.clone());
+                    String idT = t.getCodigo();
+                    StringBuilder sbT = new StringBuilder(idT);
+                    sbT.append("@gmail.com");
+                    registos.adicionarRegisto(idT, sbT.toString(),idT);
                     break;
                 case "Encomenda":
                     Encomenda e = p.parseEncomenda(linhaPartida[1]);
@@ -121,7 +141,7 @@ public class SistemaTrazAqui {
         }
     }
 
-    public void criaUtilizador(){
+    /*public void criaUtilizador(){
         Input i = new Input();
         int confirmado = 2;
         int voltar = -1;
@@ -259,5 +279,15 @@ public class SistemaTrazAqui {
                this.transportadoras.equals(that.getTransportadoras()) &&
                this.encomendas.equals(that.getEncomendas()) &&
                this.aceites.equals(that.getAceites());
+    }*/
+
+    public boolean existeConta(String codigo){
+        return registos.existeConta(codigo);
+    }
+
+    public void novoUtilizador(String codigo, String nome, GPS gps, String email, String password){
+        Utilizador u = new Utilizador(codigo, nome, gps);
+        users.add(u.clone());
+        registos.adicionarRegisto(codigo, email, password);
     }
 }
