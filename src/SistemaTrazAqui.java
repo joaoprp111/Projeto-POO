@@ -1,89 +1,86 @@
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class SistemaTrazAqui {
     /* Estrutura provisória */
-    private Map<String, Utilizador> users;
-    private Map<String, Voluntario> voluntarios;
-    private Map<String, Loja> lojas;
-    private Map<String, Transportadora> transportadoras;
-    private Map<String, Encomenda> encomendas;
-    private List<String> aceites;
+    private Collection<Utilizador> users;
+    private Collection<Voluntario> voluntarios;
+    private Collection<Loja> lojas;
+    private Collection<Transportadora> transportadoras;
+    private Collection<Encomenda> encomendas;
+    private Collection<String> aceites;
+    private Contas registos;
     private Vista v;
 
     public SistemaTrazAqui(){
-        this.users = new TreeMap<>();
-        this.voluntarios = new TreeMap<>();
-        this.lojas = new TreeMap<>();
-        this.transportadoras = new TreeMap<>();
-        this.encomendas = new TreeMap<>();
+        this.users = new TreeSet<>();
+        this.voluntarios = new TreeSet<>();
+        this.lojas = new TreeSet<>();
+        this.transportadoras = new TreeSet<>();
+        this.encomendas = new TreeSet<>();
         this.aceites = new ArrayList<>();
+        this.registos = new Contas();
         this.v = new Vista();
     }
 
     /* Getters */
-    public Map<String, Utilizador> getUsers(){
-        Map<String, Utilizador> res = new TreeMap<>();
+    public Collection<Utilizador> getUsers(){
+        Collection<Utilizador> res = new TreeSet<>();
 
-        for(Map.Entry<String,Utilizador> p : this.users.entrySet()){
-            res.putIfAbsent(p.getKey(), p.getValue().clone());
+        for(Utilizador u : this.users){
+            res.add(u.clone());
         }
 
         return res;
     }
 
-    public Map<String, Voluntario> getVoluntarios(){
-        Map<String, Voluntario> res = new TreeMap<>();
+    public Collection<Voluntario> getVoluntarios(){
+        Collection<Voluntario> res = new TreeSet<>();
 
-        for(Map.Entry<String,Voluntario> p : this.voluntarios.entrySet()){
-            res.putIfAbsent(p.getKey(), p.getValue().clone());
+        for(Voluntario v : this.voluntarios){
+            res.add(v.clone());
         }
 
         return res;
     }
 
-    public Map<String, Loja> getLojas(){
-        Map<String, Loja> res = new TreeMap<>();
+    public Collection<Loja> getLojas(){
+        Collection<Loja> res = new TreeSet<>();
 
-        for(Map.Entry<String,Loja> p : this.lojas.entrySet()){
-            res.putIfAbsent(p.getKey(), p.getValue().clone());
+        for(Loja l : this.lojas){
+            res.add(l.clone());
         }
 
         return res;
     }
 
-    public Map<String, Transportadora> getTransportadoras(){
-        Map<String, Transportadora> res = new TreeMap<>();
+    public Collection<Transportadora> getTransportadoras(){
+        Collection<Transportadora> res = new TreeSet<>();
 
-        for(Map.Entry<String,Transportadora> p : this.transportadoras.entrySet()){
-            res.putIfAbsent(p.getKey(), p.getValue().clone());
+        for(Transportadora t : this.transportadoras){
+            res.add(t.clone());
         }
 
         return res;
     }
 
-    public Map<String, Encomenda> getEncomendas(){
-        Map<String, Encomenda> res = new TreeMap<>();
+    public Collection<Encomenda> getEncomendas(){
+        Collection<Encomenda> res = new TreeSet<>();
 
-        for(Map.Entry<String,Encomenda> p : this.encomendas.entrySet()){
-            res.putIfAbsent(p.getKey(), p.getValue().clone());
+        for(Encomenda e : this.encomendas){
+            res.add(e.clone());
         }
 
         return res;
     }
 
-    public List<String> getAceites(){
-        List<String> res = new ArrayList<>();
-        for(String s: this.aceites) res.add(s);
-        return res;
+    public Collection<String> getAceites(){
+        return new ArrayList<>(this.aceites);
     }
 
     public void setUtilizador(String id, String nome, GPS gps){
         Utilizador u = new Utilizador(id, nome, gps);
-        users.putIfAbsent(id, u.clone());
+        users.add(u.clone());
     }
 
     public void loadFromLogs(){
@@ -96,23 +93,23 @@ public class SistemaTrazAqui {
             switch(linhaPartida[0]){
                 case "Utilizador":
                     Utilizador u = p.parseUtilizador(linhaPartida[1]); // criar um Utilizador
-                    users.putIfAbsent(u.getCodigo(), u.clone());
+                    users.add(u.clone());
                     break;
                 case "Loja":
                     Loja l = p.parseLoja(linhaPartida[1]);
-                    lojas.putIfAbsent(l.getCodigo(), l.clone());;
+                    lojas.add(l.clone());
                     break;
                 case "Voluntario":
                     Voluntario v = p.parseVoluntario(linhaPartida[1]);
-                    voluntarios.putIfAbsent(v.getCodigo(), v.clone());
+                    voluntarios.add(v.clone());
                     break;
                 case "Transportadora":
                     Transportadora t = p.parseTransportadora(linhaPartida[1]);
-                    transportadoras.putIfAbsent(t.getCodigo(), t.clone());
+                    transportadoras.add(t.clone());
                     break;
                 case "Encomenda":
                     Encomenda e = p.parseEncomenda(linhaPartida[1]);
-                    encomendas.putIfAbsent(e.getCodEnc(), e.clone());
+                    encomendas.add(e.clone());
                     break;
                 case "Aceite":
                     aceites.add(linhaPartida[1]);

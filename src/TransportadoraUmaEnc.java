@@ -1,6 +1,6 @@
 import java.util.Objects;
 
-public class TransportadoraUmaEnc extends Transportadora{
+public class TransportadoraUmaEnc extends Transportadora {
     int ocupacao;
     private Encomenda enc;
 

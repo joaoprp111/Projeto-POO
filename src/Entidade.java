@@ -1,6 +1,6 @@
 import java.util.Objects;
 
-abstract class Entidade {
+abstract class Entidade implements Comparable<Entidade>{
     private String codigo;
     private String nome;
     private GPS gps;
@@ -66,4 +66,10 @@ abstract class Entidade {
     }
 
     public abstract Entidade clone();
+
+    public int compareTo(Entidade e1){
+        if(this.codigo.compareTo(e1.getCodigo()) > 0) return 1;
+        else if(codigo.compareTo(e1.getCodigo()) < 0) return -1;
+        else return nome.compareTo(e1.getNome());
+    }
 }

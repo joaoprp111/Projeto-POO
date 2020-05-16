@@ -3,7 +3,7 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 
-public class Encomenda{
+public class Encomenda implements Comparable<Encomenda>{
     // variáveis de instância
     private String cod_enc;
     private String cod_user;
@@ -140,5 +140,9 @@ public class Encomenda{
         sb.append(", linhas=").append(linhas);
         sb.append('}');
         return sb.toString();
+    }
+
+    public int compareTo(Encomenda e){
+        return this.cod_enc.compareTo(e.getCodEnc());
     }
 }
