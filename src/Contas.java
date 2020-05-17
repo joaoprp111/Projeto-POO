@@ -62,4 +62,12 @@ public class Contas {
         for(Map.Entry<String, String> par : emails.entrySet()) System.out.println(par);
         for(Map.Entry<String, String> par : passwords.entrySet()) System.out.println(par);
     }
+
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("Contas{");
+        sb.append("emails=").append(emails);
+        sb.append(", passwords=").append(passwords);
+        sb.append('}');
+        return sb.toString();
+    }
 }

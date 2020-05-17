@@ -36,7 +36,7 @@ public class Vista {
         System.out.println("\n(1) Utilizador");
         System.out.println("\n(2) Voluntario");
         System.out.println("\n(3) Loja");
-        System.out.println("\n(4) Transportadora");
+        System.out.println("\n(4) Empresa transportadora");
         System.out.println("\n(0) Voltar");
         System.out.println("\n> Opção: ");
     }

@@ -255,7 +255,7 @@ public class SistemaTrazAqui {
                     x = i.lerInt();
                 }
             }
-    }
+    }*/
 
     public String toString() {
         StringBuilder sb = new StringBuilder("SistemaTrazAqui{");
@@ -265,6 +265,7 @@ public class SistemaTrazAqui {
         sb.append(", transportadoras=").append(transportadoras).append("\n");
         sb.append(", encomendas=").append(encomendas).append("\n");
         sb.append(", aceites=").append(aceites);
+        sb.append(", contas=").append(registos.toString());
         sb.append('}');
         return sb.toString();
     }
@@ -279,7 +280,7 @@ public class SistemaTrazAqui {
                this.transportadoras.equals(that.getTransportadoras()) &&
                this.encomendas.equals(that.getEncomendas()) &&
                this.aceites.equals(that.getAceites());
-    }*/
+    }
 
     public boolean existeConta(String codigo){
         return registos.existeConta(codigo);
@@ -288,6 +289,23 @@ public class SistemaTrazAqui {
     public void novoUtilizador(String codigo, String nome, GPS gps, String email, String password){
         Utilizador u = new Utilizador(codigo, nome, gps);
         users.add(u.clone());
+        registos.adicionarRegisto(codigo, email, password);
+    }
+
+    public void novoVoluntario(String codigo, String nome, GPS gps, String email, String password, double raio){
+        Voluntario v = new Voluntario(codigo, nome, gps, raio);
+        voluntarios.add(v.clone());
+        registos.adicionarRegisto(codigo, email, password);
+    }
+
+    public void novaTransportadora(String codigo, String nome, GPS gps, String email, String password, String nif, double raio, double preco,
+                                   boolean variasEncs){
+        Transportadora t;
+        if(variasEncs)
+            t = new TransportadoraVariasEncs(codigo, nome, gps, nif, raio, preco);
+        else
+            t = new TransportadoraUmaEnc(codigo, nome, gps, nif, raio, preco);
+        transportadoras.add(t.clone());
         registos.adicionarRegisto(codigo, email, password);
     }
 }
