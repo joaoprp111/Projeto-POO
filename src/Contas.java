@@ -58,6 +58,10 @@ public class Contas {
         return emails.containsKey(codigo); /* Se existe nos emails também existe nas passwords */
     }
 
+    public boolean existePass(String codigo, String pass){
+        return passwords.get(codigo).equals(pass);
+    }
+
     public void info(){
         for(Map.Entry<String, String> par : emails.entrySet()) System.out.println(par);
         for(Map.Entry<String, String> par : passwords.entrySet()) System.out.println(par);

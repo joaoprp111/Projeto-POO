@@ -141,122 +141,6 @@ public class SistemaTrazAqui {
         }
     }
 
-    /*public void criaUtilizador(){
-        Input i = new Input();
-        int confirmado = 2;
-        int voltar = -1;
-        while(confirmado == 2) {
-            v.clear();
-            v.criarConta();
-            v.showMessage("\n1. Introduza o seu nome completo > ");
-            String nome = i.lerString();
-            v.clear();
-            v.criarConta();
-            v.showMessage("\n2. Escolha o seu código de acesso (u(número), por exemplo u31) > ");
-            String id = i.lerString();
-            while (id.charAt(0) != 'u') {
-                v.clear();
-                v.criarConta();
-                v.showMessage("\nCódigo inválido, introduza outro > ");
-                id = i.lerString();
-            }
-            while (users.containsKey(id)) {
-                v.clear();
-                v.criarConta();
-                v.showMessage("\nCódigo de utilizador já registado, por favor escolha outro > ");
-                id = i.lerString();
-                while (id.charAt(0) != 'u') {
-                    v.clear();
-                    v.criarConta();
-                    v.showMessage("\nCódigo inválido, introduza outro > ");
-                    id = i.lerString();
-                }
-            }
-            v.clear();
-            v.criarConta();
-            v.showMessage("\n3. Indique as coordenadas da sua localização (x, y)");
-            v.showMessage("\nCoordenada x > ");
-            double x = i.lerDouble();
-            v.showMessage("\nCoordenada y > ");
-            double y = i.lerDouble();
-            v.clear();
-            v.criarConta();
-            v.showMessage("\nConfirmação dos dados:\n");
-            v.showMessage("\n1. Nome -> ");
-            v.showMessage(nome);
-            v.showMessage("\n\n2. Código de utilizador -> ");
-            v.showMessage(id);
-            v.showMessage("\n\n3. Coordenadas -> (");
-            v.showMessage(x);
-            v.showMessage(", ");
-            v.showMessage(y);
-            v.showMessage(")");
-            v.showMessage("\n\n4. Email associado -> ");
-            v.showMessage(id);
-            v.showMessage("@gmail.com");
-            v.showMessage("\n\n5. Password -> ");
-            v.showMessage(id);
-            v.showMessage("\n\nConfirmar os dados? (1) Sim (2) Não > ");
-            confirmado = i.lerInt();
-            if(confirmado == 1){
-                GPS gps = new GPS(x, y);
-                Utilizador novo = new Utilizador(id, nome, gps);
-                users.put(id, novo.clone());
-            }
-        }
-        v.clear();
-        v.showMessage("\nConta criada!\n");
-        while(voltar != 1){
-            v.showMessage("Pressione (1) para voltar ao menu principal > \n");
-            voltar = i.lerInt();
-        }
-    }
-
-    public void login(){
-        Input i = new Input();
-        String email;
-        int x = -1;
-        String pw;
-            v.clear();
-            v.login();
-            v.showMessage("\n1. Email [(código)@gmail.com] > ");
-            email = i.lerString();
-            String id = "";
-                try {
-                    id = email.split("@")[0];
-                    email = email.split("@")[1];
-                } catch (Exception e) {
-                    v.showMessage(e.getMessage());
-                }
-            if (!users.containsKey(id) || !email.equals("gmail.com")) {
-                v.clear();
-                v.login();
-                v.showMessage("\nUtilizador não encontrado!");
-                while(x != 1){
-                    v.showMessage("\nPrima 1 para voltar ao menu principal > ");
-                    x = i.lerInt();
-                }
-            }
-            else{
-                v.clear();
-                v.login();
-                v.showMessage("\n2. Password (código do utilizador) > ");
-                pw = i.lerString();
-                while(!pw.equals(id)){
-                    v.clear();
-                    v.login();
-                    v.showMessage("\nIntroduza a password correta > ");
-                    pw = i.lerString();
-                }
-                v.clear();
-                v.showMessage("\nSucesso!");
-                while(x != 1){
-                    v.showMessage("\nPressione (1) para continuar > ");
-                    x = i.lerInt();
-                }
-            }
-    }*/
-
     public String toString() {
         StringBuilder sb = new StringBuilder("SistemaTrazAqui{");
         sb.append("users=").append(users).append("\n");
@@ -286,6 +170,10 @@ public class SistemaTrazAqui {
         return registos.existeConta(codigo);
     }
 
+    public boolean passCorreta(String codigo, String pass){
+        return registos.existePass(codigo, pass);
+    }
+
     public void novoUtilizador(String codigo, String nome, GPS gps, String email, String password){
         Utilizador u = new Utilizador(codigo, nome, gps);
         users.add(u.clone());
@@ -307,5 +195,12 @@ public class SistemaTrazAqui {
             t = new TransportadoraUmaEnc(codigo, nome, gps, nif, raio, preco);
         transportadoras.add(t.clone());
         registos.adicionarRegisto(codigo, email, password);
+    }
+
+    public void novaLoja(String code, String nome, GPS gps, String email,
+                         String pw, boolean infoFilas){
+        Loja l = new Loja(code, nome, gps, infoFilas);
+        lojas.add(l.clone());
+        registos.adicionarRegisto(code, email, pw);
     }
 }
