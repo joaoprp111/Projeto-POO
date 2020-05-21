@@ -133,11 +133,7 @@ public class SistemaTrazAqui {
                     Encomenda e = p.parseEncomenda(linhaPartida[1]);
                     encomendas.add(e.clone());
                     Collection<String> prodsEncomendados = e.produtosEncomendados();
-                    try {
-                        cat.carregaLoja(prodsEncomendados, e.getCodLoja());
-                    } catch(Exception exc){
-                        this.v.showMessage(exc.getMessage());
-                    }
+                    cat.carregaLoja(prodsEncomendados, e.getCodLoja());
                     break;
                 case "Aceite":
                     aceites.add(linhaPartida[1]);
@@ -219,8 +215,20 @@ public class SistemaTrazAqui {
     public String lojasDisponiveis(){
         StringBuilder sb = new StringBuilder();
         for(Loja l : lojas){
-            sb.append(l.getNome()).append(" | Localização: ").append(l.getGps()).append("\n");
+            sb.append("\n").append(l.getNome()).append(" | ")
+                    .append("Código: ")
+                    .append(l.getCodigo()).append(" | ")
+                    .append(l.getGps()).append("\n");
         }
         return sb.toString();
+    }
+
+    public boolean existeLoja(String cod){
+        for(Loja l: lojas) if(cod.equals(l.getCodigo())) return true;
+        return false;
+    }
+
+    public Collection<String> buscarProdsAoCat(String loja, int p) throws Exception{
+        return cat.getProdutosLoja(loja, p);
     }
 }

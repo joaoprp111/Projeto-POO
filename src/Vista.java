@@ -60,4 +60,18 @@ public class Vista {
         System.out.println("\n(0) Logout");
         System.out.println("\n> Opção: ");
     }
+
+    public void escolherLojaParaEncomenda(){
+        clear();
+        System.out.println("\n|-------------------------------------------------------------------------------------------|");
+        System.out.println("|                                   Escolha a loja                                          |");
+        System.out.println("|-------------------------------------------------------------------------------------------|");
+    }
+
+    public void produtosLoja(){
+        clear();
+        System.out.println("\n|-------------------------------------------------------------------------------------------|");
+        System.out.println("|                                  Escolha um produto                                       |");
+        System.out.println("|-------------------------------------------------------------------------------------------|");
+    }
 }

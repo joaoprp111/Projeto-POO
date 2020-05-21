@@ -1,3 +1,5 @@
+import java.util.Collection;
+
 public class Controlador {
     private final Vista v;
     private final SistemaTrazAqui s;
@@ -382,16 +384,30 @@ public class Controlador {
             v.user();
             v.funcionalidadesUtilizador();
             opcao = i.lerInt();
+            String cod = "";
             switch(opcao){
                 case 1:
+                    v.escolherLojaParaEncomenda();
                     v.showMessage(s.lojasDisponiveis());
-                    opcao = -1;
-                    while(opcao != 0){
-                        v.showMessage("Pression (0) para voltar > ");
-                        opcao = i.lerInt();
+                    while(!s.existeLoja(cod)){
+                        v.showMessage("\nIntroduza o código da loja > ");
+                        cod = i.lerString();
                     }
+                    escolherProduto(cod);
                     break;
             }
+        }
+    }
+
+    public void escolherProduto(String codLoja){
+        Input i = new Input();
+        String codProd = "";
+        v.produtosLoja();
+        try{
+            Collection<String> prods = s.buscarProdsAoCat(codLoja, 1);
+            v.showMessage(prods);
+        }catch(Exception e){
+            v.showMessage("\nEsta loja ainda não possui catálogo!\n");
         }
     }
 }
