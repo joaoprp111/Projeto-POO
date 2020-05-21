@@ -231,4 +231,8 @@ public class SistemaTrazAqui {
     public Collection<String> buscarProdsAoCat(String loja, int p) throws Exception{
         return cat.getProdutosLoja(loja, p);
     }
+
+    public boolean existeProdutoNaLoja(String codLoja, String codProd){
+        return cat.existeProduto(codLoja, codProd);
+    }
 }

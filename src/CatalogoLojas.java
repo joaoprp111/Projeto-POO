@@ -35,4 +35,9 @@ public class CatalogoLojas implements Catalogos{
 
         return res;
     }
+
+    public boolean existeProduto(String codLoja, String prod){
+        /* Neste método a chave é sempre válida (a loja) */
+        return catLojas.get(codLoja).contains(prod);
+    }
 }

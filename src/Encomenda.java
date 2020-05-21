@@ -2,6 +2,7 @@ import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.TreeSet;
 import java.util.stream.Collectors;
 
 public class Encomenda implements Comparable<Encomenda>{
@@ -145,7 +146,7 @@ public class Encomenda implements Comparable<Encomenda>{
 
     public Collection<String> produtosEncomendados(){
         return linhas.stream().map(LinhaEncomenda::getDesc)
-                .collect(Collectors.toCollection(ArrayList::new));
+                .collect(Collectors.toCollection(TreeSet::new));
     }
 
     public int compareTo(Encomenda e){

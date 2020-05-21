@@ -403,9 +403,23 @@ public class Controlador {
         Input i = new Input();
         String codProd = "";
         v.produtosLoja();
+        Collection<String> prods;
+        int pagina = 1, opcao;
         try{
-            Collection<String> prods = s.buscarProdsAoCat(codLoja, 1);
-            v.showMessage(prods);
+            prods = s.buscarProdsAoCat(codLoja, pagina++);
+            do {
+                opcao = -1;
+                v.showMessage("\n"); v.showMessage(prods);
+                while(opcao != 0){
+                    v.showMessage("\n\nPressione (0) para continuar > ");
+                    opcao = i.lerInt();
+                }
+                prods = s.buscarProdsAoCat(codLoja, pagina++);
+            } while(prods.size() > 0);
+            while(!s.existeProdutoNaLoja(codLoja, codProd)){
+                v.showMessage("\nIntroduza o nome do produto que quer encomendar (primeira letra maiúscula) > ");
+                codProd = i.lerString();
+            }
         }catch(Exception e){
             v.showMessage("\nEsta loja ainda não possui catálogo!\n");
         }
