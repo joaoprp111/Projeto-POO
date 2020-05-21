@@ -1,4 +1,5 @@
 import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
@@ -140,6 +141,11 @@ public class Encomenda implements Comparable<Encomenda>{
         sb.append(", linhas=").append(linhas);
         sb.append('}');
         return sb.toString();
+    }
+
+    public Collection<String> produtosEncomendados(){
+        return linhas.stream().map(LinhaEncomenda::getDesc)
+                .collect(Collectors.toCollection(ArrayList::new));
     }
 
     public int compareTo(Encomenda e){

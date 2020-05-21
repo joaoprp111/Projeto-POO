@@ -4,7 +4,6 @@ public abstract class Transportadora extends Entidade{
     private String nif;
     private double raio;
     private double preco; /* Preço por km */
-
     /*
      * Construtor por omissao
      */
@@ -74,6 +73,14 @@ public abstract class Transportadora extends Entidade{
         this.preco = preco;
     }
 
+    public void setNif(String nif) {
+        this.nif = nif;
+    }
+
+    public void setRaio(double raio) {
+        this.raio = raio;
+    }
+
     /**
      *                      Transforma o conteúdo de um objeto numa String
      * @return              String com a informação do objeto
@@ -101,6 +108,11 @@ public abstract class Transportadora extends Entidade{
         return Double.compare(that.getRaio(), this.raio) == 0 &&
                 Double.compare(that.getPreco(), this.preco) == 0 &&
                 Objects.equals(this.nif, that.getNif());
+    }
+
+    public double calculaPrecoTransporte(double peso, double distLoja, double distUser){
+        double distTotal = distLoja + distUser;
+        return peso * preco * distTotal;
     }
 
     public abstract Transportadora clone();

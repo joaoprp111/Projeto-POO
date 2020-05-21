@@ -9,6 +9,7 @@ public class SistemaTrazAqui {
     private Collection<Transportadora> transportadoras;
     private Collection<Encomenda> encomendas;
     private Collection<String> aceites;
+    private CatalogoLojas cat;
     private Contas registos;
     private Vista v;
 
@@ -20,6 +21,7 @@ public class SistemaTrazAqui {
         this.encomendas = new TreeSet<>();
         this.aceites = new ArrayList<>();
         this.registos = new Contas();
+        this.cat = new CatalogoLojas();
         this.v = new Vista();
     }
 
@@ -130,6 +132,12 @@ public class SistemaTrazAqui {
                 case "Encomenda":
                     Encomenda e = p.parseEncomenda(linhaPartida[1]);
                     encomendas.add(e.clone());
+                    Collection<String> prodsEncomendados = e.produtosEncomendados();
+                    try {
+                        cat.carregaLoja(prodsEncomendados, e.getCodLoja());
+                    } catch(Exception exc){
+                        this.v.showMessage(exc.getMessage());
+                    }
                     break;
                 case "Aceite":
                     aceites.add(linhaPartida[1]);
@@ -202,5 +210,17 @@ public class SistemaTrazAqui {
         Loja l = new Loja(code, nome, gps, infoFilas);
         lojas.add(l.clone());
         registos.adicionarRegisto(code, email, pw);
+    }
+
+    public double calculaDistancia(GPS gps1, GPS gps2){
+        return GPS.dist(gps1, gps2);
+    }
+
+    public String lojasDisponiveis(){
+        StringBuilder sb = new StringBuilder();
+        for(Loja l : lojas){
+            sb.append(l.getNome()).append(" | Localização: ").append(l.getGps()).append("\n");
+        }
+        return sb.toString();
     }
 }

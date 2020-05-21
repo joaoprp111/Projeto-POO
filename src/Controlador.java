@@ -366,7 +366,31 @@ public class Controlador {
                         v.showMessage("Login efetuado!\nPressione (0) para aceder às funcionalidades ");
                         opcao = i.lerInt();
                     }
+                    if(codigo.charAt(0) == 'u') funcUser();
+                    /*else if(codigo.charAt(0) == 'v') funcVol();
+                    else if(codigo.charAt(0) == 't') funcT();
+                    else funcL();*/
                 }
+            }
+        }
+    }
+
+    public void funcUser(){
+        Input i = new Input();
+        int opcao = -1;
+        while(opcao != 0){
+            v.user();
+            v.funcionalidadesUtilizador();
+            opcao = i.lerInt();
+            switch(opcao){
+                case 1:
+                    v.showMessage(s.lojasDisponiveis());
+                    opcao = -1;
+                    while(opcao != 0){
+                        v.showMessage("Pression (0) para voltar > ");
+                        opcao = i.lerInt();
+                    }
+                    break;
             }
         }
     }

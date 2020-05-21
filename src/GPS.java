@@ -51,4 +51,14 @@ public class GPS {
     public GPS clone(){
         return new GPS(this);
     }
+
+    public static double dist(GPS gps1, GPS gps2){
+        double x1, x2, y1, y2, aux;
+        x1 = gps1.getX(); y1 = gps1.getY();
+        x2 = gps2.getX(); y2 = gps1.getY();
+
+        aux = Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2);
+
+        return Math.sqrt(aux);
+    }
 }

@@ -47,4 +47,17 @@ public class Vista {
         System.out.println("|                                           Login                                           |");
         System.out.println("|-------------------------------------------------------------------------------------------|");
     }
+
+    public void user(){
+        clear();
+        System.out.println("\n|-------------------------------------------------------------------------------------------|");
+        System.out.println("|                                        Utilizador                                         |");
+        System.out.println("|-------------------------------------------------------------------------------------------|");
+    }
+
+    public void funcionalidadesUtilizador(){
+        System.out.println("\n(1) Realizar encomenda");
+        System.out.println("\n(0) Logout");
+        System.out.println("\n> Opção: ");
+    }
 }
