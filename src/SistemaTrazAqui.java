@@ -9,7 +9,7 @@ public class SistemaTrazAqui {
     private Collection<Transportadora> transportadoras;
     private Collection<Encomenda> encomendas;
     private Collection<String> aceites;
-  /*  private CatalogoLojas cat;*/
+    private CatalogoLojas cat;
     private Contas registos;
     private Vista v;
 
@@ -21,7 +21,7 @@ public class SistemaTrazAqui {
         this.encomendas = new TreeSet<>();
         this.aceites = new ArrayList<>();
         this.registos = new Contas();
-        /*this.cat = new CatalogoLojas();*/
+        this.cat = new CatalogoLojas();
         this.v = new Vista();
     }
 
@@ -132,8 +132,9 @@ public class SistemaTrazAqui {
                 case "Encomenda":
                     Encomenda e = p.parseEncomenda(linhaPartida[1]);
                     encomendas.add(e.clone());
-                    Collection<String> prodsEncomendados = e.produtosEncomendados();
-                   /* cat.carregaLoja(prodsEncomendados, e.getCodLoja());*/
+                    List<LinhaEncomenda> listaLE = e.getLinhas();
+                    for(LinhaEncomenda le : listaLE)
+                        cat.insereProduto(e.getCodLoja(), le);
                     break;
                 case "Aceite":
                     aceites.add(linhaPartida[1]);
@@ -211,7 +212,7 @@ public class SistemaTrazAqui {
     public double calculaDistancia(GPS gps1, GPS gps2){
         return GPS.dist(gps1, gps2);
     }
-/*
+
     public String lojasDisponiveis(){
         StringBuilder sb = new StringBuilder();
         for(Loja l : lojas){
@@ -228,11 +229,11 @@ public class SistemaTrazAqui {
         return false;
     }
 
-    public Collection<String> buscarProdsAoCat(String loja, int p) throws Exception{
-        return cat.getProdutosLoja(loja, p);
+    public String buscarProdsAoCat(String loja, int p){
+        return cat.separaPorPaginas(loja, p);
     }
 
     public boolean existeProdutoNaLoja(String codLoja, String codProd){
         return cat.existeProduto(codLoja, codProd);
-    }*/
+    }
 }

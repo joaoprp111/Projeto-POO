@@ -392,28 +392,27 @@ public class Controlador {
                 case 1:
                     while(!encomendar) {
                         v.escolherLojaParaEncomenda();
-                       /* v.showMessage(s.lojasDisponiveis());
+                        v.showMessage(s.lojasDisponiveis());
                         while (!s.existeLoja(cod)) {
                             v.showMessage("\nIntroduza o código da loja > ");
                             cod = i.lerString();
                         }
-                        escolherProduto(cod, carrinho);*/
+                        escolherProduto(cod, carrinho);
                     }
                         break;
             }
         }
     }
 
-    /*public void escolherProduto(String codLoja, Collection<String> carrinho){
+    public void escolherProduto(String codLoja, Collection<String> carrinho){
         Input i = new Input();
         String codProd;
         v.produtosLoja();
-        Collection<String> prods;
+        String prods = "";
         int pagina, opcao = -1;
         while(opcao != 0) {
             pagina = 1;
             codProd = "";
-            try {
                 prods = s.buscarProdsAoCat(codLoja, pagina++);
                 do {
                     opcao = -1;
@@ -424,22 +423,19 @@ public class Controlador {
                         opcao = i.lerInt();
                     }
                     prods = s.buscarProdsAoCat(codLoja, pagina++);
-                } while (prods.size() > 0);
+                } while (!prods.equals("Não existe catálogo para esta loja!\n"));
                 while (!s.existeProdutoNaLoja(codLoja, codProd)) {
                     v.showMessage("\nIntroduza o nome do produto que quer encomendar (primeira letra maiúscula) > ");
                     codProd = i.lerString();
-                }*/
+                }
                 /* Neste ponto o produto é adicionado ao carrinho */
-                /*carrinho.add(codProd);
+                carrinho.add(codProd);
                 opcao = -1;
                 while (opcao != 1 && opcao != 0) {
                     v.showMessage("\nProduto adicionado ao carrinho > (1) Adicionar mais (0) Voltar\nOpção > ");
                     opcao = i.lerInt();
                 }
                 // encomendar();
-            } catch (Exception e) {
-                v.showMessage("\nEsta loja ainda não possui catálogo!\n");
-            }
         }
-    }*/
+    }
 }
