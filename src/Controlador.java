@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Collection;
 
 public class Controlador {
@@ -385,43 +386,60 @@ public class Controlador {
             v.funcionalidadesUtilizador();
             opcao = i.lerInt();
             String cod = "";
+            Collection<String> carrinho = new ArrayList<>();
+            boolean encomendar = false;
             switch(opcao){
                 case 1:
-                    v.escolherLojaParaEncomenda();
-                    v.showMessage(s.lojasDisponiveis());
-                    while(!s.existeLoja(cod)){
-                        v.showMessage("\nIntroduza o código da loja > ");
-                        cod = i.lerString();
+                    while(!encomendar) {
+                        v.escolherLojaParaEncomenda();
+                       /* v.showMessage(s.lojasDisponiveis());
+                        while (!s.existeLoja(cod)) {
+                            v.showMessage("\nIntroduza o código da loja > ");
+                            cod = i.lerString();
+                        }
+                        escolherProduto(cod, carrinho);*/
                     }
-                    escolherProduto(cod);
-                    break;
+                        break;
             }
         }
     }
 
-    public void escolherProduto(String codLoja){
+    /*public void escolherProduto(String codLoja, Collection<String> carrinho){
         Input i = new Input();
-        String codProd = "";
+        String codProd;
         v.produtosLoja();
         Collection<String> prods;
-        int pagina = 1, opcao;
-        try{
-            prods = s.buscarProdsAoCat(codLoja, pagina++);
-            do {
+        int pagina, opcao = -1;
+        while(opcao != 0) {
+            pagina = 1;
+            codProd = "";
+            try {
+                prods = s.buscarProdsAoCat(codLoja, pagina++);
+                do {
+                    opcao = -1;
+                    v.showMessage("\n");
+                    v.showMessage(prods);
+                    while (opcao != 0) {
+                        v.showMessage("\n\nPressione (0) para continuar > ");
+                        opcao = i.lerInt();
+                    }
+                    prods = s.buscarProdsAoCat(codLoja, pagina++);
+                } while (prods.size() > 0);
+                while (!s.existeProdutoNaLoja(codLoja, codProd)) {
+                    v.showMessage("\nIntroduza o nome do produto que quer encomendar (primeira letra maiúscula) > ");
+                    codProd = i.lerString();
+                }*/
+                /* Neste ponto o produto é adicionado ao carrinho */
+                /*carrinho.add(codProd);
                 opcao = -1;
-                v.showMessage("\n"); v.showMessage(prods);
-                while(opcao != 0){
-                    v.showMessage("\n\nPressione (0) para continuar > ");
+                while (opcao != 1 && opcao != 0) {
+                    v.showMessage("\nProduto adicionado ao carrinho > (1) Adicionar mais (0) Voltar\nOpção > ");
                     opcao = i.lerInt();
                 }
-                prods = s.buscarProdsAoCat(codLoja, pagina++);
-            } while(prods.size() > 0);
-            while(!s.existeProdutoNaLoja(codLoja, codProd)){
-                v.showMessage("\nIntroduza o nome do produto que quer encomendar (primeira letra maiúscula) > ");
-                codProd = i.lerString();
+                // encomendar();
+            } catch (Exception e) {
+                v.showMessage("\nEsta loja ainda não possui catálogo!\n");
             }
-        }catch(Exception e){
-            v.showMessage("\nEsta loja ainda não possui catálogo!\n");
         }
-    }
+    }*/
 }
