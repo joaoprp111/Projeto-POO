@@ -369,7 +369,7 @@ public class Controlador {
                         v.showMessage("Login efetuado!\nPressione (0) para aceder às funcionalidades ");
                         opcao = i.lerInt();
                     }
-                    if(codigo.charAt(0) == 'u') funcUser();
+                    if(codigo.charAt(0) == 'u') funcUser(codigo);
                     /*else if(codigo.charAt(0) == 'v') funcVol();
                     else if(codigo.charAt(0) == 't') funcT();
                     else funcL();*/
@@ -378,19 +378,20 @@ public class Controlador {
         }
     }
 
-    public void funcUser(){
+    public void funcUser(String codigo){
         Input i = new Input();
         int opcao = -1;
         while(opcao != 0){
+            opcao = -1;
             v.user();
             v.funcionalidadesUtilizador();
             opcao = i.lerInt();
-            String cod = "";
-            Collection<String> carrinho = new ArrayList<>();
+            String cod;
+            Collection<LinhaEncomenda> carrinho = new ArrayList<>();
             boolean encomendar = false;
             switch(opcao){
                 case 1:
-                    while(!encomendar) {
+                        cod = "";
                         v.escolherLojaParaEncomenda();
                         v.showMessage(s.lojasDisponiveis());
                         while (!s.existeLoja(cod)) {
@@ -398,19 +399,27 @@ public class Controlador {
                             cod = i.lerString();
                         }
                         escolherProduto(cod, carrinho);
-                    }
+                        v.confirmarEnc();
+                        v.showMessage(s.estadoEncomenda(carrinho));
+                        opcao = -1;
+                        while(opcao != 1 && opcao != 2){
+                            v.showMessage("Confirmar a encomenda? > (1) Sim (2) Não ");
+                            opcao = i.lerInt();
+                        }
+                        if(opcao == 1) encomendar = true;
                         break;
             }
         }
     }
 
-    public void escolherProduto(String codLoja, Collection<String> carrinho){
+    public void escolherProduto(String codLoja, Collection<LinhaEncomenda> carrinho){
         Input i = new Input();
         String codProd;
         v.produtosLoja();
         String prods = "";
         int pagina, opcao = -1;
         while(opcao != 0) {
+            opcao = -1;
             pagina = 1;
             codProd = "";
                 prods = s.buscarProdsAoCat(codLoja, pagina++);
@@ -423,19 +432,25 @@ public class Controlador {
                         opcao = i.lerInt();
                     }
                     prods = s.buscarProdsAoCat(codLoja, pagina++);
-                } while (!prods.equals("Não existe catálogo para esta loja!\n"));
+                } while (!prods.equals("Não existe catálogo para esta loja!\n")
+                && !prods.equals("Não existe essa loja\n"));
                 while (!s.existeProdutoNaLoja(codLoja, codProd)) {
-                    v.showMessage("\nIntroduza o nome do produto que quer encomendar (primeira letra maiúscula) > ");
+                    v.showMessage("\nIntroduza o código do produto que quer encomendar [p(número)] > ");
                     codProd = i.lerString();
                 }
-                /* Neste ponto o produto é adicionado ao carrinho */
-                carrinho.add(codProd);
+                /* Neste ponto pergunta-se quantas unidades se quer comprar */
+                double qtd = 0.0;
+                while(qtd <= 0.0){
+                    v.unidades();
+                    qtd = i.lerDouble();
+                }
+                LinhaEncomenda le = s.criarLinha(qtd, codProd, codLoja);
+                carrinho.add(le);
                 opcao = -1;
                 while (opcao != 1 && opcao != 0) {
                     v.showMessage("\nProduto adicionado ao carrinho > (1) Adicionar mais (0) Voltar\nOpção > ");
                     opcao = i.lerInt();
                 }
-                // encomendar();
         }
     }
 }

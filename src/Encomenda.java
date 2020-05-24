@@ -106,7 +106,7 @@ public class Encomenda implements Comparable<Encomenda>{
         this.data = d;
     }
 
-    public void setLinhas(List<LinhaEncomenda> linhas){
+    public void setLinhas(Collection<LinhaEncomenda> linhas){
         this.linhas = new ArrayList<>();
 
         for(LinhaEncomenda le: linhas) this.linhas.add(le.clone());

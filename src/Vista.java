@@ -74,4 +74,16 @@ public class Vista {
         System.out.println("|                                  Escolha um produto                                       |");
         System.out.println("|-------------------------------------------------------------------------------------------|");
     }
+
+    public void unidades(){
+        clear();
+        System.out.println("\nQuantas unidades deste produto quer comprar? > ");
+    }
+
+    public void confirmarEnc(){
+        clear();
+        System.out.println("\n|-------------------------------------------------------------------------------------------|");
+        System.out.println("|                                   Confirmar Encomenda                                     |");
+        System.out.println("|-------------------------------------------------------------------------------------------|");
+    }
 }

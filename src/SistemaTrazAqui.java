@@ -214,6 +214,7 @@ public class SistemaTrazAqui {
     }
 
     public String lojasDisponiveis(){
+        System.out.println(cat);
         StringBuilder sb = new StringBuilder();
         for(Loja l : lojas){
             sb.append("\n").append(l.getNome()).append(" | ")
@@ -235,5 +236,28 @@ public class SistemaTrazAqui {
 
     public boolean existeProdutoNaLoja(String codLoja, String codProd){
         return cat.existeProduto(codLoja, codProd);
+    }
+
+    LinhaEncomenda criarLinha(double qtd, String cod, String codLoja){
+        double precoUnitario = cat.precoDeUmProduto(cod, codLoja);
+        String nomeProd = cat.nomeDeUmProduto(cod, codLoja);
+        return new LinhaEncomenda(cod, nomeProd, precoUnitario, qtd);
+    }
+
+    public String estadoEncomenda(Collection<LinhaEncomenda> c){
+        StringBuilder sb = new StringBuilder(); int i = 1;
+        double precoTotal = 0.0;
+        for(LinhaEncomenda le: c){
+            sb.append("Produto ").append(i++)
+                    .append(": ").append(le.getDesc()).append(" | Unidades: ").append(le.getQtd())
+                    .append(" | Preço total: ").append(le.calculaValorLinhaEnc()).append("\n");
+            precoTotal += le.calculaValorLinhaEnc();
+        }
+        sb.append("Preço total da encomenda: ").append(precoTotal).append("\n");
+        return sb.toString();
+    }
+
+    public void registaEncomendaNoSistema(Collection<LinhaEncomenda> carrinho, String codLoja, String codUser){
+
     }
 }
