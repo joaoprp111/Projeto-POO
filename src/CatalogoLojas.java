@@ -1,4 +1,3 @@
-import javax.print.DocFlavor;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -40,10 +39,10 @@ public class CatalogoLojas implements Catalogos{
                 i++;
             }
             res = sb.toString();
-            if (i == 0) return "Não existe catálogo para esta loja!\n";
+            if(i == 0) return "Não existe catálogo para esta loja!\n";
             else return res;
         }
-        else return "Não existe essa loja!\n";
+        else return "Não existe catálogo para esta loja!\n";
     }
 
     public boolean existeProduto(String codLoja, String codProd){
@@ -88,5 +87,9 @@ public class CatalogoLojas implements Catalogos{
         sb.append("infoProdutos=").append(infoProdutos.keySet());
         sb.append('}');
         return sb.toString();
+    }
+
+    public boolean existeLoja(String codLoja){
+        return infoProdutos.containsKey(codLoja);
     }
 }

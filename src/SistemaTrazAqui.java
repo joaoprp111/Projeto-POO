@@ -214,13 +214,14 @@ public class SistemaTrazAqui {
     }
 
     public String lojasDisponiveis(){
-        System.out.println(cat);
         StringBuilder sb = new StringBuilder();
         for(Loja l : lojas){
-            sb.append("\n").append(l.getNome()).append(" | ")
-                    .append("Código: ")
-                    .append(l.getCodigo()).append(" | ")
-                    .append(l.getGps()).append("\n");
+            if(cat.existeLoja(l.getCodigo())) {
+                sb.append("\n").append(l.getNome()).append(" | ")
+                        .append("Código: ")
+                        .append(l.getCodigo()).append(" | ")
+                        .append(l.getGps()).append("\n");
+            }
         }
         return sb.toString();
     }

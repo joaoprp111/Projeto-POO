@@ -432,8 +432,7 @@ public class Controlador {
                         opcao = i.lerInt();
                     }
                     prods = s.buscarProdsAoCat(codLoja, pagina++);
-                } while (!prods.equals("Não existe catálogo para esta loja!\n")
-                && !prods.equals("Não existe essa loja\n"));
+                } while (!prods.equals("Não existe catálogo para esta loja!\n"));
                 while (!s.existeProdutoNaLoja(codLoja, codProd)) {
                     v.showMessage("\nIntroduza o código do produto que quer encomendar [p(número)] > ");
                     codProd = i.lerString();
