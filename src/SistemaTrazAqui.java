@@ -6,7 +6,7 @@ public class SistemaTrazAqui {
     private Collection<Utilizador> users;
     private Collection<Voluntario> voluntarios;
     private Collection<Loja> lojas;
-    private Collection<Transportadora> transportadoras;
+    private Collection<MeioTransporte> transportadoras;
     private Collection<Encomenda> encomendas;
     private Collection<String> aceites;
     private CatalogoLojas cat;
@@ -56,10 +56,10 @@ public class SistemaTrazAqui {
         return res;
     }
 
-    public Collection<Transportadora> getTransportadoras(){
-        Collection<Transportadora> res = new TreeSet<>();
+    public Collection<MeioTransporte> getTransportadoras(){
+        Collection<MeioTransporte> res = new TreeSet<>();
 
-        for(Transportadora t : this.transportadoras){
+        for(MeioTransporte t : this.transportadoras){
             res.add(t.clone());
         }
 
@@ -122,7 +122,7 @@ public class SistemaTrazAqui {
                     registos.adicionarRegisto(idV, sbV.toString(),idV);
                     break;
                 case "Transportadora":
-                    Transportadora t = p.parseTransportadora(linhaPartida[1]);
+                    MeioTransporte t = p.parseTransportadora(linhaPartida[1]);
                     transportadoras.add(t.clone());
                     String idT = t.getCodigo();
                     StringBuilder sbT = new StringBuilder(idT);
@@ -186,18 +186,18 @@ public class SistemaTrazAqui {
     }
 
     public void novoVoluntario(String codigo, String nome, GPS gps, String email, String password, double raio){
-        Voluntario v = new Voluntario(codigo, nome, gps, raio);
+        Voluntario v = new Voluntario(codigo, nome, gps, raio, false);
         voluntarios.add(v.clone());
         registos.adicionarRegisto(codigo, email, password);
     }
 
     public void novaTransportadora(String codigo, String nome, GPS gps, String email, String password, String nif, double raio, double preco,
                                    boolean variasEncs){
-        Transportadora t;
+        MeioTransporte t;
         if(variasEncs)
-            t = new TransportadoraVariasEncs(codigo, nome, gps, nif, raio, preco);
+            t = new TransportadoraVariasEncs(codigo, nome, gps, raio, false, nif, preco);
         else
-            t = new TransportadoraUmaEnc(codigo, nome, gps, nif, raio, preco);
+            t = new TransportadoraUmaEnc(codigo, nome, gps, raio, false, nif, preco);
         transportadoras.add(t.clone());
         registos.adicionarRegisto(codigo, email, password);
     }

@@ -3,26 +3,42 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 
-public class TransportadoraVariasEncs extends Transportadora {
-    int ocupacao;
+public class TransportadoraVariasEncs extends MeioTransporte {
+    private String nif;
+    private double preco; // preco por km
+    private int ocupacao;
     private Collection<Encomenda> encs;
 
     public TransportadoraVariasEncs(){
         super();
+        this.nif = "";
+        this.preco = 0.0;
         this.ocupacao = 0;
         this.encs = new ArrayList<>();
     }
 
-    public TransportadoraVariasEncs(String codigo, String nome, GPS gps, String nif, double raio, double preco) {
-        super(codigo, nome, gps, nif, raio, preco);
+    public TransportadoraVariasEncs(String codigo, String nome, GPS gps, double raio, boolean certificado, String nif, double preco) {
+        super(codigo, nome, gps, raio, certificado);
+        this.nif = nif;
+        this.preco = preco;
         this.ocupacao = 0;
         this.encs = new ArrayList<>();
     }
 
     public TransportadoraVariasEncs(TransportadoraVariasEncs t) {
         super(t);
+        this.nif = t.getNif();
+        this.preco = t.getPreco();
         this.ocupacao = t.getOcupacao();
         setEncs(t.getEncs());
+    }
+
+    public String getNif() {
+        return nif;
+    }
+
+    public double getPreco() {
+        return preco;
     }
 
     public Collection<Encomenda> getEncs() {
@@ -35,6 +51,15 @@ public class TransportadoraVariasEncs extends Transportadora {
         return this.ocupacao;
     }
 
+
+    public void setNif(String nif){
+        this.nif = nif;
+    }
+
+    public void setPreco(double preco){
+        this.preco = preco;
+    }
+
     public void setEncs(Collection<Encomenda> enc) {
         this.encs = new ArrayList<>();
         for(Encomenda e : enc) this.encs.add(e.clone());
@@ -44,19 +69,26 @@ public class TransportadoraVariasEncs extends Transportadora {
         this.ocupacao = ocup;
     }
 
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
         TransportadoraVariasEncs that = (TransportadoraVariasEncs) o;
-        return Objects.equals(encs, that.getEncs());
+        return Double.compare(that.getPreco(), getPreco()) == 0 &&
+                getOcupacao() == that.getOcupacao() &&
+                getNif().equals(that.getNif()) &&
+                Objects.equals(getEncs(), that.getEncs());
     }
 
+    @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder();
-        sb.append(super.toString()).append(encs);
-        sb.append('}');
-        return sb.toString();
+        return "TransportadoraVariasEncs{" +
+                "nif='" + nif + '\'' +
+                ", preco=" + preco +
+                ", ocupacao=" + ocupacao +
+                ", encs=" + encs +
+                '}';
     }
 
     public TransportadoraVariasEncs clone(){

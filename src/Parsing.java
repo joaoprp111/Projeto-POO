@@ -35,10 +35,10 @@ public class Parsing {
         double gpsy = Double.parseDouble(campos[3]);
         GPS gps = new GPS(gpsx, gpsy);
         double raio = Double.parseDouble(campos[4]);
-        return new Voluntario(id, nome, gps, raio);
+        return new Voluntario(id, nome, gps, raio, false);
     }
 
-    public Transportadora parseTransportadora(String input){
+    public MeioTransporte parseTransportadora(String input){
         String[] campos = input.split(",");
         String id = campos[0];
         String nome = campos[1];
@@ -48,7 +48,7 @@ public class Parsing {
         String nif = campos[4];
         double raio = Double.parseDouble(campos[5]);
         double preco = Double.parseDouble(campos[6]);
-        return new TransportadoraUmaEnc(id, nome, gps, nif, raio, preco);
+        return new TransportadoraUmaEnc(id, nome, gps, raio, false, nif, preco);
     }
 
     public Encomenda parseEncomenda(String input){
