@@ -12,7 +12,7 @@ public class Encomenda implements Comparable<Encomenda> {
     private String cod_loja;
     private double peso;
     private boolean encomendaMedica;
-    private LocalDateTime data;
+    private final ServicoEntrega servicoEntrega;
     private List<LinhaEncomenda> linhas;
 
     /**
@@ -24,7 +24,7 @@ public class Encomenda implements Comparable<Encomenda> {
         this.cod_loja = "";
         this.peso = 0.0;
         this.encomendaMedica = false;
-        this.data = LocalDateTime.now();
+        this.servicoEntrega = new ServicoEntrega();
         this.linhas = new ArrayList<>();
     }
 
@@ -34,7 +34,7 @@ public class Encomenda implements Comparable<Encomenda> {
         this.cod_loja = loja;
         this.peso = peso;
         this.encomendaMedica = encomendaMedica;
-        this.data = LocalDateTime.now();
+        this.servicoEntrega = new ServicoEntrega();
         this.setLinhas(linhas);
     }
 
@@ -44,7 +44,7 @@ public class Encomenda implements Comparable<Encomenda> {
         this.cod_loja = loja;
         this.peso = peso;
         this.encomendaMedica = encomendaMedica;
-        this.data = LocalDateTime.now();
+        this.servicoEntrega = new ServicoEntrega();
         this.linhas = new ArrayList<>();
     }
 
@@ -54,7 +54,7 @@ public class Encomenda implements Comparable<Encomenda> {
         this.cod_loja = e.getCodLoja();
         this.peso = e.getPeso();
         this.encomendaMedica = e.isEncomendaMedica();
-        this.data = e.getData();
+        this.servicoEntrega = e.getServicoEntrega();
         this.linhas = e.getLinhas();
     }
 
@@ -82,8 +82,8 @@ public class Encomenda implements Comparable<Encomenda> {
         return this.encomendaMedica;
     }
 
-    public LocalDateTime getData() {
-        return this.data;
+    public ServicoEntrega getServicoEntrega() {
+        return servicoEntrega;
     }
 
     public List<LinhaEncomenda> getLinhas() {
@@ -115,10 +115,6 @@ public class Encomenda implements Comparable<Encomenda> {
         this.encomendaMedica = encomendaMedica;
     }
 
-    public void setData(LocalDateTime d) {
-        this.data = d;
-    }
-
     public void setLinhas(Collection<LinhaEncomenda> linhas) {
         this.linhas = new ArrayList<>();
 
@@ -139,7 +135,6 @@ public class Encomenda implements Comparable<Encomenda> {
                 cod_enc.equals(encomenda.cod_enc) &&
                 cod_user.equals(encomenda.cod_user) &&
                 cod_loja.equals(encomenda.cod_loja) &&
-                getData().equals(encomenda.getData()) &&
                 getLinhas().equals(encomenda.getLinhas());
     }
 
@@ -155,7 +150,6 @@ public class Encomenda implements Comparable<Encomenda> {
                 ", cod_loja='" + cod_loja + '\'' +
                 ", peso=" + peso +
                 ", encomendaMedica=" + encomendaMedica +
-                ", data=" + data +
                 ", linhas=" + linhas +
                 '}';
     }
@@ -168,4 +162,29 @@ public class Encomenda implements Comparable<Encomenda> {
     public int compareTo(Encomenda e) {
         return this.cod_enc.compareTo(e.getCodEnc());
     }
+
+    public void mudaEstado(EstadoEncomenda novoEstado){
+        if(novoEstado != EstadoEncomenda.NOVA){
+            this.servicoEntrega.setEstado(novoEstado);
+            switch (novoEstado){
+                case PRONTA_A_SER_ENTREGUE:
+                    this.servicoEntrega.setDataProntaASerEntregue(LocalDateTime.now());
+                case EM_ACEITACAO:
+                    this.servicoEntrega.setDataEmAceitacao(LocalDateTime.now());
+                case EM_TRANSPORTE:
+                    this.servicoEntrega.setDataEmTransporte(LocalDateTime.now());
+                case ENTREGUE:
+                    this.servicoEntrega.setDataEntregue(LocalDateTime.now());
+            }
+        }
+    }
+
+    public void setCustoTransporte(double custoTransporte){
+        this.servicoEntrega.setCustoTransporte(custoTransporte);
+    }
+
+    public void setClassificacaoDeTransporte(int classificacao){
+        this.servicoEntrega.setClassificacao(classificacao);
+    }
+
 }
