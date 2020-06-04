@@ -2,6 +2,7 @@ public class LinhaEncomenda{
     private String cod;
     private String desc;
     private double qtd;
+    private double peso;
     private double valorUnitario;
 
     /**
@@ -17,6 +18,7 @@ public class LinhaEncomenda{
     public LinhaEncomenda(){
         this.cod = new String();
         this.desc = new String();
+        this.peso = 0.0;
         this.qtd = 0.0;
         this.valorUnitario = 0.0;
     }
@@ -31,6 +33,14 @@ public class LinhaEncomenda{
         this.qtd = qtd;
     }
 
+    public LinhaEncomenda(String ref, String desc, double preco, double qtd, double peso){
+        this.cod = ref;
+        this.desc = desc;
+        this.valorUnitario = preco;
+        this.peso = peso;
+        this.qtd = qtd;
+    }
+
     /**
      * Construtor de copia de LinhaEncomenda.
      */
@@ -38,6 +48,7 @@ public class LinhaEncomenda{
         this.cod = le.getCod();
         this.desc = le.getDesc();
         this.valorUnitario = le.getValorUnitario();
+        this.peso = le.getPeso();
         this.qtd = le.getQtd();
     }
 
@@ -61,6 +72,14 @@ public class LinhaEncomenda{
         return this.qtd;
     }
 
+    public double getPeso() {
+        return peso;
+    }
+
+    public void setPeso(double peso) {
+        this.peso = peso;
+    }
+
     public void setCod(String ref){
         this.cod = ref;
     }
@@ -81,6 +100,10 @@ public class LinhaEncomenda{
         return (this.valorUnitario * this.qtd);
     }
 
+    public double calculaPeso(){
+        return this.peso * this.qtd;
+    }
+
     public LinhaEncomenda clone(){
         return new LinhaEncomenda(this);
     }
@@ -92,6 +115,7 @@ public class LinhaEncomenda{
         return le.getCod().equals(this.cod) &&
                 le.getDesc().equals(this.desc) &&
                 Double.compare(le.getValorUnitario(), this.valorUnitario) == 0 &&
+                Double.compare(le.getPeso(), this.peso) == 0 &&
                 Double.compare(le.getQtd(), this.qtd) == 0;
     }
 
@@ -100,6 +124,7 @@ public class LinhaEncomenda{
         sb.append("CodProd: ").append(this.cod).append(" ");
         sb.append("Descricao: ").append(this.desc).append(" ");
         sb.append("Preco: ").append(this.valorUnitario).append(" ");
+        sb.append("Peso: ").append(this.peso).append(" ");
         sb.append("Quantidade: ").append(this.qtd).append(" ");
 
         return sb.toString();

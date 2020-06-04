@@ -5,6 +5,7 @@ import java.util.Objects;
 
 public class Loja extends Entidade{
     private boolean infoFilas;
+    private boolean temMedicamentos;
     private int tempoAtendimentoPorPessoa; // em segundos
     private int pessoasEmEspera;
     private Collection<Encomenda> encs;
@@ -17,6 +18,7 @@ public class Loja extends Entidade{
         this.infoFilas = false;
         this.tempoAtendimentoPorPessoa = 0;
         this.pessoasEmEspera = 0;
+        this.temMedicamentos = false;
         this.encs = new ArrayList<>();
     }
 
@@ -24,12 +26,13 @@ public class Loja extends Entidade{
      * Construtor parametrizado
      */
 
-    public Loja(String codigo, String nome, GPS gps, boolean infoFilas) {
+    public Loja(String codigo, String nome, GPS gps, boolean infoFilas, boolean temMedicamentos) {
         super(codigo, nome, gps);
         this.infoFilas = infoFilas;
         this.tempoAtendimentoPorPessoa = 0;
         this.pessoasEmEspera = 0;
         this.encs = new ArrayList<>();
+        this.temMedicamentos = temMedicamentos;
     }
 
     public Loja(String codigo, String nome, GPS gps) {
@@ -37,6 +40,7 @@ public class Loja extends Entidade{
         this.infoFilas = false;
         this.tempoAtendimentoPorPessoa = 0;
         this.pessoasEmEspera = 0;
+        this.temMedicamentos = false;
         this.encs = new ArrayList<>();
     }
 
@@ -48,6 +52,7 @@ public class Loja extends Entidade{
         this.infoFilas = l.isInfoFilas();
         this.tempoAtendimentoPorPessoa = l.getTempoAtendimentoPorPessoa();
         this.pessoasEmEspera = l.getPessoasEmEspera();
+        this.temMedicamentos = l.getTemMedicamentos();
         setEncs(l.getEncs());
     }
 
@@ -73,6 +78,14 @@ public class Loja extends Entidade{
             res.add(enc.clone());
         }
         return res;
+    }
+
+    public boolean getTemMedicamentos() {
+        return temMedicamentos;
+    }
+
+    public void setTemMedicamentos(boolean temMedicamentos) {
+        this.temMedicamentos = temMedicamentos;
     }
 
     /*
@@ -102,14 +115,15 @@ public class Loja extends Entidade{
      *                      Transforma o conteúdo de um objeto numa String
      * @return              String com a informação do objeto
      */
-    @Override
     public String toString() {
-        return "Loja{" +
-                "infoFilas=" + infoFilas +
-                ", tempoAtendimentoPorPessoa=" + tempoAtendimentoPorPessoa +
-                ", pessoasEmEspera=" + pessoasEmEspera +
-                ", encs=" + encs +
-                '}';
+        final StringBuilder sb = new StringBuilder("Loja{");
+        sb.append("infoFilas=").append(infoFilas);
+        sb.append(", temMedicamentos=").append(temMedicamentos);
+        sb.append(", tempoAtendimentoPorPessoa=").append(tempoAtendimentoPorPessoa);
+        sb.append(", pessoasEmEspera=").append(pessoasEmEspera);
+        sb.append(", encs=").append(encs);
+        sb.append('}');
+        return sb.toString();
     }
 
     /**
@@ -126,6 +140,7 @@ public class Loja extends Entidade{
         return isInfoFilas() == loja.isInfoFilas() &&
                 getTempoAtendimentoPorPessoa() == loja.getTempoAtendimentoPorPessoa() &&
                 getPessoasEmEspera() == loja.getPessoasEmEspera() &&
+                getTemMedicamentos() == loja.getTemMedicamentos() &&
                 Objects.equals(getEncs(), loja.getEncs());
     }
 

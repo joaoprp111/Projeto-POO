@@ -28,7 +28,7 @@ public class Encomenda implements Comparable<Encomenda> {
         this.linhas = new ArrayList<>();
     }
 
-    public Encomenda(String enc, String user, String loja, double peso, boolean encomendaMedica, List<LinhaEncomenda> linhas) {
+    public Encomenda(String enc, String user, String loja, double peso, boolean encomendaMedica, Collection<LinhaEncomenda> linhas) {
         this.cod_enc = enc;
         this.cod_user = user;
         this.cod_loja = loja;
@@ -177,10 +177,6 @@ public class Encomenda implements Comparable<Encomenda> {
                     this.servicoEntrega.setDataEntregue(LocalDateTime.now());
             }
         }
-    }
-
-    public void setCustoTransporte(double custoTransporte){
-        this.servicoEntrega.setCustoTransporte(custoTransporte);
     }
 
     public void setClassificacaoDeTransporte(int classificacao){

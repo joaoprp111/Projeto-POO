@@ -65,8 +65,10 @@ public class Parsing {
             String desc = campos[i++];
             double preco = Double.parseDouble(campos[i++]);
             double qtd = Double.parseDouble(campos[i++]);
-            LinhaEncomenda le = new LinhaEncomenda(codP, desc, preco, qtd);
-            e.addLinha(le);
+            double pesoProduto = (0.23 * qtd) + preco; /* Peso gerado para os logs, no caso de quem cria conta
+             o peso de cada produto é pedido ao utilizador do programa */
+            LinhaEncomenda le = new LinhaEncomenda(codP, desc, preco, qtd, pesoProduto);
+            e.addLinha(le.clone());
         }
         return e;
     }

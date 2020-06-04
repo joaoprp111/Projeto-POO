@@ -5,7 +5,7 @@ public class SistemaTrazAqui {
     /* Estrutura provisória */
     private Collection<Utilizador> users;
     private Collection<Voluntario> voluntarios;
-    private Collection<Loja> lojas;
+    private Map<String, Loja> lojas;
     private Collection<MeioTransporte> transportadoras;
     private Collection<Encomenda> encomendas;
     private Collection<String> aceites;
@@ -16,7 +16,7 @@ public class SistemaTrazAqui {
     public SistemaTrazAqui(){
         this.users = new TreeSet<>();
         this.voluntarios = new TreeSet<>();
-        this.lojas = new TreeSet<>();
+        this.lojas = new HashMap<>();
         this.transportadoras = new TreeSet<>();
         this.encomendas = new TreeSet<>();
         this.aceites = new ArrayList<>();
@@ -47,13 +47,13 @@ public class SistemaTrazAqui {
     }
 
     public Collection<Loja> getLojas(){
-        Collection<Loja> res = new TreeSet<>();
+        return this.lojas.values()
+                .stream().map(Loja::clone).collect(Collectors.toCollection(ArrayList::new));
+    }
 
-        for(Loja l : this.lojas){
-            res.add(l.clone());
-        }
-
-        return res;
+    public boolean lojaTemMedicamentos(String codLoja){
+            return lojas.get(codLoja)
+                    .getTemMedicamentos();
     }
 
     public Collection<MeioTransporte> getTransportadoras(){
@@ -107,7 +107,7 @@ public class SistemaTrazAqui {
                     break;
                 case "Loja":
                     Loja l = p.parseLoja(linhaPartida[1]);
-                    lojas.add(l.clone());
+                    lojas.putIfAbsent(l.getCodigo(), l.clone());
                     String idLoja = l.getCodigo();
                     StringBuilder sbL = new StringBuilder(idLoja);
                     sbL.append("@gmail.com");
@@ -203,9 +203,9 @@ public class SistemaTrazAqui {
     }
 
     public void novaLoja(String code, String nome, GPS gps, String email,
-                         String pw, boolean infoFilas){
-        Loja l = new Loja(code, nome, gps, infoFilas);
-        lojas.add(l.clone());
+                         String pw, boolean infoFilas, boolean temMeds){
+        Loja l = new Loja(code, nome, gps, infoFilas, temMeds);
+        lojas.putIfAbsent(code, l.clone());
         registos.adicionarRegisto(code, email, pw);
     }
 
@@ -215,7 +215,7 @@ public class SistemaTrazAqui {
 
     public String lojasDisponiveis(){
         StringBuilder sb = new StringBuilder();
-        for(Loja l : lojas){
+        for(Loja l : lojas.values()){
             if(cat.existeLoja(l.getCodigo())) {
                 sb.append("\n").append(l.getNome()).append(" | ")
                         .append("Código: ")
@@ -227,8 +227,7 @@ public class SistemaTrazAqui {
     }
 
     public boolean existeLoja(String cod){
-        for(Loja l: lojas) if(cod.equals(l.getCodigo())) return true;
-        return false;
+        return lojas.containsKey(cod);
     }
 
     public String buscarProdsAoCat(String loja, int p){
@@ -248,17 +247,34 @@ public class SistemaTrazAqui {
     public String estadoEncomenda(Collection<LinhaEncomenda> c){
         StringBuilder sb = new StringBuilder(); int i = 1;
         double precoTotal = 0.0;
+        double pesoTotal = 0.0;
         for(LinhaEncomenda le: c){
             sb.append("Produto ").append(i++)
                     .append(": ").append(le.getDesc()).append(" | Unidades: ").append(le.getQtd())
-                    .append(" | Preço total: ").append(le.calculaValorLinhaEnc()).append("\n");
+                    .append(" | Preço total: ").append(le.calculaValorLinhaEnc())
+                    .append(" | Peso total: ").append(le.calculaPeso()).append("\n");
             precoTotal += le.calculaValorLinhaEnc();
+            pesoTotal += le.calculaPeso();
         }
         sb.append("Preço total da encomenda: ").append(precoTotal).append("\n");
+        sb.append("Peso total da encomenda: ").append(pesoTotal).append("\n");
         return sb.toString();
     }
 
-    public void registaEncomendaNoSistema(Collection<LinhaEncomenda> carrinho, String codLoja, String codUser){
+    public double calculaPesoCarrinho(Collection<LinhaEncomenda> carrinho){
+        return carrinho.stream()
+                .mapToDouble(LinhaEncomenda::calculaPeso).reduce(0.0, (ac, el) -> ac + el);
+    }
 
+    public String gerarCodigoEnc(){
+        String res = "";
+        while(!encomendas.contains(res)){
+            int num = 1 + (int) (Math.random() * ((10000-1) + 1));
+            String numstr = String.valueOf(num);
+            StringBuilder sb = new StringBuilder("e");
+            sb.append(numstr);
+            res = sb.toString();
+        }
+        return res;
     }
 }

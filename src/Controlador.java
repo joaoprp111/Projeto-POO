@@ -275,6 +275,7 @@ public class Controlador {
         while(!confirmado){
             opcao = -1;
             boolean infoFilas = false;
+            boolean temMeds = false;
             String nome, codigo, email, password;
             double x, y;
             v.criarConta();
@@ -309,6 +310,14 @@ public class Controlador {
             if(opcao == 1) infoFilas = true;
             opcao = -1;
             v.criarConta();
+            v.showMessage("\n7. A loja vai vender algum tipo de medicamento? (1) Sim (2) Não > ");
+            while(opcao != 1 && opcao !=2){
+                v.showMessage("\nOpção inválida, introduza outra > ");
+                opcao = i.lerInt();
+            }
+            if(opcao == 1) temMeds = true;
+            opcao = -1;
+            v.criarConta();
             v.showMessage("\nLoja: ");v.showMessage(nome);
             v.showMessage("\n\nCódigo de acesso: ");v.showMessage(codigo);
             v.showMessage("\n\nEmail: ");v.showMessage(email);
@@ -317,6 +326,9 @@ public class Controlador {
             v.showMessage("\n\nInformação de filas de espera: ");
             if(infoFilas) v.showMessage("Sim.");
             else v.showMessage("Não.");
+            v.showMessage("\n\nTem medicamentos para venda: ");
+            if(temMeds) v.showMessage("Sim.");
+            else v.showMessage("Não.");
             while(opcao != 1 && opcao != 2) {
                 v.showMessage("\n\nQuer criar a conta com estes dados? (1) Sim (2) Criar outra > ");
                 opcao = i.lerInt();
@@ -324,7 +336,7 @@ public class Controlador {
             if(opcao == 1){
                 confirmado = true;
                 GPS gps = new GPS(x,y);
-                s.novaLoja(codigo, nome, gps, email, password, infoFilas);
+                s.novaLoja(codigo, nome, gps, email, password, infoFilas, temMeds);
             }
         }
         v.showMessage("\nConta criada, clique em (0) para voltar > ");
@@ -388,7 +400,6 @@ public class Controlador {
             opcao = i.lerInt();
             String cod;
             Collection<LinhaEncomenda> carrinho = new ArrayList<>();
-            boolean encomendar = false;
             switch(opcao){
                 case 1:
                         cod = "";
@@ -406,7 +417,16 @@ public class Controlador {
                             v.showMessage("Confirmar a encomenda? > (1) Sim (2) Não ");
                             opcao = i.lerInt();
                         }
-                        if(opcao == 1) encomendar = true;
+                        if(opcao == 1){
+                            boolean temMeds = false;
+                            if(s.lojaTemMedicamentos(cod)) temMeds = true;
+                            double peso = s.calculaPesoCarrinho(carrinho);
+                            String codEnc = s.gerarCodigoEnc();
+                            Encomenda nova = new Encomenda(codEnc, codigo, cod, peso, temMeds, carrinho);
+                            v.showMessage(nova);
+                            // falta adicionar na loja
+                        }
+                        else carrinho.clear();
                         break;
             }
         }
@@ -444,7 +464,12 @@ public class Controlador {
                     qtd = i.lerDouble();
                 }
                 LinhaEncomenda le = s.criarLinha(qtd, codProd, codLoja);
-                carrinho.add(le);
+                v.showMessage(le.getValorUnitario());
+                v.showMessage(le.getQtd());
+                double peso = le.calculaPeso();
+                v.showMessage(peso);
+                le.setPeso(peso);
+                carrinho.add(le.clone());
                 opcao = -1;
                 while (opcao != 1 && opcao != 0) {
                     v.showMessage("\nProduto adicionado ao carrinho > (1) Adicionar mais (0) Voltar\nOpção > ");

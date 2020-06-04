@@ -1,18 +1,17 @@
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 public class ServicoEntrega {
 
     // ATRIBUTOS
 
-    private int classificacao; /// int >= 0 && int <= 5
+    private int classificacao; // int >= 0 && int <= 5
     private EstadoEncomenda estado;
     private LocalDateTime dataNova;
     private LocalDateTime dataProntaASerEntregue;
     private LocalDateTime dataEmAceitacao;
     private LocalDateTime dataEmTransporte;
     private LocalDateTime dataEntregue;
-    private double custoTransporte;
-
 
     // CONSTRUTOR
 
@@ -81,25 +80,29 @@ public class ServicoEntrega {
         this.dataEntregue = dataEntregue;
     }
 
-    public double getCustoTransporte() {
-        return custoTransporte;
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ServicoEntrega that = (ServicoEntrega) o;
+        return classificacao == that.getClassificacao() &&
+                estado == that.getEstado() &&
+                Objects.equals(dataNova, that.getDataNova()) &&
+                Objects.equals(dataProntaASerEntregue, that.getDataProntaASerEntregue()) &&
+                Objects.equals(dataEmAceitacao, that.getDataEmAceitacao()) &&
+                Objects.equals(dataEmTransporte, that.getDataEmTransporte()) &&
+                Objects.equals(dataEntregue, that.getDataEntregue());
     }
 
-    public void setCustoTransporte(double custoTransporte) {
-        this.custoTransporte = custoTransporte;
-    }
-
-    @Override
     public String toString() {
-        return "ServicoEntrega{" +
-                "classificacao=" + classificacao +
-                ", estado=" + estado +
-                ", dataNova=" + dataNova +
-                ", dataProntaASerEntregue=" + dataProntaASerEntregue +
-                ", dataEmAceitacao=" + dataEmAceitacao +
-                ", dataEmTransporte=" + dataEmTransporte +
-                ", dataEntregue=" + dataEntregue +
-                ", custoTransporte=" + custoTransporte +
-                '}';
+        final StringBuilder sb = new StringBuilder("ServicoEntrega{");
+        sb.append("classificacao=").append(classificacao);
+        sb.append(", estado=").append(estado);
+        sb.append(", dataNova=").append(dataNova);
+        sb.append(", dataProntaASerEntregue=").append(dataProntaASerEntregue);
+        sb.append(", dataEmAceitacao=").append(dataEmAceitacao);
+        sb.append(", dataEmTransporte=").append(dataEmTransporte);
+        sb.append(", dataEntregue=").append(dataEntregue);
+        sb.append('}');
+        return sb.toString();
     }
 }

@@ -31,11 +31,13 @@ public class CatalogoLojas implements Catalogos{
                     collect(Collectors.toCollection(ArrayList::new)).iterator();
             int i = 0;
             sb = new StringBuilder();
-            sb.append("Produto | Preço/unidade | Código do Produto\n\n");
+            sb.append("Produto | Preço/unidade | Peso/unidade | Código do Produto\n\n");
             while (it.hasNext() && i < 10) {
                 LinhaEncomenda le = (LinhaEncomenda) it.next();
                 sb.append(le.getDesc()).append(" | ")
-                        .append(le.getValorUnitario()).append(" € | ").append(le.getCod()).append("\n");
+                        .append(le.getValorUnitario()).append(" € | ")
+                        .append(le.getPeso()).append(" kg | ")
+                        .append(le.getCod()).append("\n");
                 i++;
             }
             res = sb.toString();
