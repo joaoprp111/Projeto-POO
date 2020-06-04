@@ -101,7 +101,7 @@ public class LinhaEncomenda{
     }
 
     public double calculaPeso(){
-        return this.peso * this.qtd;
+        return (this.peso * this.qtd);
     }
 
     public LinhaEncomenda clone(){

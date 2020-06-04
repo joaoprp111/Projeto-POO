@@ -70,6 +70,20 @@ public class CatalogoLojas implements Catalogos{
         return res;
     }
 
+    public double pesoDeUmProduto(String codProd, String codLoja){
+        Collection<LinhaEncomenda> c = infoProdutos.get(codLoja);
+        Iterator it = c.iterator();
+        boolean encontrado = false; double res = 0.0;
+        while(it.hasNext() && !encontrado){
+            LinhaEncomenda le = (LinhaEncomenda) it.next();
+            if (codProd.equals(le.getCod())){
+                encontrado = true;
+                res = le.getPeso();
+            }
+        }
+        return res;
+    }
+
     public String nomeDeUmProduto(String codProd, String codLoja){
         Collection<LinhaEncomenda> c = infoProdutos.get(codLoja);
         Iterator it = c.iterator();

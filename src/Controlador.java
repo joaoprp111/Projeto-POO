@@ -423,7 +423,6 @@ public class Controlador {
                             double peso = s.calculaPesoCarrinho(carrinho);
                             String codEnc = s.gerarCodigoEnc();
                             Encomenda nova = new Encomenda(codEnc, codigo, cod, peso, temMeds, carrinho);
-                            v.showMessage(nova);
                             // falta adicionar na loja
                         }
                         else carrinho.clear();
@@ -464,10 +463,7 @@ public class Controlador {
                     qtd = i.lerDouble();
                 }
                 LinhaEncomenda le = s.criarLinha(qtd, codProd, codLoja);
-                v.showMessage(le.getValorUnitario());
-                v.showMessage(le.getQtd());
                 double peso = le.calculaPeso();
-                v.showMessage(peso);
                 le.setPeso(peso);
                 carrinho.add(le.clone());
                 opcao = -1;

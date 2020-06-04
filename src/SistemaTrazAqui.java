@@ -241,7 +241,8 @@ public class SistemaTrazAqui {
     LinhaEncomenda criarLinha(double qtd, String cod, String codLoja){
         double precoUnitario = cat.precoDeUmProduto(cod, codLoja);
         String nomeProd = cat.nomeDeUmProduto(cod, codLoja);
-        return new LinhaEncomenda(cod, nomeProd, precoUnitario, qtd);
+        double pesoProd = cat.pesoDeUmProduto(cod, codLoja);
+        return new LinhaEncomenda(cod, nomeProd, precoUnitario, qtd, pesoProd);
     }
 
     public String estadoEncomenda(Collection<LinhaEncomenda> c){
@@ -252,12 +253,12 @@ public class SistemaTrazAqui {
             sb.append("Produto ").append(i++)
                     .append(": ").append(le.getDesc()).append(" | Unidades: ").append(le.getQtd())
                     .append(" | Preço total: ").append(le.calculaValorLinhaEnc())
-                    .append(" | Peso total: ").append(le.calculaPeso()).append("\n");
+                    .append(" € | Peso total: ").append(le.calculaPeso()).append(" kg\n");
             precoTotal += le.calculaValorLinhaEnc();
             pesoTotal += le.calculaPeso();
         }
-        sb.append("Preço total da encomenda: ").append(precoTotal).append("\n");
-        sb.append("Peso total da encomenda: ").append(pesoTotal).append("\n");
+        sb.append("Preço total da encomenda: ").append(precoTotal).append(" €\n");
+        sb.append("Peso total da encomenda: ").append(pesoTotal).append(" kg\n");
         return sb.toString();
     }
 
@@ -266,9 +267,14 @@ public class SistemaTrazAqui {
                 .mapToDouble(LinhaEncomenda::calculaPeso).reduce(0.0, (ac, el) -> ac + el);
     }
 
+    public boolean existeCodEnc(String cod){
+        return this.encomendas.stream()
+                .anyMatch(e -> e.getCodEnc().equals(cod));
+    }
+
     public String gerarCodigoEnc(){
         String res = "";
-        while(!encomendas.contains(res)){
+        while(!existeCodEnc(res)){
             int num = 1 + (int) (Math.random() * ((10000-1) + 1));
             String numstr = String.valueOf(num);
             StringBuilder sb = new StringBuilder("e");
