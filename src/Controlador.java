@@ -423,9 +423,19 @@ public class Controlador {
                             double peso = s.calculaPesoCarrinho(carrinho);
                             String codEnc = s.gerarCodigoEnc();
                             Encomenda nova = new Encomenda(codEnc, codigo, cod, peso, temMeds, carrinho);
+                            s.adicionarEncFeita(nova, codigo);
                             // falta adicionar na loja
                         }
                         else carrinho.clear();
+                        break;
+                case 2:
+                        v.solicitarEnc();
+                        v.showMessage(s.encomendasFeitasUtilizador(codigo));
+                        while (opcao != 0) {
+                            v.showMessage("\nPressione (0) voltar ");
+                            opcao = i.lerInt();
+                        }
+                        opcao = -1;
                         break;
             }
         }

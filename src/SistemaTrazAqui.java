@@ -3,7 +3,7 @@ import java.util.stream.Collectors;
 
 public class SistemaTrazAqui {
     /* Estrutura provisória */
-    private Collection<Utilizador> users;
+    private Map<String, Utilizador> users;
     private Collection<Voluntario> voluntarios;
     private Map<String, Loja> lojas;
     private Collection<MeioTransporte> transportadoras;
@@ -14,7 +14,7 @@ public class SistemaTrazAqui {
     private Vista v;
 
     public SistemaTrazAqui(){
-        this.users = new TreeSet<>();
+        this.users = new HashMap<>();
         this.voluntarios = new TreeSet<>();
         this.lojas = new HashMap<>();
         this.transportadoras = new TreeSet<>();
@@ -29,7 +29,7 @@ public class SistemaTrazAqui {
     public Collection<Utilizador> getUsers(){
         Collection<Utilizador> res = new TreeSet<>();
 
-        for(Utilizador u : this.users){
+        for(Utilizador u : this.users.values()){
             res.add(u.clone());
         }
 
@@ -86,7 +86,7 @@ public class SistemaTrazAqui {
 
     public void setUtilizador(String id, String nome, GPS gps){
         Utilizador u = new Utilizador(id, nome, gps);
-        users.add(u.clone());
+        users.put(id, u.clone());
     }
 
     public void loadFromLogs(){
@@ -99,7 +99,7 @@ public class SistemaTrazAqui {
             switch(linhaPartida[0]){
                 case "Utilizador":
                     Utilizador u = p.parseUtilizador(linhaPartida[1]); // criar um Utilizador
-                    users.add(u.clone());
+                    users.put(u.getCodigo(), u.clone());
                     String codigo = u.getCodigo();
                     StringBuilder sb = new StringBuilder(codigo);
                     sb.append("@gmail.com");
@@ -181,7 +181,7 @@ public class SistemaTrazAqui {
 
     public void novoUtilizador(String codigo, String nome, GPS gps, String email, String password){
         Utilizador u = new Utilizador(codigo, nome, gps);
-        users.add(u.clone());
+        users.put(codigo, u.clone());
         registos.adicionarRegisto(codigo, email, password);
     }
 
@@ -282,5 +282,24 @@ public class SistemaTrazAqui {
             res = sb.toString();
         }
         return res;
+    }
+
+    public String encomendasFeitasUtilizador(String cod){
+        Utilizador u = users.get(cod);
+        StringBuilder sb = new StringBuilder();
+        Collection<Encomenda> c = u.getEncsFeitas();
+        if(c.size() == 0) return "Não existem encomendas feitas ainda!\n";
+        sb.append("\nEncomendas feitas:\n");
+        int i = 1;
+        for(Encomenda e: c){
+            sb.append("\nEncomenda ").append(i++).append(": ").append("Loja | ")
+                    .append(lojas.get(e.getCodLoja()).getNome()).append(" | Código da encomenda: ").append(e.getCodEnc()).append("\n");
+        }
+        return sb.toString();
+    }
+
+    public void adicionarEncFeita(Encomenda e, String codUser){
+        Utilizador u = users.get(codUser);
+        u.setEncFeita(e.clone());
     }
 }
