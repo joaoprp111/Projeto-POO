@@ -483,4 +483,26 @@ public class Controlador {
                 }
         }
     }
+
+    public void funcL (String codigo){
+        Input i = new Input();
+        int opcao = -1;
+        while(opcao != 0) {
+            opcao = -1;
+            v.loja();
+            v.funcionalidadesLoja();
+            opcao = i.lerInt();
+            switch (opcao) {
+                case 1:
+                    /* filtrar encomendas pendentes
+                    enviar propostas de transporte aos utilizadores
+                    sinalizar transportadora escolhida*/
+                case 2:
+                    v.showMessage("\nNúmero de pessoas em fila de espera: ");
+                    v.showMessage(s.pessoasEmEspera(codigo));
+                    v.showMessage("\n");
+                    break;
+            }
+        }
+    }
 }

@@ -48,6 +48,7 @@ public class Vista {
         System.out.println("|-------------------------------------------------------------------------------------------|\n");
     }
 
+
     public void user(){
         clear();
         System.out.println("\n|-------------------------------------------------------------------------------------------|");
@@ -55,9 +56,23 @@ public class Vista {
         System.out.println("|-------------------------------------------------------------------------------------------|\n");
     }
 
+    public void loja(){
+        clear();
+        System.out.println("\n|-------------------------------------------------------------------------------------------|");
+        System.out.println("|                                          Loja                                             |");
+        System.out.println("|-------------------------------------------------------------------------------------------|");
+    }
+
     public void funcionalidadesUtilizador(){
         System.out.println("\n(1) Realizar encomenda");
         System.out.println("\n(2) Solicitar a entrega de uma encomenda");
+        System.out.println("\n(0) Logout");
+        System.out.println("\n> Opção: ");
+    }
+
+    public void funcionalidadesLoja(){
+        System.out.println("\n(1) Sinalizar encomendas");
+        System.out.println("\n(2) Pessoas em fila");
         System.out.println("\n(0) Logout");
         System.out.println("\n> Opção: ");
     }

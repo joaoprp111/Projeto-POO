@@ -302,4 +302,11 @@ public class SistemaTrazAqui {
         Utilizador u = users.get(codUser);
         u.setEncFeita(e.clone());
     }
+
+    public String pessoasEmEspera(String cod){
+        StringBuilder sb = new StringBuilder();
+        Loja l = lojas.get(cod);
+        sb.append(l.getPessoasEmEspera());
+        return sb.toString();
+    }
 }

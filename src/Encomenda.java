@@ -12,6 +12,7 @@ public class Encomenda implements Comparable<Encomenda> {
     private String cod_loja;
     private double peso;
     private boolean encomendaMedica;
+    private String transportador;
     private final ServicoEntrega servicoEntrega;
     private List<LinhaEncomenda> linhas;
 
@@ -24,6 +25,7 @@ public class Encomenda implements Comparable<Encomenda> {
         this.cod_loja = "";
         this.peso = 0.0;
         this.encomendaMedica = false;
+        this.transportador = "";
         this.servicoEntrega = new ServicoEntrega();
         this.linhas = new ArrayList<>();
     }
@@ -54,6 +56,7 @@ public class Encomenda implements Comparable<Encomenda> {
         this.cod_loja = e.getCodLoja();
         this.peso = e.getPeso();
         this.encomendaMedica = e.isEncomendaMedica();
+        this.transportador = e.getTransportador();
         this.servicoEntrega = e.getServicoEntrega();
         this.linhas = e.getLinhas();
     }
@@ -81,6 +84,8 @@ public class Encomenda implements Comparable<Encomenda> {
     public boolean isEncomendaMedica() {
         return this.encomendaMedica;
     }
+
+    public String getTransportador() { return this.transportador; }
 
     public ServicoEntrega getServicoEntrega() {
         return servicoEntrega;
