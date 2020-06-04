@@ -91,8 +91,7 @@ public class TransportadoraUmaEnc extends MeioTransporte {
 
     public double calculaPrecoTransporte(double peso, double distLoja, double distUser){
         double distTotal = distLoja + distUser;
-        return peso * preco * distTotal;
+        return (preco * distTotal) + peso;
     }
-
 }
 

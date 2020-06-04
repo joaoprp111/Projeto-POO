@@ -1,5 +1,3 @@
-import java.util.Objects;
-
 public abstract class MeioTransporte extends Entidade{
     private double raio;
     private double velocidade;
