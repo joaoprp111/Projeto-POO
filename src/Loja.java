@@ -23,16 +23,12 @@ public class Loja extends Entidade{
     /*
      * Construtor parametrizado
      */
-    public Loja(String codigo, String nome, GPS gps, boolean infoFilas, int tempoAtendimentoPorPessoa, int pessoasEmEspera) {
+
+    public Loja(String codigo, String nome, GPS gps, boolean infoFilas) {
         super(codigo, nome, gps);
         this.infoFilas = infoFilas;
-        if(infoFilas){
-            this.tempoAtendimentoPorPessoa = tempoAtendimentoPorPessoa;
-            this.pessoasEmEspera = pessoasEmEspera;
-        } else {
-            this.tempoAtendimentoPorPessoa = 0;
-            this.pessoasEmEspera = 0;
-        }
+        this.tempoAtendimentoPorPessoa = 0;
+        this.pessoasEmEspera = 0;
         this.encs = new ArrayList<>();
     }
 

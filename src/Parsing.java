@@ -57,7 +57,7 @@ public class Parsing {
         String codUser = campos[1];
         String codLoja = campos[2];
         double peso = Double.parseDouble(campos[3]);
-        Encomenda e = new Encomenda(codEnc, codUser, codLoja, peso);
+        Encomenda e = new Encomenda(codEnc, codUser, codLoja, peso, false);
         int i = 4;
         int size = campos.length;
         while( i < size){
