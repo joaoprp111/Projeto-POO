@@ -63,6 +63,13 @@ public class Vista {
         System.out.println("|-------------------------------------------------------------------------------------------|");
     }
 
+    public void voluntario(){
+        clear();
+        System.out.println("\n|-------------------------------------------------------------------------------------------|");
+        System.out.println("|                                        Voluntário                                         |");
+        System.out.println("|-------------------------------------------------------------------------------------------|\n");
+    }
+
     public void funcionalidadesUtilizador(){
         System.out.println("\n(1) Realizar encomenda");
         System.out.println("\n(2) Solicitar a entrega de uma encomenda");
@@ -73,6 +80,16 @@ public class Vista {
     public void funcionalidadesLoja(){
         System.out.println("\n(1) Sinalizar encomendas");
         System.out.println("\n(2) Pessoas em fila");
+        System.out.println("\n(0) Logout");
+        System.out.println("\n> Opção: ");
+    }
+
+    public void funcionalidadesVoluntario(){
+        System.out.println("\n(1) Alterar estado transporte de encomendas médicas");
+        System.out.println("\n(2) Alterar disponibilidade para recolher encomendas");
+        System.out.println("\n(3) Ver encomendas prontas para entrega");
+        System.out.println("\n(4) Finalizar encomenda");
+        System.out.println("\n(5) Ver histórico de encomendas");
         System.out.println("\n(0) Logout");
         System.out.println("\n> Opção: ");
     }

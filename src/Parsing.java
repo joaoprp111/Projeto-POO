@@ -48,7 +48,7 @@ public class Parsing {
         String nif = campos[4];
         double raio = Double.parseDouble(campos[5]);
         double preco = Double.parseDouble(campos[6]);
-        return new TransportadoraUmaEnc(id, nome, gps, raio, false, nif, preco);
+        return new Transportadora(id, nome, gps, raio, false, nif, preco,false,false);
     }
 
     public Encomenda parseEncomenda(String input){

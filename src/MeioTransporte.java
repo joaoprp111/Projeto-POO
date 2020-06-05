@@ -116,7 +116,7 @@ public abstract class MeioTransporte extends Entidade{
         this.quer_fazer_entrega = quer_fazer_entrega;
     }
 
-    public void aceitaMedicamentos(boolean state){
+    public void setAceitaMedicamentos(boolean state){
         this.aceitoMeds = state;
     }
 

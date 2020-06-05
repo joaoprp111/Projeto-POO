@@ -46,6 +46,17 @@ public class SistemaTrazAqui {
         return res;
     }
 
+    public Voluntario getVoluntario(String codigo){
+
+        for(Voluntario v : this.voluntarios){
+            if(codigo.equals(v.getCodigo())) {
+                return v;
+            }
+        }
+        return null;
+
+    }
+
     public Collection<Loja> getLojas(){
         return this.lojas.values()
                 .stream().map(Loja::clone).collect(Collectors.toCollection(ArrayList::new));
@@ -194,10 +205,7 @@ public class SistemaTrazAqui {
     public void novaTransportadora(String codigo, String nome, GPS gps, String email, String password, String nif, double raio, double preco,
                                    boolean variasEncs){
         MeioTransporte t;
-        if(variasEncs)
-            t = new TransportadoraVariasEncs(codigo, nome, gps, raio, false, nif, preco);
-        else
-            t = new TransportadoraUmaEnc(codigo, nome, gps, raio, false, nif, preco);
+        t = new Transportadora(codigo, nome, gps, raio, false, nif, preco,variasEncs,true);
         transportadoras.add(t.clone());
         registos.adicionarRegisto(codigo, email, password);
     }
