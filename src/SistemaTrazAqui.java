@@ -46,17 +46,6 @@ public class SistemaTrazAqui {
         return res;
     }
 
-    public Voluntario getVoluntario(String codigo){
-
-        for(Voluntario v : this.voluntarios){
-            if(codigo.equals(v.getCodigo())) {
-                return v;
-            }
-        }
-        return null;
-
-    }
-
     public Collection<Loja> getLojas(){
         return this.lojas.values()
                 .stream().map(Loja::clone).collect(Collectors.toCollection(ArrayList::new));
@@ -205,7 +194,10 @@ public class SistemaTrazAqui {
     public void novaTransportadora(String codigo, String nome, GPS gps, String email, String password, String nif, double raio, double preco,
                                    boolean variasEncs){
         MeioTransporte t;
-        t = new Transportadora(codigo, nome, gps, raio, false, nif, preco,variasEncs,true);
+        if(variasEncs)
+            t = new Transportadora(codigo, nome, gps, raio, false, nif, preco);
+        else
+            t = new Transportadora(codigo, nome, gps, raio, false, nif, preco);
         transportadoras.add(t.clone());
         registos.adicionarRegisto(codigo, email, password);
     }
@@ -324,5 +316,36 @@ public class SistemaTrazAqui {
         Loja l = lojas.get(cod);
         sb.append(l.getPessoasEmEspera());
         return sb.toString();
+    }
+
+    public String encomendasLoja (String cod){
+        Loja l = lojas.get(cod);
+        StringBuilder sb = new StringBuilder();
+        for (Encomenda e : l.getEncs())
+            sb.append(e.toString()).append("\n");
+        return sb.toString();
+    }
+
+    public boolean existeEncLoja (String enc, String loja){
+        Loja l = lojas.get(loja);
+        return l.getEncs().stream()
+                          .anyMatch(e -> e.getCodEnc().equals(enc));
+    }
+
+    public boolean existeEncNova (String enc, String loja){
+        Collection<Encomenda> c = encomendasNovas(loja);
+        return c.stream().anyMatch(e -> e.getCodEnc().equals(enc));
+    }
+
+    public Collection<Encomenda> encomendasNovas(String loja){
+        Loja l = lojas.get(loja);
+        StringBuilder sb = new StringBuilder();
+        return (l.getEncs().stream().filter(e -> e.getEstado() == EstadoEncomenda.NOVA).collect(Collectors.toCollection(ArrayList::new)));
+    }
+
+    public String enviarPropostas (String loja, String enc){
+        Collection<Encomenda> c = encomendasNovas(loja);
+        Loja l = lojas.get(loja);
+        l.getEncs().stream().filter(e -> e.getCodEnc().equals(enc));
     }
 }

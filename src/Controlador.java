@@ -1,6 +1,5 @@
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.stream.Collectors;
 
 public class Controlador {
     private final Vista v;
@@ -384,9 +383,8 @@ public class Controlador {
                     }
                     if(codigo.charAt(0) == 'u') funcUser(codigo);
                     /*else if(codigo.charAt(0) == 'v') funcVol();
-                    else if(codigo.charAt(0) == 't') funcT();
-                    else funcL();*/
-                    if(codigo.charAt(0) == 'v') funcVoluntario(codigo);
+                    else if(codigo.charAt(0) == 't') funcT();*/
+                    else funcL(codigo);
                 }
             }
         }
@@ -488,6 +486,7 @@ public class Controlador {
     public void funcL (String codigo){
         Input i = new Input();
         int opcao = -1;
+        int k = -1;
         while(opcao != 0) {
             opcao = -1;
             v.loja();
@@ -495,9 +494,10 @@ public class Controlador {
             opcao = i.lerInt();
             switch (opcao) {
                 case 1:
-                    /* filtrar encomendas pendentes
-                    enviar propostas de transporte aos utilizadores
-                    sinalizar transportadora escolhida*/
+                    v.listaEncomendas();
+                    v.showMessage(s.encomendasLoja(codigo));
+                    v.opcoesGestaoLoja();
+                    gerirEncomendas(codigo);
                 case 2:
                     v.showMessage("\nNúmero de pessoas em fila de espera: ");
                     v.showMessage(s.pessoasEmEspera(codigo));
@@ -507,120 +507,31 @@ public class Controlador {
         }
     }
 
-    public void funcVoluntario(String codigo){
+    public void gerirEncomendas (String loja){
         Input i = new Input();
-        Voluntario vol = s.getVoluntario(codigo);
         int opcao = -1;
         while(opcao != 0) {
             opcao = -1;
-            v.voluntario();
-            v.funcionalidadesVoluntario();
-            opcao = i.lerInt();
             switch (opcao) {
                 case 1:
-                    v.clear();
-                    opcao = -1;
-                    while(opcao != 1 && opcao != 2) {
-                        v.showMessage("(1) Aceito");
-                        v.showMessage("\n(2) Recusar\n");
-                        v.showMessage("\nOpção > ");
-                        opcao = i.lerInt();
+                    v.encomendasNovas();
+                    v.showMessage(s.encomendasNovas(loja));
+                    int k = -1;
+                    while (k != 0 && k != 1){
+                        v.showMessage("\nPretende realizar esta operação para uma encomenda (0) ou para todas (1). Opção > ");
+                        k = i.lerInt();
                     }
-                    vol.setAceitaMedicamentos(opcao == 1);
-                    v.clear();
-                    v.showMessage("Operacão efetuada com sucesso!");
-                    while (opcao != 0) {
-                        v.showMessage("\n\nPressione (0) para continuar > ");
-                        opcao = i.lerInt();
-                        v.clear();
-                    }
-                    opcao = -1;
-                    v.clear();
-                    break;
-                case 2:
-                    v.clear();
-                    opcao = -1;
-                    while(opcao != 1 && opcao != 2) {
-                        v.showMessage("(1) Aceito");
-                        v.showMessage("\n(2) Recusar\n");
-                        v.showMessage("\nOpção > ");
-                        opcao = i.lerInt();
-                    }
-                    vol.setQuer_fazer_entrega(opcao == 1);
-                    v.clear();
-                    v.showMessage("Operacão efetuada com sucesso!");
-                    while (opcao != 0) {
-                        v.showMessage("\n\nPressione (0) para continuar > ");
-                        opcao = i.lerInt();
-                        v.clear();
-                    }
-                    opcao = -1;
-                    v.clear();
-                    break;
-                case 3:
-                    v.clear();
-                    opcao = -1;
-/*
-                    if(vol.isDisponivel()){
-                        if(!vol.aceitoTransporteMedicamentos())
-
-                            s.getEncomendas().stream().filter(e -> !e.isEncomendaMedica()).filter(e -> e.getCodLoja());
-                        else
-                            s.getEncomendas();
-
-
+                    if (k == 0){
+                        String cod = "";
+                        while (!s.existeEncLoja(cod,loja)) {
+                            v.showMessage("\nIndique o código da encomenda: ");
+                            cod = i.lerString();
                         }
-                        opcao = -1;
-*/
-                    v.clear();
-                    break;
-                case 4:
-                    v.clear();
-                    opcao = -1;
-                    Encomenda enc = s.getEncomendas()
-                            .stream()
-                            .filter(e -> e.getTransportador().equals(codigo) &&
-                                    e.getServicoEntrega().getEstado() == EstadoEncomenda.EM_TRANSPORTE)
-                            .findFirst()
-                            .orElse(null);;
-                    if(enc == null)
-                        v.showMessage("\nOpção Inválida!\nDe momento não está nenhuma encomenda a ser tranportada.");
-                    else {
-                        enc.mudaEstado(EstadoEncomenda.ENTREGUE);
-                        vol.setDisponivel(true);
-                        v.showMessage("\nEncomenda: "+ enc.getCodEnc()+". Finalizada com sucesso!");
                     }
-                    while (opcao != 0) {
-                        v.showMessage("\n\nPressione (0) para continuar > ");
-                        opcao = i.lerInt();
-                    }
-                    opcao = -1;
-                    v.clear();
-                    break;
+                    else{
 
-                case 5:
-                    opcao = -1;
-                    v.clear();
-                    ArrayList<Encomenda> lista = s.getEncomendas().stream()
-                            .filter(e -> e.getTransportador().equals(codigo) &&
-                                    e.getServicoEntrega().getEstado() == EstadoEncomenda.ENTREGUE)
-                            .collect(Collectors.toCollection(ArrayList::new));
-
-                    lista.forEach(e-> v.showMessage("\n" + e.toString() + "\n"));
-                    if(lista.size() == 0) v.showMessage("Este Voluntário ainda não realizou nenhuma entrega!");
-                    else lista.forEach(e-> v.showMessage("\n" + e.toString() + "\n"));
-                    while (opcao != 0) {
-                        v.showMessage("\n\nPressione (0) para continuar > ");
-                        opcao = i.lerInt();
                     }
-                    opcao = -1;
-                    v.clear();
-                    break;
             }
         }
-
-
     }
-
-
 }

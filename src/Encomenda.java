@@ -91,6 +91,10 @@ public class Encomenda implements Comparable<Encomenda> {
         return servicoEntrega;
     }
 
+    public EstadoEncomenda getEstado (){
+        return servicoEntrega.getEstado();
+    }
+
     public List<LinhaEncomenda> getLinhas() {
         List<LinhaEncomenda> novo;
 
@@ -156,7 +160,8 @@ public class Encomenda implements Comparable<Encomenda> {
                 ", peso=" + peso +
                 ", encomendaMedica=" + encomendaMedica +
                 ", linhas=" + linhas +
-                '}';
+                ", estado= " + servicoEntrega.getEstado() +
+                "}\n";
     }
 
     public Collection<String> produtosEncomendados() {
