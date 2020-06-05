@@ -292,8 +292,9 @@ public class SistemaTrazAqui {
         sb.append("\nEncomendas feitas:\n");
         int i = 1;
         for(Encomenda e: c){
-            sb.append("\nEncomenda ").append(i++).append(": ").append("Loja | ")
-                    .append(lojas.get(e.getCodLoja()).getNome()).append(" | Código da encomenda: ").append(e.getCodEnc()).append("\n");
+            sb.append("\nEncomenda ").append(i++).append(": ").append("Loja: ")
+                    .append(lojas.get(e.getCodLoja()).getNome()).append(" | Código da encomenda: ").append(e.getCodEnc())
+                    .append(" | Data da encomenda: ").append(e.dataEncomenda()).append("\n");
         }
         return sb.toString();
     }

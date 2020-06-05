@@ -473,8 +473,6 @@ public class Controlador {
                     qtd = i.lerDouble();
                 }
                 LinhaEncomenda le = s.criarLinha(qtd, codProd, codLoja);
-                double peso = le.calculaPeso();
-                le.setPeso(peso);
                 carrinho.add(le.clone());
                 opcao = -1;
                 while (opcao != 1 && opcao != 0) {

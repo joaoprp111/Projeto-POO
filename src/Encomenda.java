@@ -164,6 +164,10 @@ public class Encomenda implements Comparable<Encomenda> {
                 .collect(Collectors.toCollection(TreeSet::new));
     }
 
+    public LocalDateTime dataEncomenda(){
+        return servicoEntrega.getDataNova();
+    }
+
     public int compareTo(Encomenda e) {
         return this.cod_enc.compareTo(e.getCodEnc());
     }
