@@ -7,7 +7,6 @@ public class Transportadora extends MeioTransporte {
     private String nif;
     private double preco; // preco por km
     private int ocupacao;
-    private Collection<Encomenda> encs;
     private boolean fazVariasEnc;
     private boolean disponivel;
 
@@ -16,7 +15,6 @@ public class Transportadora extends MeioTransporte {
         this.nif = "";
         this.preco = 0.0;
         this.ocupacao = 0;
-        this.encs = new ArrayList<>();
         this.fazVariasEnc = false;
         this.disponivel = false;
     }
@@ -26,7 +24,6 @@ public class Transportadora extends MeioTransporte {
         this.nif = nif;
         this.preco = preco;
         this.ocupacao = 0;
-        this.encs = new ArrayList<>();
         this.fazVariasEnc = fazVarEn;
         this.disponivel = disponivel;
     }
@@ -36,7 +33,6 @@ public class Transportadora extends MeioTransporte {
         this.nif = t.getNif();
         this.preco = t.getPreco();
         this.ocupacao = t.getOcupacao();
-        setEncs(t.getEncs());
         this.fazVariasEnc = t.isFazVariasEnc();
         this.disponivel = t.isDisponivel();
     }
@@ -49,11 +45,6 @@ public class Transportadora extends MeioTransporte {
         return preco;
     }
 
-    public Collection<Encomenda> getEncs() {
-        List<Encomenda> res = new ArrayList<>();
-        for(Encomenda e : this.encs) res.add(e.clone());
-        return res;
-    }
 
     public int getOcupacao(){
         return this.ocupacao;
@@ -71,10 +62,6 @@ public class Transportadora extends MeioTransporte {
         this.preco = preco;
     }
 
-    public void setEncs(Collection<Encomenda> enc) {
-        this.encs = new ArrayList<>();
-        for(Encomenda e : enc) this.encs.add(e.clone());
-    }
 
     public void setOcupacao(int ocup){
         this.ocupacao = ocup;
@@ -95,8 +82,7 @@ public class Transportadora extends MeioTransporte {
         Transportadora that = (Transportadora) o;
         return Double.compare(that.getPreco(), getPreco()) == 0 &&
                 getOcupacao() == that.getOcupacao() &&
-                getNif().equals(that.getNif()) &&
-                Objects.equals(getEncs(), that.getEncs());
+                getNif().equals(that.getNif());
     }
 
     @Override
@@ -105,7 +91,6 @@ public class Transportadora extends MeioTransporte {
                 "nif='" + nif + '\'' +
                 ", preco=" + preco +
                 ", ocupacao=" + ocupacao +
-                ", encs=" + encs +
                 '}';
     }
 

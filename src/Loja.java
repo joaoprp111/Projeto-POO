@@ -1,14 +1,11 @@
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 public class Loja extends Entidade{
     private boolean infoFilas;
     private boolean temMedicamentos;
     private int tempoAtendimentoPorPessoa; // em segundos
     private int pessoasEmEspera;
-    private Collection<Encomenda> encs;
+    private Map<String,Encomenda> encs;
 
     /*
      * Construtor por omissão
@@ -19,7 +16,7 @@ public class Loja extends Entidade{
         this.tempoAtendimentoPorPessoa = 0;
         this.pessoasEmEspera = 0;
         this.temMedicamentos = false;
-        this.encs = new ArrayList<>();
+        this.encs = new HashMap<>();
     }
 
     /*
@@ -31,7 +28,7 @@ public class Loja extends Entidade{
         this.infoFilas = infoFilas;
         this.tempoAtendimentoPorPessoa = 0;
         this.pessoasEmEspera = 0;
-        this.encs = new ArrayList<>();
+        this.encs = new HashMap<>();
         this.temMedicamentos = temMedicamentos;
     }
 
@@ -41,7 +38,7 @@ public class Loja extends Entidade{
         this.tempoAtendimentoPorPessoa = 0;
         this.pessoasEmEspera = 0;
         this.temMedicamentos = false;
-        this.encs = new ArrayList<>();
+        this.encs = new HashMap<>();
     }
 
     /*
@@ -72,10 +69,10 @@ public class Loja extends Entidade{
         return pessoasEmEspera;
     }
 
-    public Collection<Encomenda> getEncs() {
-        List<Encomenda> res = new ArrayList<>();
-        for(Encomenda enc: this.encs){
-            res.add(enc.clone());
+    public Map<String,Encomenda> getEncs() {
+        Map<String,Encomenda> res = new HashMap<>();
+        for(Encomenda enc: this.encs.values()){
+            res.put(enc.getCodEnc(),enc.clone());
         }
         return res;
     }
@@ -104,15 +101,15 @@ public class Loja extends Entidade{
         this.pessoasEmEspera = pessoasEmEspera;
     }
 
-    public void setEncs(Collection<Encomenda> encs) {
-        this.encs = new ArrayList<>();
-        for(Encomenda enc : encs){
-            this.encs.add(enc.clone());
+    public void setEncs(Map<String,Encomenda> encs) {
+        this.encs = new HashMap<>();
+        for(Encomenda enc : encs.values()){
+            this.encs.put(enc.getCodEnc(),enc.clone());
         }
     }
 
     public void setEnc(Encomenda e){
-        this.encs.add(e.clone());
+        this.encs.put(e.getCodEnc(),e.clone());
     }
 
     /**

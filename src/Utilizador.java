@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 public class Utilizador extends Entidade{
     Collection<Encomenda> encsFeitas;
     Collection<Encomenda> encsEntregues;
+    Collection<Proposta> propostas;
 
     /*
      * Construtor por omissão
@@ -14,6 +15,7 @@ public class Utilizador extends Entidade{
         super();
         encsEntregues = new ArrayList<>();
         encsFeitas = new ArrayList<>();
+        propostas = new ArrayList<>();
     }
 
     /*
@@ -23,6 +25,7 @@ public class Utilizador extends Entidade{
         super(id, nome, gps);
         encsEntregues = new ArrayList<>();
         encsFeitas = new ArrayList<>();
+        propostas = new ArrayList<>();
     }
 
     /*
@@ -44,6 +47,11 @@ public class Utilizador extends Entidade{
                 .map(Encomenda::clone).collect(Collectors.toCollection(ArrayList::new));
     }
 
+    public Collection<Proposta> getPropostas() {
+        return this.propostas.stream()
+                .map(Proposta::clone).collect(Collectors.toCollection(ArrayList::new));
+    }
+
     public void setEncFeita(Encomenda e){
         this.encsFeitas.add(e.clone());
     }
@@ -56,6 +64,15 @@ public class Utilizador extends Entidade{
     public void setEncsEntregues(Collection<Encomenda> c){
         this.encsEntregues = new ArrayList<>();
         for(Encomenda e: c) this.encsEntregues.add(e.clone());
+    }
+
+    public void setPropostas(Collection<Proposta> propostas) {
+        this.propostas = new ArrayList<>();
+        for (Proposta p: propostas) this.propostas.add(p.clone());
+    }
+
+    public void setProposta (Proposta p){
+        this.propostas.add(p.clone());
     }
 
     /**

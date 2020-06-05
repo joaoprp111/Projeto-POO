@@ -524,7 +524,7 @@ public class Controlador {
                     }
                     if (k == 0){
                         String cod = "";
-                        while (!s.existeEncLoja(cod,loja)) {
+                        while (!s.existeEncNova(cod,loja)) {
                             v.showMessage("\nIndique o código da encomenda: ");
                             cod = i.lerString();
                         }

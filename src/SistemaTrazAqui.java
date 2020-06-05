@@ -330,14 +330,14 @@ public class SistemaTrazAqui {
     public String encomendasLoja (String cod){
         Loja l = lojas.get(cod);
         StringBuilder sb = new StringBuilder();
-        for (Encomenda e : l.getEncs())
+        for (Encomenda e : l.getEncs().values())
             sb.append(e.toString()).append("\n");
         return sb.toString();
     }
 
     public boolean existeEncLoja (String enc, String loja){
         Loja l = lojas.get(loja);
-        return l.getEncs().stream()
+        return l.getEncs().values().stream()
                           .anyMatch(e -> e.getCodEnc().equals(enc));
     }
 
@@ -349,12 +349,23 @@ public class SistemaTrazAqui {
     public Collection<Encomenda> encomendasNovas(String loja){
         Loja l = lojas.get(loja);
         StringBuilder sb = new StringBuilder();
-        return (l.getEncs().stream().filter(e -> e.getEstado() == EstadoEncomenda.NOVA).collect(Collectors.toCollection(ArrayList::new)));
+        return (l.getEncs().values().stream().filter(e -> e.getEstado() == EstadoEncomenda.NOVA).collect(Collectors.toCollection(ArrayList::new)));
     }
 
     public String enviarPropostas (String loja, String enc){
-        Collection<Encomenda> c = encomendasNovas(loja);
         Loja l = lojas.get(loja);
-        return (l.getEncs().stream().filter(e -> e.getCodEnc().equals(enc)));
+        Collection<Proposta> propostas = new ArrayList<>();
+        l.getEncs().get(enc).setEstado(EstadoEncomenda.EM_ACEITACAO);
+        Encomenda e = l.getEncs().get(enc);
+        Utilizador u = users.get(e.getCodUser());
+        if (e.isEncomendaMedica()){
+            for (Voluntario v: voluntarios){
+                if (v.aceitoTransporteMedicamentos() && v.isDisponivel()
+                    &&  GPS.dist(v.getGps(),l.getGps()) <= v.getRaio()
+                    && GPS.dist(l.getGps(),u.getGps()) <= v.getRaio())
+                        Proposta p = new Proposta(v.getCodigo(),)
+            }
+        }
+
     }
 }

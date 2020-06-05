@@ -1,10 +1,13 @@
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
 public abstract class MeioTransporte extends Entidade{
     private double raio;
     private double velocidade;
     private boolean disponivel;
-    private boolean quer_fazer_entrega;
     private boolean aceitoMeds;
-    private boolean certificado;
+    private Collection<Encomenda> encs;
 
     /*
      * Construtor por omissao
@@ -14,9 +17,8 @@ public abstract class MeioTransporte extends Entidade{
         this.raio = 0.0;
         this.velocidade = 0.0;
         this.disponivel = false;
-        this.quer_fazer_entrega = false;
         this.aceitoMeds = false;
-        this.certificado = false;
+        this.encs = new ArrayList<>();
     }
 
     /*
@@ -27,9 +29,8 @@ public abstract class MeioTransporte extends Entidade{
         this.raio = raio;
         this.velocidade = 0.0;
         this.disponivel = false;
-        this.quer_fazer_entrega = false;
         this.aceitoMeds = false;
-        this.certificado = certificado;
+        this.encs = new ArrayList<>();
     }
 
     /*
@@ -40,9 +41,8 @@ public abstract class MeioTransporte extends Entidade{
         this.raio = t.getRaio();
         this.velocidade = t.getVelocidade();
         this.disponivel = t.isDisponivel();
-        this.quer_fazer_entrega = t.Quer_fazer_entrega();
         this.aceitoMeds = t.aceitoTransporteMedicamentos();
-        this.certificado = t.isCertificado();
+        setEncs(t.getEncs());
     }
 
     /*
@@ -73,13 +73,6 @@ public abstract class MeioTransporte extends Entidade{
         return disponivel;
     }
 
-    /**
-     *                      Informa se o meio de transporte quer fazer a entrega
-     * @return              true se quiser, false caso contrário
-     */
-    public boolean Quer_fazer_entrega() {
-        return quer_fazer_entrega;
-    }
 
     /**
      *                      Informa se o meio de transporte aceita fazer transporte de medicamentos
@@ -88,12 +81,6 @@ public abstract class MeioTransporte extends Entidade{
     public boolean aceitoTransporteMedicamentos(){
         return aceitoMeds;
     }
-
-    /**
-     *                      Informa se o meio de transporte é certificado
-     * @return              true se quiser, false caso contrário
-     */
-    public boolean isCertificado(){ return certificado; }
 
 
     /*
@@ -112,18 +99,22 @@ public abstract class MeioTransporte extends Entidade{
         this.disponivel = disponivel;
     }
 
-    public void setQuer_fazer_entrega(boolean quer_fazer_entrega){
-        this.quer_fazer_entrega = quer_fazer_entrega;
-    }
 
     public void setAceitaMedicamentos(boolean state){
         this.aceitoMeds = state;
     }
 
-    public void setCertificado(boolean certificado){
-        this.certificado = certificado;
+
+    public Collection<Encomenda> getEncs() {
+        List<Encomenda> res = new ArrayList<>();
+        for(Encomenda e : this.encs) res.add(e.clone());
+        return res;
     }
 
+    public void setEncs(Collection<Encomenda> enc) {
+        this.encs = new ArrayList<>();
+        for(Encomenda e : enc) this.encs.add(e.clone());
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -134,9 +125,8 @@ public abstract class MeioTransporte extends Entidade{
         return Double.compare(that.getRaio(), getRaio()) == 0 &&
                 Double.compare(that.getVelocidade(), getVelocidade()) == 0 &&
                 isDisponivel() == that.isDisponivel() &&
-                quer_fazer_entrega == that.quer_fazer_entrega &&
                 aceitoMeds == that.aceitoMeds &&
-                isCertificado() == that.isCertificado();
+                encs == that.getEncs();
     }
 
     @Override
@@ -145,9 +135,8 @@ public abstract class MeioTransporte extends Entidade{
                 "raio=" + raio +
                 ", velocidade=" + velocidade +
                 ", disponivel=" + disponivel +
-                ", quer_fazer_entrega=" + quer_fazer_entrega +
                 ", aceitoMeds=" + aceitoMeds +
-                ", certificado=" + certificado +
+                ", encomendas=" + encs +
                 '}';
     }
 

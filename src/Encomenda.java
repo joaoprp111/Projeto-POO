@@ -124,6 +124,10 @@ public class Encomenda implements Comparable<Encomenda> {
         this.encomendaMedica = encomendaMedica;
     }
 
+    public void setEstado (EstadoEncomenda ee){
+        this.servicoEntrega.setEstado(ee);
+    }
+
     public void setLinhas(Collection<LinhaEncomenda> linhas) {
         this.linhas = new ArrayList<>();
 
