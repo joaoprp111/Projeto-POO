@@ -301,7 +301,14 @@ public class SistemaTrazAqui {
 
     public void adicionarEncFeita(Encomenda e, String codUser){
         Utilizador u = users.get(codUser);
-        u.setEncFeita(e.clone());
+        u.setEncFeita(e);
+    }
+
+    public void adicionarNaLoja(Encomenda e, String codLoja){
+        if(lojas.containsKey(codLoja)){
+            Loja l = lojas.get(codLoja);
+            l.setEnc(e);
+        }
     }
 
     public String pessoasEmEspera(String cod){

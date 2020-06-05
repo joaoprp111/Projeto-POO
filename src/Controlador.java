@@ -423,8 +423,9 @@ public class Controlador {
                             double peso = s.calculaPesoCarrinho(carrinho);
                             String codEnc = s.gerarCodigoEnc();
                             Encomenda nova = new Encomenda(codEnc, codigo, cod, peso, temMeds, carrinho);
-                            s.adicionarEncFeita(nova, codigo);
-                            // falta adicionar na loja
+                            s.adicionarEncFeita(nova, codigo); /* Adiciona aos registos do utilizador */
+                            s.adicionarNaLoja(nova, cod); /* Adiciona a encomenda na loja */
+                            v.showMessage(s.getLojas());
                         }
                         else carrinho.clear();
                         break;

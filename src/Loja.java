@@ -111,12 +111,17 @@ public class Loja extends Entidade{
         }
     }
 
+    public void setEnc(Encomenda e){
+        this.encs.add(e.clone());
+    }
+
     /**
      *                      Transforma o conteúdo de um objeto numa String
      * @return              String com a informação do objeto
      */
     public String toString() {
         final StringBuilder sb = new StringBuilder("Loja{");
+        sb.append(super.toString());
         sb.append("infoFilas=").append(infoFilas);
         sb.append(", temMedicamentos=").append(temMedicamentos);
         sb.append(", tempoAtendimentoPorPessoa=").append(tempoAtendimentoPorPessoa);
