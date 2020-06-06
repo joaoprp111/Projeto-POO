@@ -538,7 +538,7 @@ public class Controlador {
 
     public void funcVoluntario(String codigo){
         Input i = new Input();
-        Voluntario vol = s.getVoluntario(codigo);
+        Voluntario vol = (Voluntario) s.getTransportador(codigo);
         int opcao = -1;
         while(opcao != 0) {
             opcao = -1;
@@ -647,9 +647,48 @@ public class Controlador {
                     break;
             }
         }
-
-
     }
+
+    /*void funcT(String codT){
+        Input i = new Input();
+        Transportadora t = (Transportadora) s.getTransportador(codT);
+        int opcao = -1;
+        while(opcao != 0){
+            opcao = -1;
+            v.transportadora();
+            v.funcionalidadesTransportadora();
+            opcao = i.lerInt();
+            switch(opcao){
+                case 1:
+
+                    while(opcao != 1 && opcao != 2){
+                        v.showMessage("Confirmar a encomenda? > (1) Sim (2) Não ");
+                        opcao = i.lerInt();
+                    }
+                    if(opcao == 1){
+                        boolean temMeds = false;
+                        if(s.lojaTemMedicamentos(cod)) temMeds = true;
+                        double peso = s.calculaPesoCarrinho(carrinho);
+                        String codEnc = s.gerarCodigoEnc();
+                        Encomenda nova = new Encomenda(codEnc, codigo, cod, peso, temMeds, carrinho);
+                        s.adicionarEncFeita(nova, codigo);  Adiciona aos registos do utilizador
+                        s.adicionarNaLoja(nova, cod);  Adiciona a encomenda na loja
+                        v.showMessage(s.getLojas());
+                    }
+                    else carrinho.clear();
+                    break;
+                case 2:
+                    v.solicitarEnc();
+                    v.showMessage(s.encomendasFeitasUtilizador(codigo));
+                    while (opcao != 0) {
+                        v.showMessage("\nPressione (0) voltar ");
+                        opcao = i.lerInt();
+                    }
+                    opcao = -1;
+                    break;
+            }
+        }
+    }*/
 
 
 

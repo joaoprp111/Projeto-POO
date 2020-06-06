@@ -4,9 +4,8 @@ import java.util.stream.Collectors;
 public class SistemaTrazAqui {
     /* Estrutura provisória */
     private Map<String, Utilizador> users;
-    private Collection<Voluntario> voluntarios;
     private Map<String, Loja> lojas;
-    private Collection<MeioTransporte> transportadoras;
+    private Map<String, MeioTransporte> transportadores;
     private Collection<Encomenda> encomendas;
     private Collection<String> aceites;
     private CatalogoLojas cat;
@@ -15,9 +14,8 @@ public class SistemaTrazAqui {
 
     public SistemaTrazAqui(){
         this.users = new HashMap<>();
-        this.voluntarios = new TreeSet<>();
         this.lojas = new HashMap<>();
-        this.transportadoras = new TreeSet<>();
+        this.transportadores = new HashMap<>();
         this.encomendas = new TreeSet<>();
         this.aceites = new ArrayList<>();
         this.registos = new Contas();
@@ -36,27 +34,16 @@ public class SistemaTrazAqui {
         return res;
     }
 
-    public Collection<Voluntario> getVoluntarios(){
-        Collection<Voluntario> res = new TreeSet<>();
+    public MeioTransporte getTransportador(String codigo){
 
-        for(Voluntario v : this.voluntarios){
-            res.add(v.clone());
-        }
-
-        return res;
-    }
-
-    public Voluntario getVoluntario(String codigo){
-
-        for(Voluntario v : this.voluntarios){
-            if(codigo.equals(v.getCodigo())) {
-                return v;
+        for(MeioTransporte t : this.transportadores.values()){
+            if(codigo.equals(t.getCodigo())) {
+                return t;
             }
         }
         return null;
 
     }
-
 
     public Collection<Loja> getLojas(){
         return this.lojas.values()
@@ -68,14 +55,9 @@ public class SistemaTrazAqui {
                     .getTemMedicamentos();
     }
 
-    public Collection<MeioTransporte> getTransportadoras(){
-        Collection<MeioTransporte> res = new TreeSet<>();
-
-        for(MeioTransporte t : this.transportadoras){
-            res.add(t.clone());
-        }
-
-        return res;
+    public Collection<MeioTransporte> getTransportadores(){
+        return this.transportadores.values()
+                .stream().map(MeioTransporte::clone).collect(Collectors.toCollection(TreeSet::new));
     }
 
     public Collection<Encomenda> getEncomendas(){
@@ -127,7 +109,7 @@ public class SistemaTrazAqui {
                     break;
                 case "Voluntario":
                     Voluntario v = p.parseVoluntario(linhaPartida[1]);
-                    voluntarios.add(v.clone());
+                    transportadores.put(v.getCodigo(),v.clone());
                     String idV = v.getCodigo();
                     StringBuilder sbV = new StringBuilder(idV);
                     sbV.append("@gmail.com");
@@ -135,7 +117,7 @@ public class SistemaTrazAqui {
                     break;
                 case "Transportadora":
                     MeioTransporte t = p.parseTransportadora(linhaPartida[1]);
-                    transportadoras.add(t.clone());
+                    transportadores.put(t.getCodigo(),t.clone());
                     String idT = t.getCodigo();
                     StringBuilder sbT = new StringBuilder(idT);
                     sbT.append("@gmail.com");
@@ -161,9 +143,8 @@ public class SistemaTrazAqui {
     public String toString() {
         StringBuilder sb = new StringBuilder("SistemaTrazAqui{");
         sb.append("users=").append(users).append("\n");
-        sb.append(", voluntarios=").append(voluntarios).append("\n");
         sb.append(", lojas=").append(lojas).append("\n");
-        sb.append(", transportadoras=").append(transportadoras).append("\n");
+        sb.append(", transportadoras=").append(transportadores).append("\n");
         sb.append(", encomendas=").append(encomendas).append("\n");
         sb.append(", aceites=").append(aceites);
         sb.append(", contas=").append(registos.toString());
@@ -176,9 +157,8 @@ public class SistemaTrazAqui {
         if (o == null || getClass() != o.getClass()) return false;
         SistemaTrazAqui that = (SistemaTrazAqui) o;
         return this.users.equals(that.getUsers()) &&
-               this.voluntarios.equals(that.getVoluntarios()) &&
                this.lojas.equals(that.getLojas()) &&
-               this.transportadoras.equals(that.getTransportadoras()) &&
+               this.transportadores.equals(that.getTransportadores()) &&
                this.encomendas.equals(that.getEncomendas()) &&
                this.aceites.equals(that.getAceites());
     }
@@ -199,7 +179,7 @@ public class SistemaTrazAqui {
 
     public void novoVoluntario(String codigo, String nome, GPS gps, String email, String password, double raio){
         Voluntario v = new Voluntario(codigo, nome, gps, raio, false);
-        voluntarios.add(v.clone());
+        transportadores.put(codigo, v.clone());
         registos.adicionarRegisto(codigo, email, password);
     }
 
@@ -207,7 +187,7 @@ public class SistemaTrazAqui {
                                    boolean variasEncs){
         MeioTransporte t;
         t = new Transportadora(codigo, nome, gps, raio, false, nif, preco,variasEncs,false);
-        transportadoras.add(t.clone());
+        transportadores.put(codigo, t.clone());
         registos.adicionarRegisto(codigo, email, password);
     }
 
@@ -359,7 +339,7 @@ public class SistemaTrazAqui {
         Encomenda e = l.getEncs().get(enc);
         Utilizador u = users.get(e.getCodUser());
         if (e.isEncomendaMedica()){
-            Iterator it = voluntarios.iterator();
+            Iterator it = transportadores.values().iterator();
             int flag = 0;
             while(it.hasNext() && flag == 0){
                 Voluntario v = (Voluntario) it.next();

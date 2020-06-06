@@ -99,12 +99,10 @@ public class Transportadora extends MeioTransporte {
     }
 
 
-    public double calculaPrecoTransporte(double peso, double distLoja, double distUser){
-        double distTotal = distLoja + distUser;
-        return (preco * distTotal) + peso;
+    public double calculaPrecoTransporte(double peso, double distLoja, double distUserLoja, double tempoEspera){
+        double distTotal = distLoja + distUserLoja;
+        return ((preco * distTotal) + peso) - tempoEspera;
     }
-
-
 }
 
 
