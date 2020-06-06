@@ -332,7 +332,7 @@ public class SistemaTrazAqui {
         return (l.getEncs().values().stream().filter(e -> e.getEstado() == EstadoEncomenda.NOVA).collect(Collectors.toCollection(ArrayList::new)));
     }
 
-    public String enviarPropostas (String loja, String enc){
+    /*public String enviarPropostas (String loja, String enc){
         Loja l = lojas.get(loja);
         Collection<Proposta> propostas = new ArrayList<>();
         l.getEncs().get(enc).setEstado(EstadoEncomenda.EM_ACEITACAO);
@@ -351,5 +351,12 @@ public class SistemaTrazAqui {
             }
         }
 
+    }*/
+
+    public boolean alteraDisponibilidadeTransportadora(String codT){
+        Transportadora t = (Transportadora) transportadores.get(codT);
+        t.setDisponivel(!t.isDisponivel());
+
+        return !t.isDisponivel();
     }
 }
