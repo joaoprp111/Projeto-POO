@@ -2,13 +2,13 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
-public class Controlador {
-    private final Vista v;
-    private final SistemaTrazAqui s;
+public class Controlador implements IControlador{
+    private final IVista v;
+    private final IModelo s;
 
-    public Controlador(){
-        this.v = new Vista();
-        this.s = new SistemaTrazAqui();
+    public Controlador(IVista v, IModelo s){
+        this.v = v;
+        this.s = s;
     }
 
     public void run(){
@@ -68,7 +68,7 @@ public class Controlador {
         }
     }
 
-    public void novoUtilizador(){
+    private void novoUtilizador(){
         boolean confirmado = false;
         int opcao = -1;
         Input i = new Input();
@@ -124,7 +124,7 @@ public class Controlador {
         }
     }
 
-    public void novoVoluntario(){
+    private void novoVoluntario(){
         boolean confirmado = false;
         int opcao = -1;
         Input i = new Input();
@@ -185,7 +185,7 @@ public class Controlador {
         }
     }
 
-    public void novaTransportadora(){
+    private void novaTransportadora(){
         boolean confirmado = false;
         boolean variasEncomendas = false;
         int opcao = -1;
@@ -269,7 +269,7 @@ public class Controlador {
         }
     }
 
-    public void novaLoja(){
+    private void novaLoja(){
         boolean confirmado = false;
         int opcao = -1;
         Input i = new Input();
@@ -346,7 +346,7 @@ public class Controlador {
         }
     }
 
-    public void login() {
+    private void login() {
         Input i = new Input();
         int opcao = -1;
         while (opcao != 2 && opcao != 0) {
@@ -391,7 +391,7 @@ public class Controlador {
         }
     }
 
-    public void funcUser(String codigo){
+    private void funcUser(String codigo){
         Input i = new Input();
         int opcao = -1;
         while(opcao != 0){
@@ -443,7 +443,7 @@ public class Controlador {
         }
     }
 
-    public void escolherProduto(String codLoja, Collection<LinhaEncomenda> carrinho){
+    private void escolherProduto(String codLoja, Collection<LinhaEncomenda> carrinho){
         Input i = new Input();
         String codProd;
         v.produtosLoja();
@@ -484,7 +484,7 @@ public class Controlador {
         }
     }
 
-    public void funcL (String codigo){
+    private void funcL (String codigo){
         Input i = new Input();
         int opcao = -1;
         int k = -1;
@@ -508,7 +508,7 @@ public class Controlador {
         }
     }
 
-    public void gerirEncomendas (String loja){
+    private void gerirEncomendas (String loja){
         Input i = new Input();
         int opcao = -1;
         while(opcao != 0) {
@@ -536,7 +536,7 @@ public class Controlador {
         }
     }
 
-    public void funcVoluntario(String codigo){
+    private void funcVoluntario(String codigo){
         Input i = new Input();
         Voluntario vol = (Voluntario) s.getTransportador(codigo);
         int opcao = -1;
@@ -649,7 +649,7 @@ public class Controlador {
         }
     }
 
-    void funcT(String codT){
+    private void funcT(String codT){
         Input i = new Input();
         Transportadora t = (Transportadora) s.getTransportador(codT);
         int opcao = -1;

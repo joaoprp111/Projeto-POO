@@ -1,4 +1,4 @@
-public class Vista {
+public class Vista implements IVista {
 
     public void menuInicial(){
         clear();
