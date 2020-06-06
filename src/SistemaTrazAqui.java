@@ -328,26 +328,59 @@ public class SistemaTrazAqui implements IModelo{
         return (l.getEncs().values().stream().filter(e -> e.getEstado() == EstadoEncomenda.NOVA).collect(Collectors.toCollection(ArrayList::new)));
     }
 
-    /*public String enviarPropostas (String loja, String enc){
+    public String enviarPropostas (String loja, String enc){
         Loja l = lojas.get(loja);
-        Collection<Proposta> propostas = new ArrayList<>();
         l.getEncs().get(enc).setEstado(EstadoEncomenda.EM_ACEITACAO);
         Encomenda e = l.getEncs().get(enc);
         Utilizador u = users.get(e.getCodUser());
+        Proposta p = null;
         if (e.isEncomendaMedica()){
             Iterator it = transportadores.values().iterator();
             int flag = 0;
             while(it.hasNext() && flag == 0){
-                Voluntario v = (Voluntario) it.next();
-                if (v.aceitoTransporteMedicamentos() && v.isDisponivel()
-                    &&  GPS.dist(v.getGps(),l.getGps()) <= v.getRaio()
-                    && GPS.dist(l.getGps(),u.getGps()) <= v.getRaio())
-                        Proposta p = new Proposta(e.getCodEnc(),v.getCodigo(),0.0,)
-
+                if (it.next() instanceof Voluntario) {
+                    Voluntario v = (Voluntario) it.next();
+                    if (v.aceitoTransporteMedicamentos() && v.isDisponivel()
+                            && GPS.dist(v.getGps(), l.getGps()) <= v.getRaio()
+                            && GPS.dist(l.getGps(), u.getGps()) <= v.getRaio()) {
+                        p = new Proposta(e.getCodEnc(), v.getCodigo(), 0.0);
+                        flag = 1;
+                    }
+                }
             }
         }
+        else{
+            Iterator it = transportadores.values().iterator();
+            int flag = 0;
+            while(it.hasNext() && flag == 0){
+                if (it.next() instanceof Voluntario) {
+                    Voluntario v = (Voluntario) it.next();
+                    if (v.isDisponivel() && GPS.dist(v.getGps(), l.getGps()) <= v.getRaio() && GPS.dist(l.getGps(), u.getGps()) <= v.getRaio()) {
+                        p = new Proposta(e.getCodEnc(), v.getCodigo(), 0.0);
+                        flag = 1;
+                    }
+                }
+            }
+        }
+        if (p!=null) u.setProposta(p);
+        else {
+            Collection<Proposta> ps = new ArrayList<>();
+            for (MeioTransporte mt: transportadores.values()){
+                if (mt instanceof Transportadora){
+                    Transportadora t = (Transportadora) mt;
+                    if (t.isDisponivel() && (t.aceitoTransporteMedicamentos() == e.isEncomendaMedica()) && GPS.dist(t.getGps(), l.getGps()) <= t.getRaio() && GPS.dist(l.getGps(), u.getGps()) <= t.getRaio()
+                        && t.getEncs().size() < t.getOcupacao())
+                        p = new Proposta(e.getCodEnc(),t.getCodigo(),t.calculaPrecoTransporte(e.getPeso(),GPS.dist(t.getGps(), l.getGps()),GPS.dist(l.getGps(), u.getGps()),l.getTempoAtendimentoPorPessoa()));
+                        ps.add(p);
+                }
+            }
+            u.setPropostas(ps);
+        }
+        StringBuilder sb = new StringBuilder();
+        sb.append("Propostas enviadas com sucesso\n");
+        return sb.toString();
+    }
 
-    }*/
 
     public boolean alteraDisponibilidadeTransportadora(String codT){
         Transportadora t = (Transportadora) transportadores.get(codT);

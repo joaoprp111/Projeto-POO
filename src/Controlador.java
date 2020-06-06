@@ -499,6 +499,7 @@ public class Controlador implements IControlador{
                     v.showMessage(s.encomendasLoja(codigo));
                     v.opcoesGestaoLoja();
                     gerirEncomendas(codigo);
+                    break;
                 case 2:
                     v.showMessage("\nNúmero de pessoas em fila de espera: ");
                     v.showMessage(s.pessoasEmEspera(codigo));
@@ -517,21 +518,13 @@ public class Controlador implements IControlador{
                 case 1:
                     v.encomendasNovas();
                     v.showMessage(s.encomendasNovas(loja));
-                    int k = -1;
-                    while (k != 0 && k != 1){
-                        v.showMessage("\nPretende realizar esta operação para uma encomenda (0) ou para todas (1). Opção > ");
-                        k = i.lerInt();
+                    String cod = "";
+                    while (!s.existeEncNova(cod,loja)) {
+                        v.showMessage("\nIndique o código da encomenda: ");
+                        cod = i.lerString();
                     }
-                    if (k == 0){
-                        String cod = "";
-                        while (!s.existeEncNova(cod,loja)) {
-                            v.showMessage("\nIndique o código da encomenda: ");
-                            cod = i.lerString();
-                        }
-                    }
-                    else{
-
-                    }
+                    v.showMessage(s.enviarPropostas(loja,cod));
+                    break;
             }
         }
     }

@@ -36,4 +36,6 @@ public interface IModelo {
     boolean existeEncNova (String enc, String loja);
     Collection<Encomenda> encomendasNovas(String loja);
     boolean alteraDisponibilidadeTransportadora(String codT);
+
+    String enviarPropostas(String loja, String cod);
 }
