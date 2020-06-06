@@ -198,10 +198,6 @@ public class SistemaTrazAqui {
         registos.adicionarRegisto(code, email, pw);
     }
 
-    public double calculaDistancia(GPS gps1, GPS gps2){
-        return GPS.dist(gps1, gps2);
-    }
-
     public String lojasDisponiveis(){
         StringBuilder sb = new StringBuilder();
         for(Loja l : lojas.values()){
@@ -227,7 +223,7 @@ public class SistemaTrazAqui {
         return cat.existeProduto(codLoja, codProd);
     }
 
-    LinhaEncomenda criarLinha(double qtd, String cod, String codLoja){
+    public LinhaEncomenda criarLinha(double qtd, String cod, String codLoja){
         double precoUnitario = cat.precoDeUmProduto(cod, codLoja);
         String nomeProd = cat.nomeDeUmProduto(cod, codLoja);
         double pesoProd = cat.pesoDeUmProduto(cod, codLoja);
