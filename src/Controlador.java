@@ -383,7 +383,7 @@ public class Controlador implements IControlador{
                         opcao = i.lerInt();
                     }
                     if(codigo.charAt(0) == 'u') funcUser(codigo);
-                    /*else if(codigo.charAt(0) == 'v') funcVol();*/
+                    else if(codigo.charAt(0) == 'v') funcVoluntario(codigo);
                     else if(codigo.charAt(0) == 't') funcT(codigo);
                     else funcL(codigo);
                 }
@@ -529,7 +529,7 @@ public class Controlador implements IControlador{
         }
     }
 
-    private void funcVoluntario(String codigo){
+    public void funcVoluntario(String codigo){
         Input i = new Input();
         Voluntario vol = (Voluntario) s.getTransportador(codigo);
         int opcao = -1;
@@ -548,7 +548,7 @@ public class Controlador implements IControlador{
                         v.showMessage("\nOpção > ");
                         opcao = i.lerInt();
                     }
-                    vol.setAceitaMedicamentos(opcao == 1);
+                    s.aceitaMedicamentos(codigo,opcao == 1);
                     v.clear();
                     v.showMessage("Operacão efetuada com sucesso!");
                     while (opcao != 0) {
@@ -568,7 +568,7 @@ public class Controlador implements IControlador{
                         v.showMessage("\nOpção > ");
                         opcao = i.lerInt();
                     }
-                    /*vol.setQuer_fazer_entrega(opcao == 1);*/
+                    s.mudaDisponibilidade(codigo,opcao == 1);
                     v.clear();
                     v.showMessage("Operacão efetuada com sucesso!");
                     while (opcao != 0) {
@@ -599,19 +599,9 @@ public class Controlador implements IControlador{
                 case 4:
                     v.clear();
                     opcao = -1;
-                    Encomenda enc = s.getEncomendas()
-                            .stream()
-                            .filter(e -> e.getTransportador().equals(codigo) &&
-                                    e.getServicoEntrega().getEstado() == EstadoEncomenda.EM_TRANSPORTE)
-                            .findFirst()
-                            .orElse(null);;
-                    if(enc == null)
-                        v.showMessage("\nOpção Inválida!\nDe momento não está nenhuma encomenda a ser tranportada.");
-                    else {
-                        enc.mudaEstado(EstadoEncomenda.ENTREGUE);
-                        vol.setDisponivel(true);
-                        v.showMessage("\nEncomenda: "+ enc.getCodEnc()+". Finalizada com sucesso!");
-                    }
+                    String CodEnc = s.finalizaUmaEnc(codigo);
+                    if(CodEnc == null) v.showMessage("\nOpção Inválida!\nDe momento não está nenhuma encomenda a ser tranportada.");
+                    else v.showMessage("\nEncomenda: " + CodEnc + ". Finalizada com sucesso!");
                     while (opcao != 0) {
                         v.showMessage("\n\nPressione (0) para continuar > ");
                         opcao = i.lerInt();
@@ -619,16 +609,10 @@ public class Controlador implements IControlador{
                     opcao = -1;
                     v.clear();
                     break;
-
                 case 5:
                     opcao = -1;
                     v.clear();
-                    ArrayList<Encomenda> lista = s.getEncomendas().stream()
-                            .filter(e -> e.getTransportador().equals(codigo) &&
-                                    e.getServicoEntrega().getEstado() == EstadoEncomenda.ENTREGUE)
-                            .collect(Collectors.toCollection(ArrayList::new));
-
-                    lista.forEach(e-> v.showMessage("\n" + e.toString() + "\n"));
+                    ArrayList<Encomenda> lista = s.historicoEncTransp(codigo);
                     if(lista.size() == 0) v.showMessage("Este Voluntário ainda não realizou nenhuma entrega!");
                     else lista.forEach(e-> v.showMessage("\n" + e.toString() + "\n"));
                     while (opcao != 0) {
@@ -641,7 +625,6 @@ public class Controlador implements IControlador{
             }
         }
     }
-
     private void funcT(String codT){
         Input i = new Input();
         Transportadora t = (Transportadora) s.getTransportador(codT);

@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Collection;
 
 public interface IModelo {
@@ -36,6 +37,9 @@ public interface IModelo {
     boolean existeEncNova (String enc, String loja);
     Collection<Encomenda> encomendasNovas(String loja);
     boolean alteraDisponibilidadeTransportadora(String codT);
-
+    void aceitaMedicamentos(String codTransp, boolean aceitaMed);
+    void mudaDisponibilidade(String codTransp,boolean estaDisponivel);
+    String finalizaUmaEnc(String codigo);
+    ArrayList<Encomenda> historicoEncTransp(String codigo);
     String enviarPropostas(String loja, String cod);
 }

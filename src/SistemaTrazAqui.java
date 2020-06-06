@@ -388,4 +388,43 @@ public class SistemaTrazAqui implements IModelo{
 
         return !t.isDisponivel();
     }
+
+    public void aceitaMedicamentos(String codTransp, boolean aceitaMed){
+        MeioTransporte transporte = getTransportador(codTransp);
+        transporte.setAceitaMedicamentos(aceitaMed);
+    }
+
+    public void mudaDisponibilidade(String codTransp,boolean estaDisponivel){
+        MeioTransporte transporte = getTransportador(codTransp);
+        transporte.setDisponivel(estaDisponivel);
+    }
+
+    public String finalizaUmaEnc(String codigo){
+        Encomenda enc = getEncomendas()
+                .stream()
+                .filter(e -> e.getTransportador().equals(codigo) &&
+                        e.getServicoEntrega().getEstado() == EstadoEncomenda.EM_TRANSPORTE)
+                .findFirst()
+                .orElse(null);
+        if(enc == null) return null;
+        else {
+            enc.mudaEstado(EstadoEncomenda.ENTREGUE);
+            getTransportador(codigo).setDisponivel(true);
+            v.showMessage("\nEncomenda: "+ enc.getCodEnc()+". Finalizada com sucesso!");
+            return enc.getCodEnc();
+        }
+
+    }
+
+    public ArrayList<Encomenda> historicoEncTransp(String codigo){
+        ArrayList<Encomenda> lista = getEncomendas().stream()
+                .filter(e -> e.getTransportador().equals(codigo) &&
+                        e.getServicoEntrega().getEstado() == EstadoEncomenda.ENTREGUE)
+                .collect(Collectors.toCollection(ArrayList::new));
+        if(lista.size() == 0) return lista;
+        else return null;
+    }
+
+
 }
+
