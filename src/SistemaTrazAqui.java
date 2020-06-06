@@ -1,7 +1,7 @@
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class SistemaTrazAqui {
+public class SistemaTrazAqui implements IModelo{
     /* Estrutura provisória */
     private Map<String, Utilizador> users;
     private Map<String, Loja> lojas;
