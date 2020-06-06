@@ -359,11 +359,15 @@ public class SistemaTrazAqui {
         Encomenda e = l.getEncs().get(enc);
         Utilizador u = users.get(e.getCodUser());
         if (e.isEncomendaMedica()){
-            for (Voluntario v: voluntarios){
+            Iterator it = voluntarios.iterator();
+            int flag = 0;
+            while(it.hasNext() && flag == 0){
+                Voluntario v = (Voluntario) it.next();
                 if (v.aceitoTransporteMedicamentos() && v.isDisponivel()
                     &&  GPS.dist(v.getGps(),l.getGps()) <= v.getRaio()
                     && GPS.dist(l.getGps(),u.getGps()) <= v.getRaio())
-                        Proposta p = new Proposta(v.getCodigo(),)
+                        Proposta p = new Proposta(e.getCodEnc(),v.getCodigo(),0.0,)
+
             }
         }
 

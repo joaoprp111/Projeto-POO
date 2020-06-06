@@ -1,23 +1,34 @@
 public class Proposta {
+    private String enc;
     private String transporte;
     private double custo;
-    private double distancia;
+    private double tempo;
 
     public Proposta() {
-        this.transporte = "";
-        this.custo = this.distancia = 0.0;
+        this.transporte = this.enc = "";
+        this.custo = this.tempo = 0.0;
     }
 
-    public Proposta(String transporte, double custo, double distancia) {
+    public Proposta(String enc, String transporte, double custo, double distancia) {
+        this.enc = enc;
         this.transporte = transporte;
         this.custo = custo;
-        this.distancia = distancia;
+        this.tempo = distancia;
     }
 
     public  Proposta(Proposta p){
+        this.enc = p.getEnc();
         this.transporte = p.getTransporte();
         this.custo = p.getCusto();
-        this.distancia = p.getDistancia();
+        this.tempo = p.getTempo();
+    }
+
+    public String getEnc() {
+        return enc;
+    }
+
+    public void setEnc(String enc) {
+        this.enc = enc;
     }
 
     public String getTransporte() {
@@ -28,8 +39,8 @@ public class Proposta {
         return custo;
     }
 
-    public double getDistancia() {
-        return distancia;
+    public double getTempo() {
+        return tempo;
     }
 
     public void setTransporte(String transporte) {
@@ -40,16 +51,17 @@ public class Proposta {
         this.custo = custo;
     }
 
-    public void setDistancia(double distancia) {
-        this.distancia = distancia;
+    public void setTempo(double distancia) {
+        this.tempo = distancia;
     }
 
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("Proposta{");
-        sb.append("transporte='").append(transporte).append('\'');
+        sb.append("encomenda=").append(enc);
+        sb.append(", transporte='").append(transporte);
         sb.append(", custo=").append(custo);
-        sb.append(", distancia=").append(distancia);
+        sb.append(", tempo=").append(tempo);
         sb.append('}');
         return sb.toString();
     }
