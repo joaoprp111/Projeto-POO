@@ -2,13 +2,23 @@ import java.io.Serializable;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * Classe que representa calalogo de produtos que as lojas vendem
+ */
 public class CatalogoLojas implements Catalogos, Serializable {
     private Map<String, Collection<LinhaEncomenda>> infoProdutos;
+
 
     public CatalogoLojas() {
         infoProdutos = new HashMap<>();
     }
 
+
+    /**
+     * Insere um produto no catálogo
+     * @param codLoja Código da loja
+     * @param le O que se adiciona
+     */
     public void insereProduto(String codLoja, LinhaEncomenda le) {
         if (!infoProdutos.containsKey(codLoja)) {
             Collection<LinhaEncomenda> nova = new ArrayList<>();
@@ -22,6 +32,13 @@ public class CatalogoLojas implements Catalogos, Serializable {
         }
     }
 
+
+    /**
+     * Indica uma página específica de um catálogo de uma loja
+     * @param codLoja Código da loja
+     * @param p página pretendida
+     * @return String com a página pretendida
+     */
     public String separaPorPaginas(String codLoja, int p) {
         if (infoProdutos.containsKey(codLoja)) {
             StringBuilder sb;
@@ -46,6 +63,13 @@ public class CatalogoLojas implements Catalogos, Serializable {
         } else return "Não existe catálogo para esta loja!\n";
     }
 
+
+    /**
+     * Verifica se existe um produto numa loja
+     * @param codLoja Código da loja
+     * @param codProd Código do Produto
+     * @return boolean que indica se existe
+     */
     public boolean existeProduto(String codLoja, String codProd) {
         if (!infoProdutos.containsKey(codLoja)) return false;
         else {
@@ -55,6 +79,13 @@ public class CatalogoLojas implements Catalogos, Serializable {
         return false;
     }
 
+
+    /**
+     * Indica o preço de um produto
+     * @param codProd código do produto
+     * @param codLoja código da loja
+     * @return double que indica o preço do produto
+     */
     public double precoDeUmProduto(String codProd, String codLoja) {
         Collection<LinhaEncomenda> c = infoProdutos.get(codLoja);
         Iterator it = c.iterator();
@@ -70,6 +101,12 @@ public class CatalogoLojas implements Catalogos, Serializable {
         return res;
     }
 
+    /**
+     * Indica o peso de um produto
+     * @param codProd código do produto
+     * @param codLoja código da loja
+     * @return double que indica o peso do produto
+     */
     public double pesoDeUmProduto(String codProd, String codLoja) {
         Collection<LinhaEncomenda> c = infoProdutos.get(codLoja);
         Iterator it = c.iterator();
@@ -85,6 +122,13 @@ public class CatalogoLojas implements Catalogos, Serializable {
         return res;
     }
 
+
+    /**
+     * Indica o nome de um produto
+     * @param codProd código do produto
+     * @param codLoja código da loja
+     * @return String que indica o nome do produto
+     */
     public String nomeDeUmProduto(String codProd, String codLoja) {
         Collection<LinhaEncomenda> c = infoProdutos.get(codLoja);
         Iterator it = c.iterator();
@@ -100,6 +144,26 @@ public class CatalogoLojas implements Catalogos, Serializable {
         return res;
     }
 
+
+    /**
+     * Devolve os catálogos de produtos existentes
+     */
+    public Map<String, Collection<LinhaEncomenda>> getInfoProdutos(){
+        return infoProdutos;
+    }
+
+    /**
+     * adiciona a uma loja um catálogo
+     * @param codLoja código da loja
+     * @param catalogo Catálogo que vai ser adicionado
+     */
+    public void adicionaInfoProdutos(String codLoja, Collection<LinhaEncomenda> catalogo){
+        infoProdutos.put(codLoja, catalogo);
+    }
+
+    /**
+     * Coloca em String
+     */
     public String toString() {
         final StringBuilder sb = new StringBuilder("CatalogoLojas{");
         sb.append("infoProdutos=").append(infoProdutos.keySet());

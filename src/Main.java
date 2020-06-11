@@ -1,5 +1,8 @@
 import java.io.*;
 
+/**
+ * Onde o programa inicia
+ */
 public class Main {
 
     public static void main(String[] args) {
@@ -19,9 +22,12 @@ public class Main {
 
         IVista v = new Vista();
         IControlador c = new Controlador(v, m);
-        c.run(); /* A app em si começa a correr */
+        c.run();
     }
 
+    /**
+     * Guarda o estado atual em ficheiro
+     */
     public static void writeInFile(SistemaTrazAqui s) throws IOException {
         ObjectOutputStream o = new ObjectOutputStream(new FileOutputStream("./sistemaTrazAqui.data"));
         o.writeObject(s);
@@ -29,6 +35,9 @@ public class Main {
         o.close();
     }
 
+    /**
+     * Carrega de um ficheiro um estado
+     */
     public static SistemaTrazAqui readFile(String filename) throws IOException, ClassNotFoundException {
         ObjectInputStream o = new ObjectInputStream(new FileInputStream(filename));
         SistemaTrazAqui s = (SistemaTrazAqui) o.readObject();

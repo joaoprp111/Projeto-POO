@@ -476,6 +476,7 @@ public class Controlador implements IControlador {
                 confirmado = true;
                 GPS gps = new GPS(x, y);
                 s.novaLoja(codigo, nome, gps, email, password, infoFilas);
+                s.adicionaCatalogoALoja(codigo);
             }
         }
         v.showMessage("\nConta criada, clique em (0) para voltar > ");
@@ -694,7 +695,6 @@ public class Controlador implements IControlador {
         String prods = "";
         int pagina, opcao = -1;
         while (opcao != 0) {
-            opcao = -1;
             pagina = 1;
             codProd = "";
             prods = s.buscarProdsAoCat(codLoja, pagina++);

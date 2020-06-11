@@ -1,5 +1,7 @@
 import java.io.Serializable;
-
+/**
+ * Possíveis estados de uma encomenda
+ */
 public enum EstadoEncomenda implements Serializable {
     NOVA,
     EM_ACEITACAO,

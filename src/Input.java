@@ -1,6 +1,9 @@
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
+/**
+ * Classe responsável pelo Input do Utilizador
+ */
 public class Input {
     private final Vista v;
 

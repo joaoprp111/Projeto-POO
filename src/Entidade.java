@@ -1,11 +1,17 @@
 import java.io.Serializable;
 import java.util.Objects;
 
+/**
+ * Classe abstrata que dá origem ás lojas,voluntários,empresas transportadoras,utilizadores
+ */
 abstract class Entidade implements Comparable<Entidade>, Serializable {
     private String codigo;
     private String nome;
     private GPS gps;
 
+    /**
+     * Construtores para objetos da classe Entidade
+     */
     public Entidade() {
         this.codigo = "";
         this.nome = "";
@@ -23,6 +29,11 @@ abstract class Entidade implements Comparable<Entidade>, Serializable {
         this.nome = e.getNome();
         this.gps = e.getGps();
     }
+
+
+    /**
+     * Metodos de instancia
+     */
 
     public String getCodigo() {
         return codigo;

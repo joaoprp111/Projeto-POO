@@ -125,8 +125,8 @@ public class LinhaEncomenda implements Serializable {
         StringBuilder sb = new StringBuilder();
         sb.append("CodProd: ").append(this.cod).append(" ");
         sb.append("Descricao: ").append(this.desc).append(" ");
-        sb.append("Preco: ").append(this.valorUnitario).append(" ");
-        sb.append("Peso: ").append(this.peso).append(" ");
+        sb.append("Preco: ").append(String.format("%.2f", this.valorUnitario)).append(" ");
+        sb.append("Peso: ").append(String.format("%.2f", this.peso)).append(" ");
         sb.append("Quantidade: ").append(this.qtd).append(" ");
 
         return sb.toString();

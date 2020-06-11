@@ -6,6 +6,9 @@ import java.util.List;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
 
+/**
+ * Classe que representa uma encomenda
+ */
 public class Encomenda implements Comparable<Encomenda>, Serializable {
     // variáveis de instância
     private String cod_enc;
@@ -189,6 +192,7 @@ public class Encomenda implements Comparable<Encomenda>, Serializable {
                 .collect(Collectors.toCollection(TreeSet::new));
     }
 
+
     public LocalDateTime dataEncomenda() {
         return servicoEntrega.getDataNova();
     }
@@ -197,6 +201,10 @@ public class Encomenda implements Comparable<Encomenda>, Serializable {
         return this.cod_enc.compareTo(e.getCodEnc());
     }
 
+    /**
+     * Muda estado de uma encomenda
+     * @param novoEstado estado novo
+     */
     public void mudaEstado(EstadoEncomenda novoEstado) {
         if (novoEstado != EstadoEncomenda.NOVA) {
             this.servicoEntrega.setEstado(novoEstado);
@@ -221,11 +229,26 @@ public class Encomenda implements Comparable<Encomenda>, Serializable {
         this.servicoEntrega.setClassificacao(classificacao);
     }
 
+
+    /**
+     * Calcula o custo de transporte de uma encomenda
+     * @param distancia total do percurso
+     * @param peso peso da encomenda
+     * @param taxaDistancia taxa da distância da empresa transportadora
+     * @param taxaPeso taxa de peso da empresa transportadora
+     */
     public void setCustoDeTransporte(double distancia, double peso, double taxaDistancia, double taxaPeso){
         double preco = taxaDistancia * distancia + taxaPeso * peso;
         this.servicoEntrega.setCusto(preco);
     }
 
+    /**
+     * Calcula o tempo de transporte de uma encomenda(em min)
+     * @param tempoEsperaNaLojaMin tempo de espera na loja
+     * @param distanciaTotal Distância total do percurso de entrega
+     * @param velocidadeKmHora Velocidade do transportador
+     * @return Tempo total do transporte
+     */
     public int calculaTempoDeTransporteEncomenda(int tempoEsperaNaLojaMin,int distanciaTotal,int velocidadeKmHora){
         return tempoEsperaNaLojaMin + (distanciaTotal / velocidadeKmHora);
     }
