@@ -9,7 +9,7 @@ import java.util.stream.Collectors;
 /**
  * Classe principal
  */
-public class SistemaTrazAqui implements IModel {
+public class SistemaTrazAqui implements IModelo, Serializable {
     private Map<String, Utilizador> users;
     private Map<String, Loja> lojas;
     private Map<String, MeioTransporte> transportadores;
@@ -34,7 +34,6 @@ public class SistemaTrazAqui implements IModel {
     /**
      * Devolve os utilizadores existentes no sistema
      */
-    @Override
     public Collection<Utilizador> getUsers() {
         Collection<Utilizador> res = new TreeSet<>();
 
@@ -50,7 +49,6 @@ public class SistemaTrazAqui implements IModel {
      * @param codigo Codigo
      * @return t Meio transporte pretendido
      */
-    @Override
     public MeioTransporte getTransportador(String codigo) {
 
         for (MeioTransporte t : this.transportadores.values()) {
@@ -65,7 +63,6 @@ public class SistemaTrazAqui implements IModel {
     /**
      * Devolve todos as lojas existentes no sistema
      */
-    @Override
     public Collection<Loja> getLojas() {
         return this.lojas.values()
                 .stream().map(Loja::clone).collect(Collectors.toCollection(ArrayList::new));
@@ -74,7 +71,6 @@ public class SistemaTrazAqui implements IModel {
     /**
      * Devolve todos os MeioTransporte existentes no sistema
      */
-    @Override
     public Collection<MeioTransporte> getTransportadores() {
         return this.transportadores.values()
                 .stream().map(MeioTransporte::clone).collect(Collectors.toCollection(TreeSet::new));
@@ -83,7 +79,6 @@ public class SistemaTrazAqui implements IModel {
     /**
      * Devolve todos as encomendas existentes no sistema
      */
-    @Override
     public Collection<Encomenda> getEncomendas() {
         Collection<Encomenda> res = new TreeSet<>();
 
@@ -94,20 +89,13 @@ public class SistemaTrazAqui implements IModel {
         return res;
     }
 
-    @Override
     public void adicionaCatalogoALoja(String codigo){
         cat.adicionaInfoProdutos(codigo, cat.getInfoProdutos().entrySet().iterator().next().getValue());
-    }
-
-    @Override
-    public void contas() {
-        registos.info();
     }
 
     /**
      * Função que carrega os dados dos Logs para o sistema
      */
-    @Override
     public void loadFromLogs() {
         Parsing p = new Parsing();
         List<String> linhas = p.lerFicheiro("logs_20200416.txt");
@@ -162,7 +150,6 @@ public class SistemaTrazAqui implements IModel {
         }
     }
 
-    @Override
     public String toString() {
         StringBuilder sb = new StringBuilder("SistemaTrazAqui{");
         sb.append("users=").append(users).append("\n");
@@ -174,7 +161,6 @@ public class SistemaTrazAqui implements IModel {
         return sb.toString();
     }
 
-    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
@@ -189,7 +175,6 @@ public class SistemaTrazAqui implements IModel {
      * Verifica se existe uma conta
      * @param codigo Codigo da conta
      */
-    @Override
     public boolean existeConta(String codigo) {
         return registos.existeConta(codigo);
     }
@@ -199,7 +184,6 @@ public class SistemaTrazAqui implements IModel {
      * @param codigo Codigo de login da conta
      * @param pass Password da conta
      */
-    @Override
     public boolean passCorreta(String codigo, String pass) {
         return registos.existePass(codigo, pass);
     }
@@ -207,7 +191,6 @@ public class SistemaTrazAqui implements IModel {
     /**
      * Cria um novo utilizador e coloca o no conjunto de utilizadores e registos do sistema
      */
-    @Override
     public void novoUtilizador(String codigo, String nome, GPS gps, String email, String password) {
         Utilizador u = new Utilizador(codigo, nome, gps);
         users.put(codigo, u.clone());
@@ -217,7 +200,6 @@ public class SistemaTrazAqui implements IModel {
     /**
      * Cria um novo voluntário e coloca o no conjunto de transportadores e registos do sistema
      */
-    @Override
     public void novoVoluntario(String codigo, String nome, GPS gps, String email, String password, double raio, boolean certificado, double velocidade) {
         Voluntario v = new Voluntario(codigo, nome, gps, raio, certificado, velocidade);
         transportadores.put(codigo, v.clone());
@@ -227,7 +209,6 @@ public class SistemaTrazAqui implements IModel {
     /**
      * Cria um novo Meio de Transporte e coloca o no conjunto de transportadores e registos do sistema
      */
-    @Override
     public void novaTransportadora(String codigo, String nome, GPS gps, String email, String password, String nif,
                                    double raio, double taxaDistancia, double taxaPeso, boolean variasEncs, boolean certificado, double velocidade) {
         MeioTransporte t;
@@ -239,7 +220,6 @@ public class SistemaTrazAqui implements IModel {
     /**
      * Cria uma nova loja e coloca o no conjunto de lojas e registos do sistema
      */
-    @Override
     public void novaLoja(String code, String nome, GPS gps, String email,
                          String pw, boolean infoFilas) {
         Loja l = new Loja(code, nome, gps, infoFilas);
@@ -250,7 +230,6 @@ public class SistemaTrazAqui implements IModel {
      * Permite ver todas as lojas existentes no sistema
      * @return String com todas as lojas e informações sobre as mesmas
      */
-    @Override
     public String lojasDisponiveis() {
         StringBuilder sb = new StringBuilder();
         for (Loja l : lojas.values()) {
@@ -268,7 +247,6 @@ public class SistemaTrazAqui implements IModel {
      * @param cod Codigo da loja
      * @return boolean que indica se tem ou não info
      */
-    @Override
     public boolean lojaTemInfoFilaEspera(String cod) {
         Loja l = lojas.get(cod);
         return l.isInfoFilas();
@@ -279,7 +257,6 @@ public class SistemaTrazAqui implements IModel {
      * @param cod Codigo da loja
      * @return boolean que indica se tem ou não info sobre filas de espera
      */
-    @Override
     public boolean existeLoja(String cod) {
         return lojas.containsKey(cod);
     }
@@ -290,7 +267,6 @@ public class SistemaTrazAqui implements IModel {
      * @param p página pretendida
      * @return String que contém uma página do catálogo de produtos da loja
      */
-    @Override
     public String buscarProdsAoCat(String loja, int p) {
         return cat.separaPorPaginas(loja, p);
     }
@@ -302,7 +278,6 @@ public class SistemaTrazAqui implements IModel {
      * @param codProd Codigo de produto
      * @return boolean que indica se existe ou não o tal produto
      */
-    @Override
     public boolean existeProdutoNaLoja(String codLoja, String codProd) {
         return cat.existeProduto(codLoja, codProd);
     }
@@ -314,7 +289,6 @@ public class SistemaTrazAqui implements IModel {
      * @param codLoja Codigo da loja
      * @return Linha encomenda já criada
      */
-    @Override
     public LinhaEncomenda criarLinha(double qtd, String cod, String codLoja) {
         double precoUnitario = cat.precoDeUmProduto(cod, codLoja);
         String nomeProd = cat.nomeDeUmProduto(cod, codLoja);
@@ -327,7 +301,6 @@ public class SistemaTrazAqui implements IModel {
      * @param c Corrosponde a uma encomenda
      * @return String já criada com as informações de uma  encomenda
      */
-    @Override
     public String estadoEncomenda(Collection<LinhaEncomenda> c) {
         StringBuilder sb = new StringBuilder();
         int i = 1;
@@ -346,7 +319,6 @@ public class SistemaTrazAqui implements IModel {
         return sb.toString();
     }
 
-    @Override
     public double precoTotalEncomenda(Collection<LinhaEncomenda> c){
         double precoTotal = 0.0;
         for (LinhaEncomenda le : c) {
@@ -373,7 +345,6 @@ public class SistemaTrazAqui implements IModel {
      * @param cod Código da encomenda
      * @return boolean que indica se existe ou não a encomenda
      */
-    @Override
     public boolean existeCodEnc(String cod) {
         return this.encomendas.stream()
                 .anyMatch(e -> e.getCodEnc().equals(cod));
@@ -384,7 +355,6 @@ public class SistemaTrazAqui implements IModel {
      * Gera um código para uma encomenda
      * @return String com o codigo da encomenda
      */
-    @Override
     public String gerarCodigoEnc() {
         String res = "";
         while (existeCodEnc(res) || res.equals("")) {
@@ -402,7 +372,6 @@ public class SistemaTrazAqui implements IModel {
      * Adiciona uma encomenda ao sistema
      * @param e Encomenda a adicionar
      */
-    @Override
     public void novaEncomenda(Encomenda e) {
         this.encomendas.add(e);
     }
@@ -413,7 +382,6 @@ public class SistemaTrazAqui implements IModel {
      * @param cod Codigo da loja
      * @return String Indica a fila de espera
      */
-    @Override
     public String pessoasEmEspera(String cod) {
         StringBuilder sb = new StringBuilder();
         Loja l = lojas.get(cod);
@@ -427,7 +395,6 @@ public class SistemaTrazAqui implements IModel {
      * @param cod Codigo da loja
      * @return String que indica o tempo por pessoa
      */
-    @Override
     public String tempoAtendimentoPorPessoa(String cod) {
         StringBuilder sb = new StringBuilder();
         Loja l = lojas.get(cod);
@@ -443,7 +410,6 @@ public class SistemaTrazAqui implements IModel {
      * @param cod Codigo da loja
      * @return String que indica o tempo estimado de espera de uma loja
      */
-    @Override
     public String tempoEstimadoDeEspera(String cod) {
         StringBuilder sb = new StringBuilder();
         Loja l = lojas.get(cod);
@@ -460,7 +426,6 @@ public class SistemaTrazAqui implements IModel {
      * @param cod Codigo da loja
      * @param num Número de pessoas em espera
      */
-    @Override
     public void setNumeroDePessoasEmEspera(String cod, int num) {
         lojas.get(cod).setPessoasEmEspera(num);
     }
@@ -471,7 +436,6 @@ public class SistemaTrazAqui implements IModel {
      * @param cod Codigo da loja
      * @param num tempo por pessoa
      */
-    @Override
     public void setTempoMedioAtendimentoPorPessoa(String cod, int num) {
         lojas.get(cod).setTempoAtendimentoPorPessoa(num);
     }
@@ -482,7 +446,6 @@ public class SistemaTrazAqui implements IModel {
      * @param codigo Codigo do meio de transporte responsável pela encomenda
      * @return String com código de encomenda em caso de sucesso, null se a encomenda não existir
      */
-    @Override
     public String finalizaUmaEnc(String codigo) {
         Encomenda enc = getEncomendas()
                 .stream()
@@ -506,7 +469,6 @@ public class SistemaTrazAqui implements IModel {
      * @param codEnc Codigo da encomenda a finalizar
      * @return String com código de encomenda em caso de sucesso, null se a encomenda não existir
      */
-    @Override
     public String finalizaVariasEncomendas(String codigo, String codEnc) {
         Encomenda enc = getEncomendas()
                 .stream()
@@ -529,7 +491,6 @@ public class SistemaTrazAqui implements IModel {
      * @param codigo Codigo do meio de transporte responsável pela encomenda
      * @return Histórico de encomendas
      */
-    @Override
     public String historicoEncTransp(String codigo) {
         ArrayList<Encomenda> lista = getEncomendas().stream()
                 .filter(e -> e.getTransportador().equals(codigo))
@@ -550,7 +511,6 @@ public class SistemaTrazAqui implements IModel {
      * @param codigo Codigo da loja
      * @return Histórico de encomendas
      */
-    @Override
     public String historicoEncLojas(String codigo) {
         ArrayList<Encomenda> lista = getEncomendas().stream()
                 .filter(e -> e.getCodLoja().equals(codigo))
@@ -571,7 +531,6 @@ public class SistemaTrazAqui implements IModel {
      * @param codigo Codigo do utilizador
      * @return Histórico de encomendas
      */
-    @Override
     public String historicoEncUtilizador(String codigo) {
         ArrayList<Encomenda> lista = getEncomendas().stream()
                 .filter(e -> e.getCodUser().equals(codigo)).collect(Collectors.toCollection(ArrayList::new));
@@ -610,7 +569,6 @@ public class SistemaTrazAqui implements IModel {
      * @param codigo Codigo da loja
      * @return String com as encomendas
      */
-    @Override
     public String imprimeEncNovasLojas(String codigo) {
         ArrayList<Encomenda> lista = getEncomendas().stream()
                 .filter(e -> e.getCodLoja().equals(codigo) &&
@@ -631,7 +589,6 @@ public class SistemaTrazAqui implements IModel {
      * @param value String a ser testada
      * @return boolean que indica se é possível ou não
      */
-    @Override
     public boolean tryParseInt(String value) {
         try {
             Integer.parseInt(value);
@@ -646,7 +603,6 @@ public class SistemaTrazAqui implements IModel {
      * Altera a disponibilidade de um meio de transporte
      * @param codT Codigo do Meio de Transporte
      */
-    @Override
     public void alteraDisponibilidadeTransporte(String codT) {
         MeioTransporte t = getTransportador(codT);
         t.setDisponivel(!t.isDisponivel());
@@ -656,8 +612,6 @@ public class SistemaTrazAqui implements IModel {
      * Altera a disponibilidade para encomendas médicas de um Meio de Transporte
      * @param codTransp Codigo do Meio de Transporte
      */
-
-    @Override
     public void alteraDisponibilidadeTransporteMedico(String codTransp) {
         MeioTransporte transporte = getTransportador(codTransp);
         transporte.setAceitaMedicamentos(!transporte.aceitoTransporteMedicamentos());
@@ -670,7 +624,6 @@ public class SistemaTrazAqui implements IModel {
      * @param codEncomenda Codigo da Encomenda a verificar
      * @return boolean que indica se existe ou não
      */
-    @Override
     public boolean existeEncomendaNasEncomendasDisponiveis(String codTransportador, String codEncomenda) {
         boolean existe = encomendas.stream().anyMatch(x -> x.getCodEnc().equals(codEncomenda));
 
@@ -687,7 +640,6 @@ public class SistemaTrazAqui implements IModel {
      * @param codEncomenda Codigo da encomenda a entregar
      * @return String que indica o código da Encomenda e que foi aceite com successo
      */
-    @Override
     public String aceitaUmaEncomenda(String codigoTransporte, String codEncomenda) {
         StringBuilder sb = new StringBuilder();
 
@@ -721,7 +673,6 @@ public class SistemaTrazAqui implements IModel {
      * @param gpsUtilizador Coordenadas do utilizador
      * @return Double que indica a distância total do percurso
      */
-    @Override
     public double distanciaTotal(GPS gpsTransporte, GPS gpsLoja, GPS gpsUtilizador) {
         return GPS.dist(gpsTransporte, gpsLoja) + GPS.dist(gpsLoja, gpsUtilizador);
     }
@@ -732,7 +683,6 @@ public class SistemaTrazAqui implements IModel {
      * @param codigo Codigo do transportador a verificar
      * @return boolean que indica se é certificado
      */
-    @Override
     public boolean Certificado(String codigo) {
         MeioTransporte transporte = getTransportador(codigo);
         return transporte.isCertificado();
@@ -744,7 +694,6 @@ public class SistemaTrazAqui implements IModel {
      * @param codigo Codigo da empresa transportadora a verificar
      * @return boolean que indica se é certificado
      */
-    @Override
     public boolean podeTransportarVariasEncomendas(String codigo) {
         Transportadora t = (Transportadora) getTransportador(codigo);
         return t.isFazVariasEnc();
@@ -756,7 +705,6 @@ public class SistemaTrazAqui implements IModel {
      * @param codigo Codigo do transportador a verificar
      * @return boolean que indica está disponível
      */
-    @Override
     public boolean estaDisponivel(String codigo) {
         return transportadores.get(codigo).isDisponivel();
     }
@@ -768,7 +716,6 @@ public class SistemaTrazAqui implements IModel {
      * @param signal que indica se é ou não certificado
      * @return String com as disponibilidades
      */
-    @Override
     public String mostraEstados(String codigo, int signal) {
         MeioTransporte transporte = getTransportador(codigo);
         StringBuilder sb = new StringBuilder();
@@ -786,7 +733,6 @@ public class SistemaTrazAqui implements IModel {
      * @param codigo Codigo do transportador
      * @return Encomendas disponíveis
      */
-    @Override
     public ArrayList<Encomenda> encomendasDisponiveisAuxiliar(String codigo) {
         MeioTransporte transporte = getTransportador(codigo);
         ArrayList<Encomenda> lista = getEncomendas().stream()
@@ -808,7 +754,6 @@ public class SistemaTrazAqui implements IModel {
      * @param codigoMeioTransporte Codigo do transportador
      * @return Encomendas disponíveis e respetiva distância
      */
-    @Override
     public Map<Double, Encomenda> encomendasDisponiveis(String codigoMeioTransporte) {
 
         ArrayList<Encomenda> listaEncomendas = encomendasDisponiveisAuxiliar(codigoMeioTransporte);
@@ -831,7 +776,6 @@ public class SistemaTrazAqui implements IModel {
      * @param listaEncomendas Encomendas
      * @return String já completa
      */
-    @Override
     public String verEncomendasDisponiveis(Map<Double, Encomenda> listaEncomendas) {
         if (listaEncomendas == null) return "\nNão existem encomendas para entregar.\n";
         StringBuilder sb = new StringBuilder();
@@ -851,7 +795,6 @@ public class SistemaTrazAqui implements IModel {
      * @param codTransportadora Código da transportadora
      * @return String com todas as encomendas
      */
-    @Override
     public String encomendasASerEntreguesTransportadorasVariasEncomendas(String codTransportadora) {
         ArrayList<Encomenda> lista = getEncomendas().stream()
                 .filter(e -> e.getServicoEntrega().getEstado() == EstadoEncomenda.EM_TRANSPORTE &&
@@ -883,7 +826,6 @@ public class SistemaTrazAqui implements IModel {
      * Verifica se o transportador já se encontra a transportar alguma encomenda
      * @param codigo Código da transportadora
      */
-    @Override
     public boolean estaNoMomentoATransportarOuEmAceitacao(String codigo) {
         return getEncomendas().stream().anyMatch(e -> e.getTransportador().equals(codigo) && (
                 e.getEstado() == EstadoEncomenda.EM_TRANSPORTE || e.getEstado() == EstadoEncomenda.EM_ACEITACAO));
@@ -897,7 +839,6 @@ public class SistemaTrazAqui implements IModel {
      * @param fim Data do fim
      * @return inteiro que indica o total faturado nesse período
      */
-    @Override
     public int totalFaturadoEmpTrans(String codigo, LocalDate inicio, LocalDate fim) {
         int totalFaturado = 0;
         LocalDateTime inicioT = inicio.atStartOfDay();
@@ -918,7 +859,6 @@ public class SistemaTrazAqui implements IModel {
     /**
      * DateTimeFormatter
      */
-    @Override
     public LocalDate dateInput(String userInput) {
 
         DateTimeFormatter dateFormat = new DateTimeFormatterBuilder()
@@ -937,7 +877,6 @@ public class SistemaTrazAqui implements IModel {
      * Indica os 10 utilizadores mais ativos do sistema por numero de encomendas finalizadas
      * @return String com os 10 utilizadores mais ativos
      */
-    @Override
     public String utilizadoresMaisAtivos() {
         int[][] codUserENmrEncomendasFeitas = new int[1000][2];
         StringBuilder sb = new StringBuilder();
@@ -973,7 +912,6 @@ public class SistemaTrazAqui implements IModel {
      * Indica as 10 empresas transportadoras mais ativas do sistema por numero de kms percorrido
      * @return String com as 10 empresas mais ativas
      */
-    @Override
     public String empresasTransportadorasMaisAtivas() {
         int[][] codTransENmrEncomendasFeitas = new int[1000][2];
         StringBuilder sb = new StringBuilder();
@@ -1009,7 +947,6 @@ public class SistemaTrazAqui implements IModel {
      * Indica as encomendas que o utilizador tem de aceitar o seu custo
      * @return String com as encomendas por aceitar
      */
-    @Override
     public String verEncomendasPorAceitar(String codigo) {
         ArrayList<Encomenda> lista = getEncomendas().stream()
                 .filter(e -> e.getCodUser().equals(codigo) &&
@@ -1030,7 +967,6 @@ public class SistemaTrazAqui implements IModel {
      * Verifica se existe uma encomenda e se está por aceitar
      * @return String com as encomendas por aceitar
      */
-    @Override
     public boolean existeEncomendaPorAceitar(String codigo) {
         return encomendas.stream().anyMatch(x -> x.getCodEnc().equals(codigo) &&
                 x.getEstado() == EstadoEncomenda.EM_ACEITACAO);
@@ -1041,7 +977,6 @@ public class SistemaTrazAqui implements IModel {
      * Indica que uma encomenda foi aceite por um transportador
      * @param codigo Codigo da encomenda a mudar o estado
      */
-    @Override
     public void sinalizaEncomendaAceite(String codigo) {
         Encomenda e = getEncomendas().stream().filter(x -> x.getCodEnc().equals(codigo)).findFirst().get();
         e.mudaEstado(EstadoEncomenda.EM_TRANSPORTE);
@@ -1064,7 +999,6 @@ public class SistemaTrazAqui implements IModel {
      * @param codigo Codigo do utilizador
      * @return String com as encomendas
      */
-    @Override
     public String verEncomendasPorClassificar(String codigo) {
         ArrayList<Encomenda> lista = getEncomendas().stream()
                 .filter(e -> e.getCodUser().equals(codigo) &&
@@ -1087,7 +1021,6 @@ public class SistemaTrazAqui implements IModel {
      * @param codigo Codigo do utilizador
      * @return boolean que indica se tem alguma encomenda
      */
-    @Override
     public boolean existeEncomendaPorClassificar(String codigo) {
         return getEncomendas().stream().anyMatch(x -> x.getCodEnc().equals(codigo) &&
                 x.getEstado() == EstadoEncomenda.ENTREGUE &&
@@ -1098,7 +1031,6 @@ public class SistemaTrazAqui implements IModel {
      * Classifica uma encomenda
      * @param codigo Codigo da encomenda a classificar
      */
-    @Override
     public void classificaEncomenda(String codigo, int classificacao) {
         Encomenda e = getEncomendas().stream().filter(x -> x.getCodEnc().equals(codigo)).findFirst().get();
         e.setClassificacaoDeTransporte(classificacao);

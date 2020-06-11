@@ -1,45 +1,139 @@
+import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Map;
 
 public interface IModelo {
-    void loadFromLogs();
     Collection<Utilizador> getUsers();
+
     MeioTransporte getTransportador(String codigo);
-    Collection<MeioTransporte> getTransportadores();
+
     Collection<Loja> getLojas();
-    boolean lojaTemMedicamentos(String codLoja);
+
+    Collection<MeioTransporte> getTransportadores();
+
     Collection<Encomenda> getEncomendas();
+
+    void adicionaCatalogoALoja(String codigo);
+
+    void loadFromLogs();
+
     String toString();
+
     boolean equals(Object o);
+
     boolean existeConta(String codigo);
+
     boolean passCorreta(String codigo, String pass);
+
     void novoUtilizador(String codigo, String nome, GPS gps, String email, String password);
-    void novoVoluntario(String codigo, String nome, GPS gps, String email, String password, double raio);
-    void novaTransportadora(String codigo, String nome, GPS gps, String email, String password, String nif, double raio, double preco,
-                            boolean variasEncs);
+
+    void novoVoluntario(String codigo, String nome, GPS gps, String email, String password, double raio, boolean certificado, double velocidade);
+
+    void novaTransportadora(String codigo, String nome, GPS gps, String email, String password, String nif,
+                            double raio, double taxaDistancia, double taxaPeso, boolean variasEncs, boolean certificado, double velocidade);
+
     void novaLoja(String code, String nome, GPS gps, String email,
-                  String pw, boolean infoFilas, boolean temMeds);
+                  String pw, boolean infoFilas);
+
     String lojasDisponiveis();
+
+    boolean lojaTemInfoFilaEspera(String cod);
+
     boolean existeLoja(String cod);
+
     String buscarProdsAoCat(String loja, int p);
+
     boolean existeProdutoNaLoja(String codLoja, String codProd);
+
     LinhaEncomenda criarLinha(double qtd, String cod, String codLoja);
+
     String estadoEncomenda(Collection<LinhaEncomenda> c);
+
+    double precoTotalEncomenda(Collection<LinhaEncomenda> c);
+
     double calculaPesoCarrinho(Collection<LinhaEncomenda> carrinho);
+
     boolean existeCodEnc(String cod);
+
     String gerarCodigoEnc();
-    String encomendasFeitasUtilizador(String cod);
-    void adicionarEncFeita(Encomenda e, String codUser);
-    void adicionarNaLoja(Encomenda e, String codLoja);
+
+    void novaEncomenda(Encomenda e);
+
     String pessoasEmEspera(String cod);
-    String encomendasLoja (String cod);
-    boolean existeEncLoja (String enc, String loja);
-    boolean existeEncNova (String enc, String loja);
-    Collection<Encomenda> encomendasNovas(String loja);
-    boolean alteraDisponibilidadeTransportadora(String codT);
-    void aceitaMedicamentos(String codTransp, boolean aceitaMed);
-    void mudaDisponibilidade(String codTransp,boolean estaDisponivel);
+
+    String tempoAtendimentoPorPessoa(String cod);
+
+    String tempoEstimadoDeEspera(String cod);
+
+    void setNumeroDePessoasEmEspera(String cod, int num);
+
+    void setTempoMedioAtendimentoPorPessoa(String cod, int num);
+
     String finalizaUmaEnc(String codigo);
-    ArrayList<Encomenda> historicoEncTransp(String codigo);
-    String enviarPropostas(String loja, String cod);
+
+    String finalizaVariasEncomendas(String codigo, String codEnc);
+
+    String historicoEncTransp(String codigo);
+
+    String historicoEncLojas(String codigo);
+
+    String historicoEncUtilizador(String codigo);
+
+    String imprimeEncNovasLojas(String codigo);
+
+    boolean tryParseInt(String value);
+
+    void alteraDisponibilidadeTransporte(String codT);
+
+    void alteraDisponibilidadeTransporteMedico(String codTransp);
+
+    boolean existeEncomendaNasEncomendasDisponiveis(String codTransportador, String codEncomenda);
+
+    String aceitaUmaEncomenda(String codigoTransporte, String codEncomenda);
+
+    double distanciaTotal(GPS gpsTransporte, GPS gpsLoja, GPS gpsUtilizador);
+
+    boolean Certificado(String codigo);
+
+    boolean podeTransportarVariasEncomendas(String codigo);
+
+    boolean estaDisponivel(String codigo);
+
+    String mostraEstados(String codigo, int signal);
+
+    ArrayList<Encomenda> encomendasDisponiveisAuxiliar(String codigo);
+
+    Map<Double, Encomenda> encomendasDisponiveis(String codigoMeioTransporte);
+
+    String verEncomendasDisponiveis(Map<Double, Encomenda> listaEncomendas);
+
+    String encomendasASerEntreguesTransportadorasVariasEncomendas(String codTransportadora);
+
+    void sinalizaEncomendaProntaParaEntrega(String codigo);
+
+    boolean estaNoMomentoATransportarOuEmAceitacao(String codigo);
+
+    int totalFaturadoEmpTrans(String codigo, LocalDate inicio, LocalDate fim);
+
+    LocalDate dateInput(String userInput);
+
+    String utilizadoresMaisAtivos();
+
+    String empresasTransportadorasMaisAtivas();
+
+    String verEncomendasPorAceitar(String codigo);
+
+    boolean existeEncomendaPorAceitar(String codigo);
+
+    void sinalizaEncomendaAceite(String codigo);
+
+    void sinalizaEncomendaRejeitada(String codigo);
+
+    String verEncomendasPorClassificar(String codigo);
+
+    boolean existeEncomendaPorClassificar(String codigo);
+
+    void classificaEncomenda(String codigo, int classificacao);
 }

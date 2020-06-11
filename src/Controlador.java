@@ -1,4 +1,4 @@
-import java.io.IOException;
+import java.io.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -8,17 +8,36 @@ import java.util.Collection;
  */
 public class Controlador implements IControlador {
     private final IVista v;
-    private final SistemaTrazAqui s;
+    private IModelo s;
 
 
     /**
      * Construtor
      */
-    public Controlador(IVista v, SistemaTrazAqui s) {
+    public Controlador(IVista v, IModelo s) {
         this.v = v;
         this.s = s;
     }
 
+    /**
+     * Carrega de um ficheiro um estado
+     */
+    private IModelo readFile(String filename) throws IOException, ClassNotFoundException {
+        ObjectInputStream o = new ObjectInputStream(new FileInputStream(filename));
+        IModelo m = (SistemaTrazAqui) o.readObject();
+        o.close();
+        return m;
+    }
+
+    /**
+     * Guarda o estado atual em ficheiro
+     */
+    private void writeInFile(IModelo s) throws IOException {
+        ObjectOutputStream o = new ObjectOutputStream(new FileOutputStream("./sistemaTrazAqui.data"));
+        o.writeObject(s);
+        o.flush();
+        o.close();
+    }
 
     /**
      * Função principal que arranca o controlador
@@ -27,6 +46,7 @@ public class Controlador implements IControlador {
         Input i = new Input();
         v.clear();
         s.loadFromLogs();
+        v.showMessage("Logs carregados!\n");
 
         int input = -1;
 
@@ -66,7 +86,7 @@ public class Controlador implements IControlador {
                 case 5:
                     input = -1;
                     try {
-                        Main.writeInFile(s);
+                        writeInFile(s);
                         v.showMessage("\nEstado da aplicação gravado.");
                         while (input != 0) {
                             v.showMessage("\nPressione (0) voltar > ");
@@ -79,6 +99,15 @@ public class Controlador implements IControlador {
                             input = i.lerInt();
                         }
                         e.printStackTrace();
+                    }
+                    input = -1;
+                    break;
+                case 6:
+                    s = carregarSistemaDoFicheiro();
+                    v.showMessage("Ficheiro lido!\n");
+                    while (input != 0) {
+                        v.showMessage("\nPressione (0) voltar > ");
+                        input = i.lerInt();
                     }
                     input = -1;
                     break;
@@ -1160,5 +1189,23 @@ public class Controlador implements IControlador {
                     break;
             }
         }
+    }
+
+    /**
+     * Carrega o sistema a partir de ficheiro objeto (criado por nós)
+     */
+    public IModelo carregarSistemaDoFicheiro(){
+        File f = new File("./sistemaTrazAqui.data");
+
+        if (f.exists() && !f.isDirectory()) {
+            try {
+                s = readFile("./sistemaTrazAqui.data");
+            } catch (IOException | ClassNotFoundException e) {
+                e.printStackTrace();
+                s = new SistemaTrazAqui();
+            }
+        }
+
+        return s;
     }
 }

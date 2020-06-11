@@ -18,6 +18,7 @@ public class Vista implements IVista, Serializable {
         System.out.println("\n> (3) Ver os 10 utilizadores mais ativos");
         System.out.println("\n> (4) Ver as 10 empresas transportadoras mais ativas");
         System.out.println("\n> (5) Grava estado do sistema");
+        System.out.println("\n> (6) Carregar ficheiro adicional (com algumas entidades criadas)");
         System.out.println("\n> (0) Sair da aplicação");
         System.out.println("\n\n> Opção: ");
     }
