@@ -1002,7 +1002,7 @@ public class SistemaTrazAqui implements IModelo, Serializable {
                 MeioTransporte t = getTransportadores().stream().filter(y -> y.getCodigo().equals(e.getTransportador())).findFirst().get();
                 Utilizador u = getUsers().stream().filter(k -> k.getCodigo().equals(e.getCodUser())).findFirst().get();
 
-                double tempo = (l.getTempoAtendimentoPorPessoa() * l.getPessoasEmEspera() )* 3600; // horas
+                double tempo = (l.getTempoAtendimentoPorPessoa() * l.getPessoasEmEspera() ) / 3600; // horas
                 double distancia = distanciaTotal(t.getGps(), l.getGps(),u.getGps());
 
                 s.append("\n").append("Cod. Encomenda: ").append(e.getCodEnc()).append(" | ")

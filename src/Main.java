@@ -1,4 +1,3 @@
-import java.io.*;
 
 /**
  * Onde o programa inicia

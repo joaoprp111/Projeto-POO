@@ -800,9 +800,12 @@ public class Controlador implements IControlador {
                 }
                 prods = s.buscarProdsAoCat(codLoja, pagina++);
             } while (!prods.equals("Não existe catálogo para esta loja!\n"));
-            while (!s.existeProdutoNaLoja(codLoja, codProd)) {
-                v.showMessage("\nIntroduza o código do produto que quer encomendar [p(número)] > ");
+            while (!s.existeProdutoNaLoja(codLoja, codProd) && !codProd.equals("0")) {
+                v.showMessage("\nIntroduza o código do produto que quer encomendar [p(número)] ou (0) para sair > ");
                 codProd = i.lerString();
+            }
+            if(codProd.equals("0")){
+                break;
             }
             /* Neste ponto pergunta-se quantas unidades se quer comprar */
             double qtd = 0.0;
@@ -830,7 +833,6 @@ public class Controlador implements IControlador {
         Input i = new Input();
         int opcao = -1;
         String opcaoEncomenda = "";
-        int k = -1;
         while (opcao != 0) {
             if (s.lojaTemInfoFilaEspera(codigo)) {
                 v.funcionalidadesLojaComInfoEspera();
@@ -857,7 +859,7 @@ public class Controlador implements IControlador {
                                 opcao = i.lerInt();
                             }
                         }
-                        funcL(codigo);
+                        opcao = -1;
                         break;
                     case 2:
                         v.loja();
@@ -879,9 +881,6 @@ public class Controlador implements IControlador {
                             opcao = i.lerInt();
                         }
                         switch (opcao) {
-                            case 0:
-                                funcL(codigo);
-                                break;
                             case 1:
                                 opcao = -1;
                                 v.loja();
@@ -896,7 +895,7 @@ public class Controlador implements IControlador {
                                     v.showMessage("\nPressione (0) voltar > ");
                                     opcao = i.lerInt();
                                 }
-                                funcL(codigo);
+                                break;
                             case 2:
                                 opcao = -1;
                                 v.loja();
@@ -911,8 +910,9 @@ public class Controlador implements IControlador {
                                     v.showMessage("\nPressione (0) voltar > ");
                                     opcao = i.lerInt();
                                 }
-                                funcL(codigo);
+                                break;
                         }
+                        opcao = -1;
                         break;
                     case 3:
                         v.loja();
@@ -922,7 +922,7 @@ public class Controlador implements IControlador {
                             v.showMessage("\nPressione (0) voltar > ");
                             opcao = i.lerInt();
                         }
-                        funcL(codigo);
+                        opcao = -1;
                         break;
                 }
             } else {
@@ -950,7 +950,7 @@ public class Controlador implements IControlador {
                                 opcao = i.lerInt();
                             }
                         }
-                        funcL(codigo);
+                        opcao = -1;
                         break;
                     case 2:
                         v.loja();
@@ -960,7 +960,7 @@ public class Controlador implements IControlador {
                             v.showMessage("\nPressione (0) voltar > ");
                             opcao = i.lerInt();
                         }
-                        funcL(codigo);
+                        opcao = -1;
                         break;
                 }
             }

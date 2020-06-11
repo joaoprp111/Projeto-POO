@@ -250,7 +250,7 @@ public class Encomenda implements Comparable<Encomenda>, Serializable {
      * @return Tempo total do transporte
      */
     public int  calculaTempoDeTransporteEncomenda(double tempoEsperaNaLojaMin,double distanciaTotal,double velocidadeKmHora){
-        return (int) (tempoEsperaNaLojaMin + (distanciaTotal / (velocidadeKmHora)) / 60);
+        return (int) (tempoEsperaNaLojaMin + (distanciaTotal / (velocidadeKmHora)) * 60);
     }
 
 }
