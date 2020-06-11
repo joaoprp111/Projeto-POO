@@ -1,17 +1,19 @@
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-public class ServicoEntrega {
+public class ServicoEntrega implements Serializable {
 
     // ATRIBUTOS
 
-    private int classificacao; // int >= 0 && int <= 5
+    private Integer classificacao; // int >= 0 && int <= 5
     private EstadoEncomenda estado;
     private LocalDateTime dataNova;
     private LocalDateTime dataProntaASerEntregue;
     private LocalDateTime dataEmAceitacao;
     private LocalDateTime dataEmTransporte;
     private LocalDateTime dataEntregue;
+    private double custo;
 
     // CONSTRUTOR
 
@@ -23,12 +25,12 @@ public class ServicoEntrega {
 
     // GETTERS E SETTERS
 
-    public int getClassificacao() {
+    public Integer getClassificacao() {
         return classificacao;
     }
 
     public void setClassificacao(int classificacao) {
-        if(classificacao >= 0 && classificacao <= 5)
+        if (classificacao >= 0 && classificacao <= 5)
             this.classificacao = classificacao;
     }
 
@@ -80,29 +82,45 @@ public class ServicoEntrega {
         this.dataEntregue = dataEntregue;
     }
 
+    public double getCusto() {
+        return custo;
+    }
+
+    public void setCusto(double custo) {
+        this.custo = custo;
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ServicoEntrega that = (ServicoEntrega) o;
-        return classificacao == that.getClassificacao() &&
-                estado == that.getEstado() &&
-                Objects.equals(dataNova, that.getDataNova()) &&
-                Objects.equals(dataProntaASerEntregue, that.getDataProntaASerEntregue()) &&
-                Objects.equals(dataEmAceitacao, that.getDataEmAceitacao()) &&
-                Objects.equals(dataEmTransporte, that.getDataEmTransporte()) &&
-                Objects.equals(dataEntregue, that.getDataEntregue());
+        return Double.compare(that.getCusto(), getCusto()) == 0 &&
+                Objects.equals(getClassificacao(), that.getClassificacao()) &&
+                getEstado() == that.getEstado() &&
+                getDataNova().equals(that.getDataNova()) &&
+                Objects.equals(getDataProntaASerEntregue(), that.getDataProntaASerEntregue()) &&
+                Objects.equals(getDataEmAceitacao(), that.getDataEmAceitacao()) &&
+                Objects.equals(getDataEmTransporte(), that.getDataEmTransporte()) &&
+                Objects.equals(getDataEntregue(), that.getDataEntregue());
     }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(getClassificacao(), getEstado(), getDataNova(), getDataProntaASerEntregue(), getDataEmAceitacao(), getDataEmTransporte(), getDataEntregue(), getCusto());
+    }
+
+    @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("ServicoEntrega{");
-        sb.append("classificacao=").append(classificacao);
-        sb.append(", estado=").append(estado);
-        sb.append(", dataNova=").append(dataNova);
-        sb.append(", dataProntaASerEntregue=").append(dataProntaASerEntregue);
-        sb.append(", dataEmAceitacao=").append(dataEmAceitacao);
-        sb.append(", dataEmTransporte=").append(dataEmTransporte);
-        sb.append(", dataEntregue=").append(dataEntregue);
-        sb.append('}');
-        return sb.toString();
+        return "ServicoEntrega{" +
+                "classificacao=" + classificacao +
+                ", estado=" + estado +
+                ", dataNova=" + dataNova +
+                ", dataProntaASerEntregue=" + dataProntaASerEntregue +
+                ", dataEmAceitacao=" + dataEmAceitacao +
+                ", dataEmTransporte=" + dataEmTransporte +
+                ", dataEntregue=" + dataEntregue +
+                ", custo=" + custo +
+                '}';
     }
 }

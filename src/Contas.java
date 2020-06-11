@@ -1,11 +1,12 @@
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Contas {
+public class Contas implements Serializable {
     private Map<String, String> emails;
     private Map<String, String> passwords;
 
-    public Contas(){
+    public Contas() {
         this.emails = new HashMap<>();
         this.passwords = new HashMap<>();
     }
@@ -15,14 +16,14 @@ public class Contas {
         setPasswords(passwords);
     }
 
-    public Contas(Contas c){
+    public Contas(Contas c) {
         this.emails = c.getEmails();
         this.passwords = c.getPasswords();
     }
 
     private Map<String, String> getEmails() {
         Map<String, String> res = new HashMap<>();
-        for(Map.Entry<String, String> par: this.emails.entrySet()){
+        for (Map.Entry<String, String> par : this.emails.entrySet()) {
             res.put(par.getKey(), par.getValue());
         }
         return res;
@@ -34,7 +35,7 @@ public class Contas {
 
     private Map<String, String> getPasswords() {
         Map<String, String> res = new HashMap<>();
-        for(Map.Entry<String, String> par: this.emails.entrySet()){
+        for (Map.Entry<String, String> par : this.emails.entrySet()) {
             res.put(par.getKey(), par.getValue());
         }
         return res;
@@ -44,27 +45,27 @@ public class Contas {
         this.passwords = new HashMap<>(passwords);
     }
 
-    public void adicionarRegisto(String codigo, String email, String password){
+    public void adicionarRegisto(String codigo, String email, String password) {
         emails.put(codigo, email);
         passwords.put(codigo, password);
     }
 
-    public boolean loginCorreto(String email, String password){
+    public boolean loginCorreto(String email, String password) {
         String[] parse = email.split("@");
         return (this.emails.containsKey(parse[0]) && this.passwords.containsKey(parse[0]));
     }
 
-    public boolean existeConta(String codigo){
+    public boolean existeConta(String codigo) {
         return emails.containsKey(codigo); /* Se existe nos emails também existe nas passwords */
     }
 
-    public boolean existePass(String codigo, String pass){
+    public boolean existePass(String codigo, String pass) {
         return passwords.get(codigo).equals(pass);
     }
 
-    public void info(){
-        for(Map.Entry<String, String> par : emails.entrySet()) System.out.println(par);
-        for(Map.Entry<String, String> par : passwords.entrySet()) System.out.println(par);
+    public void info() {
+        for (Map.Entry<String, String> par : emails.entrySet()) System.out.println(par);
+        for (Map.Entry<String, String> par : passwords.entrySet()) System.out.println(par);
     }
 
     public String toString() {

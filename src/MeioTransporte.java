@@ -1,36 +1,32 @@
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
-public abstract class MeioTransporte extends Entidade{
+public abstract class MeioTransporte extends Entidade {
     private double raio;
     private double velocidade;
     private boolean disponivel;
     private boolean aceitoMeds;
-    private Collection<Encomenda> encs;
+    private boolean certificado;
 
     /*
      * Construtor por omissao
      */
-    public MeioTransporte(){
+    public MeioTransporte() {
         super();
         this.raio = 0.0;
         this.velocidade = 0.0;
         this.disponivel = false;
         this.aceitoMeds = false;
-        this.encs = new ArrayList<>();
+        this.certificado = false;
     }
 
     /*
      * Construtor parametrizado
      */
-    public MeioTransporte(String codigo, String nome, GPS gps, double raio, boolean certificado) {
+    public MeioTransporte(String codigo, String nome, GPS gps, double raio, boolean certificado, double velocidade) {
         super(codigo, nome, gps);
         this.raio = raio;
-        this.velocidade = 0.0;
+        this.velocidade = velocidade;
         this.disponivel = false;
         this.aceitoMeds = false;
-        this.encs = new ArrayList<>();
+        this.certificado = certificado;
     }
 
     /*
@@ -42,7 +38,7 @@ public abstract class MeioTransporte extends Entidade{
         this.velocidade = t.getVelocidade();
         this.disponivel = t.isDisponivel();
         this.aceitoMeds = t.aceitoTransporteMedicamentos();
-        setEncs(t.getEncs());
+        this.certificado = t.isCertificado();
     }
 
     /*
@@ -50,24 +46,27 @@ public abstract class MeioTransporte extends Entidade{
      */
 
     /**
-     *                      Devolve o raio de transporte
-     * @return              Raio
+     * Devolve o raio de transporte
+     *
+     * @return Raio
      */
     public double getRaio() {
         return raio;
     }
 
     /**
-     *                      Devolve a velocidade do meio de transporte
-     * @return              Velocidade
+     * Devolve a velocidade do meio de transporte
+     *
+     * @return Velocidade
      */
     public double getVelocidade() {
         return velocidade;
     }
 
     /**
-     *                      Informa se o meio de transporte está ou não disponível
-     * @return              true se estiver disponivel, false caso contrário
+     * Informa se o meio de transporte está ou não disponível
+     *
+     * @return true se estiver disponivel, false caso contrário
      */
     public boolean isDisponivel() {
         return disponivel;
@@ -75,11 +74,17 @@ public abstract class MeioTransporte extends Entidade{
 
 
     /**
-     *                      Informa se o meio de transporte aceita fazer transporte de medicamentos
-     * @return              true se quiser, false caso contrário
+     * Informa se o meio de transporte aceita fazer transporte de medicamentos
+     *
+     * @return true se quiser, false caso contrário
      */
-    public boolean aceitoTransporteMedicamentos(){
+    public boolean aceitoTransporteMedicamentos() {
         return aceitoMeds;
+    }
+
+
+    public boolean isCertificado() {
+        return certificado;
     }
 
 
@@ -91,30 +96,23 @@ public abstract class MeioTransporte extends Entidade{
         this.raio = raio;
     }
 
-    public void setVelocidade(double velocidade){
+    public void setVelocidade(double velocidade) {
         this.velocidade = velocidade;
     }
 
-    public void setDisponivel(boolean disponivel){
+    public void setDisponivel(boolean disponivel) {
         this.disponivel = disponivel;
     }
 
 
-    public void setAceitaMedicamentos(boolean state){
+    public void setAceitaMedicamentos(boolean state) {
         this.aceitoMeds = state;
     }
 
-
-    public Collection<Encomenda> getEncs() {
-        List<Encomenda> res = new ArrayList<>();
-        for(Encomenda e : this.encs) res.add(e.clone());
-        return res;
+    public void setCertificado(boolean certificado) {
+        this.certificado = certificado;
     }
 
-    public void setEncs(Collection<Encomenda> enc) {
-        this.encs = new ArrayList<>();
-        for(Encomenda e : enc) this.encs.add(e.clone());
-    }
 
     @Override
     public boolean equals(Object o) {
@@ -126,7 +124,7 @@ public abstract class MeioTransporte extends Entidade{
                 Double.compare(that.getVelocidade(), getVelocidade()) == 0 &&
                 isDisponivel() == that.isDisponivel() &&
                 aceitoMeds == that.aceitoMeds &&
-                encs == that.getEncs();
+                isCertificado() == that.isCertificado();
     }
 
     @Override
@@ -136,7 +134,7 @@ public abstract class MeioTransporte extends Entidade{
                 ", velocidade=" + velocidade +
                 ", disponivel=" + disponivel +
                 ", aceitoMeds=" + aceitoMeds +
-                ", encomendas=" + encs +
+                ", certificado=" + certificado +
                 '}';
     }
 

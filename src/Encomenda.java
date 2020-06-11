@@ -1,11 +1,12 @@
+import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.ArrayList;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
 
-public class Encomenda implements Comparable<Encomenda> {
+public class Encomenda implements Comparable<Encomenda>, Serializable {
     // variáveis de instância
     private String cod_enc;
     private String cod_user;
@@ -30,22 +31,24 @@ public class Encomenda implements Comparable<Encomenda> {
         this.linhas = new ArrayList<>();
     }
 
-    public Encomenda(String enc, String user, String loja, double peso, boolean encomendaMedica, Collection<LinhaEncomenda> linhas) {
+    public Encomenda(String enc, String user, String loja, double peso, boolean encomendaMedica, String transportador, Collection<LinhaEncomenda> linhas) {
         this.cod_enc = enc;
         this.cod_user = user;
         this.cod_loja = loja;
         this.peso = peso;
         this.encomendaMedica = encomendaMedica;
+        this.transportador = transportador;
         this.servicoEntrega = new ServicoEntrega();
         this.setLinhas(linhas);
     }
 
-    public Encomenda(String enc, String user, String loja, double peso, boolean encomendaMedica) {
+    public Encomenda(String enc, String user, String loja, double peso, String transportador, boolean encomendaMedica) {
         this.cod_enc = enc;
         this.cod_user = user;
         this.cod_loja = loja;
         this.peso = peso;
         this.encomendaMedica = encomendaMedica;
+        this.transportador = transportador;
         this.servicoEntrega = new ServicoEntrega();
         this.linhas = new ArrayList<>();
     }
@@ -85,14 +88,20 @@ public class Encomenda implements Comparable<Encomenda> {
         return this.encomendaMedica;
     }
 
-    public String getTransportador() { return this.transportador; }
+    public String getTransportador() {
+        return this.transportador;
+    }
 
     public ServicoEntrega getServicoEntrega() {
         return servicoEntrega;
     }
 
-    public EstadoEncomenda getEstado (){
+    public EstadoEncomenda getEstado() {
         return servicoEntrega.getEstado();
+    }
+
+    public Integer getClassificacao() {
+        return servicoEntrega.getClassificacao();
     }
 
     public List<LinhaEncomenda> getLinhas() {
@@ -124,7 +133,11 @@ public class Encomenda implements Comparable<Encomenda> {
         this.encomendaMedica = encomendaMedica;
     }
 
-    public void setEstado (EstadoEncomenda ee){
+    public void setTransportador(String transportador) {
+        this.transportador = transportador;
+    }
+
+    public void setEstado(EstadoEncomenda ee) {
         this.servicoEntrega.setEstado(ee);
     }
 
@@ -148,6 +161,8 @@ public class Encomenda implements Comparable<Encomenda> {
                 cod_enc.equals(encomenda.cod_enc) &&
                 cod_user.equals(encomenda.cod_user) &&
                 cod_loja.equals(encomenda.cod_loja) &&
+                getTransportador().equals(encomenda.getTransportador()) &&
+                getServicoEntrega().equals(encomenda.getServicoEntrega()) &&
                 getLinhas().equals(encomenda.getLinhas());
     }
 
@@ -163,9 +178,10 @@ public class Encomenda implements Comparable<Encomenda> {
                 ", cod_loja='" + cod_loja + '\'' +
                 ", peso=" + peso +
                 ", encomendaMedica=" + encomendaMedica +
+                ", transportador='" + transportador + '\'' +
+                ", servicoEntrega=" + servicoEntrega +
                 ", linhas=" + linhas +
-                ", estado= " + servicoEntrega.getEstado() +
-                "}\n";
+                '}';
     }
 
     public Collection<String> produtosEncomendados() {
@@ -173,7 +189,7 @@ public class Encomenda implements Comparable<Encomenda> {
                 .collect(Collectors.toCollection(TreeSet::new));
     }
 
-    public LocalDateTime dataEncomenda(){
+    public LocalDateTime dataEncomenda() {
         return servicoEntrega.getDataNova();
     }
 
@@ -181,24 +197,37 @@ public class Encomenda implements Comparable<Encomenda> {
         return this.cod_enc.compareTo(e.getCodEnc());
     }
 
-    public void mudaEstado(EstadoEncomenda novoEstado){
-        if(novoEstado != EstadoEncomenda.NOVA){
+    public void mudaEstado(EstadoEncomenda novoEstado) {
+        if (novoEstado != EstadoEncomenda.NOVA) {
             this.servicoEntrega.setEstado(novoEstado);
-            switch (novoEstado){
+            switch (novoEstado) {
                 case PRONTA_A_SER_ENTREGUE:
                     this.servicoEntrega.setDataProntaASerEntregue(LocalDateTime.now());
+                    break;
                 case EM_ACEITACAO:
                     this.servicoEntrega.setDataEmAceitacao(LocalDateTime.now());
+                    break;
                 case EM_TRANSPORTE:
                     this.servicoEntrega.setDataEmTransporte(LocalDateTime.now());
+                    break;
                 case ENTREGUE:
                     this.servicoEntrega.setDataEntregue(LocalDateTime.now());
+                    break;
             }
         }
     }
 
-    public void setClassificacaoDeTransporte(int classificacao){
+    public void setClassificacaoDeTransporte(int classificacao) {
         this.servicoEntrega.setClassificacao(classificacao);
+    }
+
+    public void setCustoDeTransporte(double distancia, double peso, double taxaDistancia, double taxaPeso){
+        double preco = taxaDistancia * distancia + taxaPeso * peso;
+        this.servicoEntrega.setCusto(preco);
+    }
+
+    public int calculaTempoDeTransporteEncomenda(int tempoEsperaNaLojaMin,int distanciaTotal,int velocidadeKmHora){
+        return tempoEsperaNaLojaMin + (distanciaTotal / velocidadeKmHora);
     }
 
 }

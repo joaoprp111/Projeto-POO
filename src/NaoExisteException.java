@@ -1,10 +1,12 @@
-public class NaoExisteException extends Exception {
+import java.io.Serializable;
 
-    public NaoExisteException(){
+public class NaoExisteException extends Exception implements Serializable {
+
+    public NaoExisteException() {
         super();
     }
 
-    public NaoExisteException(String s){
+    public NaoExisteException(String s) {
         super(s);
     }
 }

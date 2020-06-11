@@ -1,4 +1,6 @@
-public class LinhaEncomenda{
+import java.io.Serializable;
+
+public class LinhaEncomenda implements Serializable {
     private String cod;
     private String desc;
     private double qtd;
@@ -15,9 +17,9 @@ public class LinhaEncomenda{
     /**
      * Construtor por omissao de LinhaEncomenda.
      */
-    public LinhaEncomenda(){
-        this.cod = new String();
-        this.desc = new String();
+    public LinhaEncomenda() {
+        this.cod = "";
+        this.desc = "";
         this.peso = 0.0;
         this.qtd = 0.0;
         this.valorUnitario = 0.0;
@@ -26,14 +28,14 @@ public class LinhaEncomenda{
     /**
      * Construtor parametrizado de LinhaEncomenda.
      */
-    public LinhaEncomenda(String ref, String desc, double preco, double qtd){
+    public LinhaEncomenda(String ref, String desc, double preco, double qtd) {
         this.cod = ref;
         this.desc = desc;
         this.valorUnitario = preco;
         this.qtd = qtd;
     }
 
-    public LinhaEncomenda(String ref, String desc, double preco, double qtd, double peso){
+    public LinhaEncomenda(String ref, String desc, double preco, double qtd, double peso) {
         this.cod = ref;
         this.desc = desc;
         this.valorUnitario = preco;
@@ -44,7 +46,7 @@ public class LinhaEncomenda{
     /**
      * Construtor de copia de LinhaEncomenda.
      */
-    public LinhaEncomenda(LinhaEncomenda le){
+    public LinhaEncomenda(LinhaEncomenda le) {
         this.cod = le.getCod();
         this.desc = le.getDesc();
         this.valorUnitario = le.getValorUnitario();
@@ -56,19 +58,19 @@ public class LinhaEncomenda{
      * Metodos de instancia
      */
 
-    public String getCod(){
+    public String getCod() {
         return this.cod;
     }
 
-    public String getDesc(){
+    public String getDesc() {
         return this.desc;
     }
 
-    public double getValorUnitario(){
+    public double getValorUnitario() {
         return this.valorUnitario;
     }
 
-    public double getQtd(){
+    public double getQtd() {
         return this.qtd;
     }
 
@@ -80,37 +82,37 @@ public class LinhaEncomenda{
         this.peso = peso;
     }
 
-    public void setCod(String ref){
+    public void setCod(String ref) {
         this.cod = ref;
     }
 
-    public void setDesc(String desc){
+    public void setDesc(String desc) {
         this.desc = desc;
     }
 
-    public void setValorUnitario(double v){
+    public void setValorUnitario(double v) {
         this.valorUnitario = v;
     }
 
-    public void setQtd(double q){
+    public void setQtd(double q) {
         this.qtd = q;
     }
 
-    public double calculaValorLinhaEnc(){
+    public double calculaValorLinhaEnc() {
         return (this.valorUnitario * this.qtd);
     }
 
-    public double calculaPeso(){
+    public double calculaPeso() {
         return (this.peso * this.qtd);
     }
 
-    public LinhaEncomenda clone(){
+    public LinhaEncomenda clone() {
         return new LinhaEncomenda(this);
     }
 
-    public boolean equals(Object obj){
-        if(obj==this) return true;
-        if(obj==null || obj.getClass() != this.getClass()) return false;
+    public boolean equals(Object obj) {
+        if (obj == this) return true;
+        if (obj == null || obj.getClass() != this.getClass()) return false;
         LinhaEncomenda le = (LinhaEncomenda) obj;
         return le.getCod().equals(this.cod) &&
                 le.getDesc().equals(this.desc) &&
@@ -119,7 +121,7 @@ public class LinhaEncomenda{
                 Double.compare(le.getQtd(), this.qtd) == 0;
     }
 
-    public String toString(){
+    public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("CodProd: ").append(this.cod).append(" ");
         sb.append("Descricao: ").append(this.desc).append(" ");

@@ -1,76 +1,80 @@
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
+import java.io.Serializable;
 
-public class Transportadora extends MeioTransporte {
+public class Transportadora extends MeioTransporte implements Serializable {
+
     private String nif;
-    private double preco; // preco por km
+    private double taxaDistancia;
+    private double taxaPeso;
     private int ocupacao;
     private boolean fazVariasEnc;
-    private boolean disponivel;
 
-    public Transportadora(){
+    public Transportadora() {
         super();
         this.nif = "";
-        this.preco = 0.0;
+        this.taxaDistancia = 0.0;
+        this.taxaPeso = 0.0;
         this.ocupacao = 0;
         this.fazVariasEnc = false;
-        this.disponivel = false;
     }
 
-    public Transportadora(String codigo, String nome, GPS gps, double raio, boolean certificado, String nif, double preco, boolean fazVarEn,boolean disponivel) {
-        super(codigo, nome, gps, raio, certificado);
+    public Transportadora(String codigo, String nome, GPS gps, double raio, boolean certificado, double velocidade, String nif, double taxaDistancia, double taxaPeso, boolean fazVarEn) {
+        super(codigo, nome, gps, raio, certificado, velocidade);
         this.nif = nif;
-        this.preco = preco;
+        this.taxaDistancia = taxaDistancia;
+        this.taxaPeso = taxaPeso;
         this.ocupacao = 0;
         this.fazVariasEnc = fazVarEn;
-        this.disponivel = disponivel;
     }
 
     public Transportadora(Transportadora t) {
         super(t);
         this.nif = t.getNif();
-        this.preco = t.getPreco();
+        this.taxaDistancia = t.getTaxaDistancia();
+        this.taxaPeso = t.getTaxaPeso();
         this.ocupacao = t.getOcupacao();
         this.fazVariasEnc = t.isFazVariasEnc();
-        this.disponivel = t.isDisponivel();
     }
 
     public String getNif() {
         return nif;
     }
 
-    public double getPreco() {
-        return preco;
+    public double getTaxaDistancia() {
+        return taxaDistancia;
     }
 
+    public double getTaxaPeso() {
+        return taxaPeso;
+    }
 
-    public int getOcupacao(){
+    public int getOcupacao() {
         return this.ocupacao;
     }
 
-    public boolean isFazVariasEnc(){ return this.fazVariasEnc; }
+    public boolean isFazVariasEnc() {
+        return this.fazVariasEnc;
+    }
 
-    public boolean isDisponivel(){ return this.disponivel; }
 
-    public void setNif(String nif){
+    public void setNif(String nif) {
         this.nif = nif;
     }
 
-    public void setPreco(double preco){
-        this.preco = preco;
+    public void setTaxaDistancia(double taxaDistancia) {
+        this.taxaDistancia = taxaDistancia;
     }
 
 
-    public void setOcupacao(int ocup){
+    public void setTaxaPeso(double taxaPeso) {
+        this.taxaPeso = taxaPeso;
+    }
+
+    public void setOcupacao(int ocup) {
         this.ocupacao = ocup;
     }
 
-    public void setFazVariasEnc(boolean fazVariasEnc) { this.fazVariasEnc = fazVariasEnc; }
-
-    public void setDisponivel(boolean disponivel){
-        this.disponivel = disponivel;
+    public void setFazVariasEnc(boolean fazVariasEnc) {
+        this.fazVariasEnc = fazVariasEnc;
     }
 
 
@@ -80,28 +84,32 @@ public class Transportadora extends MeioTransporte {
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
         Transportadora that = (Transportadora) o;
-        return Double.compare(that.getPreco(), getPreco()) == 0 &&
+        return Double.compare(that.getTaxaDistancia(), getTaxaDistancia()) == 0 &&
+                Double.compare(that.getTaxaPeso(), getTaxaPeso()) == 0 &&
                 getOcupacao() == that.getOcupacao() &&
+                isFazVariasEnc() == that.isFazVariasEnc() &&
                 getNif().equals(that.getNif());
     }
 
     @Override
     public String toString() {
-        return "TransportadoraVariasEncs{" +
+        return "Transportadora{" +
                 "nif='" + nif + '\'' +
-                ", preco=" + preco +
+                ", taxaDistancia=" + taxaDistancia +
+                ", taxaPeso=" + taxaPeso +
                 ", ocupacao=" + ocupacao +
+                ", fazVariasEnc=" + fazVariasEnc +
                 '}';
     }
 
-    public Transportadora clone(){
+    public Transportadora clone() {
         return new Transportadora(this);
     }
 
 
-    public double calculaPrecoTransporte(double peso, double distLoja, double distUserLoja, double tempoEspera){
+    public double calculaPrecoTransporte(double peso, double distLoja, double distUserLoja, double tempoEspera) {
         double distTotal = distLoja + distUserLoja;
-        return ((preco * distTotal) + peso) - tempoEspera;
+        return ((taxaDistancia * distTotal) + peso) - tempoEspera;
     }
 }
 

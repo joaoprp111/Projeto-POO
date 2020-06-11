@@ -1,6 +1,8 @@
-public class Vista implements IVista {
+import java.io.Serializable;
 
-    public void menuInicial(){
+public class Vista implements IVista, Serializable {
+
+    public void menuInicial() {
         clear();
         System.out.println("\n|-------------------------------------------------------------------------------------------------|");
         System.out.println("|-------------------------------------------------------------------------------------------------|");
@@ -10,29 +12,32 @@ public class Vista implements IVista {
         System.out.println("|-------------------------------------------------------------------------------------------------|");
     }
 
-    public void menuOpcoes(){
-        System.out.println("\n> (1) Crie uma conta");
-        System.out.println("\n> (2) Faça login");
+    public void menuOpcoes() {
+        System.out.println("\n> (1) Criar conta");
+        System.out.println("\n> (2) Fazer login");
+        System.out.println("\n> (3) Ver os 10 utilizadores mais ativos");
+        System.out.println("\n> (4) Ver as 10 empresas transportadoras mais ativas");
+        System.out.println("\n> (5) Grava estado do sistema");
         System.out.println("\n> (0) Sair da aplicação");
         System.out.println("\n\n> Opção: ");
     }
 
-    public void showMessage(Object o){
+    public void showMessage(Object o) {
         System.out.print(o);
     }
 
-    public void clear(){
+    public void clear() {
         System.out.print("\033[H\033[2J");
     }
 
-    public void criarConta(){
+    public void criarConta() {
         clear();
         System.out.println("\n|-------------------------------------------------------------------------------------------------|");
         System.out.println("|                                           Criar conta                                           |");
         System.out.println("|-------------------------------------------------------------------------------------------------|\n");
     }
 
-    public void tipoDeConta(){
+    public void tipoDeConta() {
         System.out.println("\n(1) Utilizador");
         System.out.println("\n(2) Voluntario");
         System.out.println("\n(3) Loja");
@@ -41,7 +46,7 @@ public class Vista implements IVista {
         System.out.println("\n> Opção: ");
     }
 
-    public void login(){
+    public void login() {
         clear();
         System.out.println("\n|-------------------------------------------------------------------------------------------|");
         System.out.println("|                                           Login                                           |");
@@ -49,115 +54,117 @@ public class Vista implements IVista {
     }
 
 
-    public void user(){
+    public void user() {
         clear();
         System.out.println("\n|-------------------------------------------------------------------------------------------|");
         System.out.println("|                                        Utilizador                                         |");
         System.out.println("|-------------------------------------------------------------------------------------------|\n");
     }
 
-    public void loja(){
+    public void loja() {
         clear();
         System.out.println("\n|-------------------------------------------------------------------------------------------|");
         System.out.println("|                                          Loja                                             |");
         System.out.println("|-------------------------------------------------------------------------------------------|");
     }
 
-    public void voluntario(){
+    public void voluntario() {
         clear();
         System.out.println("\n|-------------------------------------------------------------------------------------------|");
         System.out.println("|                                        Voluntário                                         |");
         System.out.println("|-------------------------------------------------------------------------------------------|\n");
     }
 
-    public void transportadora(){
+    public void transportadora() {
         clear();
         System.out.println("\n|-------------------------------------------------------------------------------------------|");
         System.out.println("|                                     Transportadora                                          |");
         System.out.println("|-------------------------------------------------------------------------------------------|\n");
     }
 
-    public void funcionalidadesUtilizador(){
-        System.out.println("\n(1) Realizar encomenda");
-        System.out.println("\n(2) Solicitar a entrega de uma encomenda");
-        System.out.println("\n(0) Logout");
-        System.out.println("\n> Opção: ");
-    }
-
-    public void funcionalidadesLoja(){
-        System.out.println("\n(1) Gerir encomendas");
-        System.out.println("\n(2) Pessoas em fila");
-        System.out.println("\n(0) Logout");
-        System.out.println("\n> Opção: ");
-    }
-
-    public void funcionalidadesVoluntario(){
-        System.out.println("\n(1) Alterar estado transporte de encomendas médicas");
-        System.out.println("\n(2) Alterar disponibilidade para recolher encomendas");
-        System.out.println("\n(3) Ver encomendas prontas para entrega");
-        System.out.println("\n(4) Finalizar encomenda");
-        System.out.println("\n(5) Ver histórico de encomendas");
-        System.out.println("\n(0) Logout");
-        System.out.println("\n> Opção: ");
-    }
-
-    public void funcionalidadesTransportadora(){
-        System.out.println("\n(1) Alterar disponibilidade para recolher encomendas");
-        System.out.println("\n(0) Logout");
-        System.out.println("\n> Opção: ");
-    }
-
-    public void opcoesGestaoLoja(){
-        System.out.println("\n(1) Enviar propostas de transporte");
-        System.out.println("\n(2) Sinalizar transportadores");
-        System.out.println("\n(0) Voltar");
-        System.out.println("\n> Opção: ");
-    }
-
-    public void escolherLojaParaEncomenda(){
+    public void funcionalidadesUtilizador() {
         clear();
-        System.out.println("\n|-------------------------------------------------------------------------------------------|");
-        System.out.println("|                                   Escolha a loja                                          |");
-        System.out.println("|-------------------------------------------------------------------------------------------|\n");
+        user();
+        System.out.println("\n(1) Fazer encomenda");
+        System.out.println("\n(2) Aceitar serviço transporte");
+        System.out.println("\n(3) Histórico de encomendas");
+        System.out.println("\n(4) Classificar serviço entrega");
+        System.out.println("\n(0) Logout");
+        System.out.println("\n> Opção: ");
     }
 
-    public void produtosLoja(){
+    public void utilizadorOpcao1SelecionarLoja() {
         clear();
-        System.out.println("\n|-------------------------------------------------------------------------------------------|");
-        System.out.println("|                                  Escolha um produto                                       |");
-        System.out.println("|-------------------------------------------------------------------------------------------|\n");
+        user();
+        System.out.println("\nEscolha a loja: ");
     }
 
-    public void unidades(){
+    public void utilizadorOpcao1EncomendaMedica() {
         clear();
+        user();
+        System.out.println("\nÉ encomenda médica?");
+    }
+
+    public void utilizadorOpcao1EscolhaProduto() {
+        clear();
+        user();
+        System.out.println("\nEscolha um produto: ");
+    }
+
+    public void utilizadorOpcao1EscolhaDeUnidades() {
+        clear();
+        user();
         System.out.println("\nQuantas unidades deste produto quer comprar? > ");
     }
 
-    public void confirmarEnc(){
+    public void utilizadorOpcao1ConfirmarEnc() {
         clear();
-        System.out.println("\n|-------------------------------------------------------------------------------------------|");
-        System.out.println("|                                   Confirmar Encomenda                                     |");
-        System.out.println("|-------------------------------------------------------------------------------------------|\n");
+        user();
+        System.out.println("\nConfirmar encomenda?");
     }
 
-    public void solicitarEnc(){
+    public void funcionalidadesLojaComInfoEspera() {
         clear();
-        System.out.println("\n|-------------------------------------------------------------------------------------------|");
-        System.out.println("|                               Solicitar encomenda feita                                     |");
-        System.out.println("|-------------------------------------------------------------------------------------------|\n");
+        loja();
+        System.out.println("\n(1) Gerir encomendas");
+        System.out.println("\n(2) Gerir fila de espera");
+        System.out.println("\n(3) Histórico de encomendas");
+        System.out.println("\n(0) Logout");
+        System.out.println("\n> Opção: ");
     }
 
-    public void listaEncomendas(){
+    public void funcionalidadesLojaSemInfoEspera() {
         clear();
-        System.out.println("\n|-------------------------------------------------------------------------------------------|");
-        System.out.println("|                                   Lista de Encomendas                                       |");
-        System.out.println("|-------------------------------------------------------------------------------------------|\n");
+        loja();
+        System.out.println("\n(1) Gerir encomendas");
+        System.out.println("\n(2) Histórico de encomendas");
+        System.out.println("\n(0) Logout");
+        System.out.println("\n> Opção: ");
     }
 
-    public void encomendasNovas(){
+
+    public void funcionalidadesMeioTransporte(boolean isVoluntario) {
+        clear();
+        if (isVoluntario)
+            voluntario();
+        else
+            transportadora();
+
+        System.out.println("\n(1) Gerir disponibilidade");
+        System.out.println("\n(2) Escolher encomenda a entregar");
+        System.out.println("\n(3) Finalizar encomenda");
+        System.out.println("\n(4) Histórico de encomendas");
+        if (!isVoluntario) System.out.println("\n(5) Total faturado entre datas");
+        System.out.println("\n(0) Logout");
+        System.out.println("\n> Opção: ");
+    }
+
+
+    public void top10() {
         clear();
         System.out.println("\n|-------------------------------------------------------------------------------------------|");
-        System.out.println("|                                     Encomendas Novas                                        |");
+        System.out.println("|                                           TOP 10                                          |");
         System.out.println("|-------------------------------------------------------------------------------------------|\n");
+
     }
 }

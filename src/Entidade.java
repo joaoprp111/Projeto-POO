@@ -1,11 +1,12 @@
+import java.io.Serializable;
 import java.util.Objects;
 
-abstract class Entidade implements Comparable<Entidade>{
+abstract class Entidade implements Comparable<Entidade>, Serializable {
     private String codigo;
     private String nome;
     private GPS gps;
 
-    public Entidade(){
+    public Entidade() {
         this.codigo = "";
         this.nome = "";
         this.gps = new GPS();
@@ -67,9 +68,9 @@ abstract class Entidade implements Comparable<Entidade>{
 
     public abstract Entidade clone();
 
-    public int compareTo(Entidade e1){
-        if(this.codigo.compareTo(e1.getCodigo()) > 0) return 1;
-        else if(codigo.compareTo(e1.getCodigo()) < 0) return -1;
+    public int compareTo(Entidade e1) {
+        if (this.codigo.compareTo(e1.getCodigo()) > 0) return 1;
+        else if (codigo.compareTo(e1.getCodigo()) < 0) return -1;
         else return nome.compareTo(e1.getNome());
     }
 }

@@ -1,17 +1,19 @@
-public class GPS {
+import java.io.Serializable;
+
+public class GPS implements Serializable {
     private double x;
     private double y;
 
-    public GPS(){
+    public GPS() {
         this.x = this.y = 0.0;
     }
 
-    public GPS(double x, double y){
+    public GPS(double x, double y) {
         this.x = x;
         this.y = y;
     }
 
-    public GPS(GPS gps){
+    public GPS(GPS gps) {
         this.x = gps.getX();
         this.y = gps.getY();
     }
@@ -48,17 +50,30 @@ public class GPS {
         return sb.toString();
     }
 
-    public GPS clone(){
+    public GPS clone() {
         return new GPS(this);
     }
 
-    public static double dist(GPS gps1, GPS gps2){
+    public static double dist(GPS gps1, GPS gps2) {
         double x1, x2, y1, y2, aux;
-        x1 = gps1.getX(); y1 = gps1.getY();
-        x2 = gps2.getX(); y2 = gps1.getY();
+        x1 = gps1.getX();
+        y1 = gps1.getY();
+        x2 = gps2.getX();
+        y2 = gps1.getY();
 
         aux = Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2);
 
         return Math.sqrt(aux);
     }
+
+
+    public static boolean estaDentroDoRaio(GPS Tranportadora, GPS Loja, GPS DestinoEncomenda, double raioTransportadora) {
+        return dist(Tranportadora, Loja) <= raioTransportadora && dist(Tranportadora, DestinoEncomenda) <= raioTransportadora;
+
+    }
+
+
 }
+
+
+

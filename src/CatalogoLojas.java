@@ -1,29 +1,29 @@
+import java.io.Serializable;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class CatalogoLojas implements Catalogos{
-    private Map<String,Collection<LinhaEncomenda>> infoProdutos;
+public class CatalogoLojas implements Catalogos, Serializable {
+    private Map<String, Collection<LinhaEncomenda>> infoProdutos;
 
-    public CatalogoLojas(){
+    public CatalogoLojas() {
         infoProdutos = new HashMap<>();
     }
 
-    public void insereProduto(String codLoja, LinhaEncomenda le){
-        if(!infoProdutos.containsKey(codLoja)){
+    public void insereProduto(String codLoja, LinhaEncomenda le) {
+        if (!infoProdutos.containsKey(codLoja)) {
             Collection<LinhaEncomenda> nova = new ArrayList<>();
             nova.add(le.clone());
             infoProdutos.put(codLoja, nova);
-        }
-        else{
+        } else {
             Collection<LinhaEncomenda> c = infoProdutos.get(codLoja);
             int numRepetidos = (int) c.stream()
                     .filter(l -> l.getDesc().equals(le.getDesc())).count();
-            if(numRepetidos == 0) c.add(le.clone());
+            if (numRepetidos == 0) c.add(le.clone());
         }
     }
 
     public String separaPorPaginas(String codLoja, int p) {
-        if(infoProdutos.containsKey(codLoja)) {
+        if (infoProdutos.containsKey(codLoja)) {
             StringBuilder sb;
             Collection<LinhaEncomenda> c = infoProdutos.get(codLoja);
             String res = "";
@@ -41,28 +41,28 @@ public class CatalogoLojas implements Catalogos{
                 i++;
             }
             res = sb.toString();
-            if(i == 0) return "Não existe catálogo para esta loja!\n";
+            if (i == 0) return "Não existe catálogo para esta loja!\n";
             else return res;
-        }
-        else return "Não existe catálogo para esta loja!\n";
+        } else return "Não existe catálogo para esta loja!\n";
     }
 
-    public boolean existeProduto(String codLoja, String codProd){
-        if(!infoProdutos.containsKey(codLoja)) return false;
-        else{
+    public boolean existeProduto(String codLoja, String codProd) {
+        if (!infoProdutos.containsKey(codLoja)) return false;
+        else {
             Collection<LinhaEncomenda> c = infoProdutos.get(codLoja);
-            for(LinhaEncomenda le : c) if(le.getCod().equals(codProd)) return true;
+            for (LinhaEncomenda le : c) if (le.getCod().equals(codProd)) return true;
         }
         return false;
     }
 
-    public double precoDeUmProduto(String codProd, String codLoja){
+    public double precoDeUmProduto(String codProd, String codLoja) {
         Collection<LinhaEncomenda> c = infoProdutos.get(codLoja);
         Iterator it = c.iterator();
-        boolean encontrado = false; double res = 0.0;
-        while(it.hasNext() && !encontrado){
+        boolean encontrado = false;
+        double res = 0.0;
+        while (it.hasNext() && !encontrado) {
             LinhaEncomenda le = (LinhaEncomenda) it.next();
-            if (codProd.equals(le.getCod())){
+            if (codProd.equals(le.getCod())) {
                 encontrado = true;
                 res = le.getValorUnitario();
             }
@@ -70,13 +70,14 @@ public class CatalogoLojas implements Catalogos{
         return res;
     }
 
-    public double pesoDeUmProduto(String codProd, String codLoja){
+    public double pesoDeUmProduto(String codProd, String codLoja) {
         Collection<LinhaEncomenda> c = infoProdutos.get(codLoja);
         Iterator it = c.iterator();
-        boolean encontrado = false; double res = 0.0;
-        while(it.hasNext() && !encontrado){
+        boolean encontrado = false;
+        double res = 0.0;
+        while (it.hasNext() && !encontrado) {
             LinhaEncomenda le = (LinhaEncomenda) it.next();
-            if (codProd.equals(le.getCod())){
+            if (codProd.equals(le.getCod())) {
                 encontrado = true;
                 res = le.getPeso();
             }
@@ -84,13 +85,14 @@ public class CatalogoLojas implements Catalogos{
         return res;
     }
 
-    public String nomeDeUmProduto(String codProd, String codLoja){
+    public String nomeDeUmProduto(String codProd, String codLoja) {
         Collection<LinhaEncomenda> c = infoProdutos.get(codLoja);
         Iterator it = c.iterator();
-        boolean encontrado = false; String res = "";
-        while(it.hasNext() && !encontrado){
+        boolean encontrado = false;
+        String res = "";
+        while (it.hasNext() && !encontrado) {
             LinhaEncomenda le = (LinhaEncomenda) it.next();
-            if (codProd.equals(le.getCod())){
+            if (codProd.equals(le.getCod())) {
                 encontrado = true;
                 res = le.getDesc();
             }
@@ -105,7 +107,4 @@ public class CatalogoLojas implements Catalogos{
         return sb.toString();
     }
 
-    public boolean existeLoja(String codLoja){
-        return infoProdutos.containsKey(codLoja);
-    }
 }
