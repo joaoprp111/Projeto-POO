@@ -1,5 +1,7 @@
 import java.io.Serializable;
-
+/**
+ * Classe que representa as empresas transportadoras
+ */
 public class Transportadora extends MeioTransporte implements Serializable {
 
     private String nif;
@@ -8,6 +10,9 @@ public class Transportadora extends MeioTransporte implements Serializable {
     private int ocupacao;
     private boolean fazVariasEnc;
 
+    /**
+     * Construtor por omissao
+     */
     public Transportadora() {
         super();
         this.nif = "";
@@ -17,6 +22,10 @@ public class Transportadora extends MeioTransporte implements Serializable {
         this.fazVariasEnc = false;
     }
 
+
+    /**
+     * Construtor parametrizado
+     */
     public Transportadora(String codigo, String nome, GPS gps, double raio, boolean certificado, double velocidade, String nif, double taxaDistancia, double taxaPeso, boolean fazVarEn) {
         super(codigo, nome, gps, raio, certificado, velocidade);
         this.nif = nif;
@@ -26,6 +35,9 @@ public class Transportadora extends MeioTransporte implements Serializable {
         this.fazVariasEnc = fazVarEn;
     }
 
+    /**
+     * Construtor por cópia
+     */
     public Transportadora(Transportadora t) {
         super(t);
         this.nif = t.getNif();
@@ -34,6 +46,10 @@ public class Transportadora extends MeioTransporte implements Serializable {
         this.ocupacao = t.getOcupacao();
         this.fazVariasEnc = t.isFazVariasEnc();
     }
+
+    /**
+     * Metodos de instancia
+     */
 
     public String getNif() {
         return nif;
@@ -78,7 +94,7 @@ public class Transportadora extends MeioTransporte implements Serializable {
     }
 
 
-    @Override
+
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
@@ -91,7 +107,7 @@ public class Transportadora extends MeioTransporte implements Serializable {
                 getNif().equals(that.getNif());
     }
 
-    @Override
+
     public String toString() {
         return "Transportadora{" +
                 "nif='" + nif + '\'' +

@@ -1,6 +1,14 @@
 import java.io.Serializable;
 
+/**
+ * Classe responsável pela vista
+ */
 public class Vista implements IVista, Serializable {
+
+    /**
+     * MENUS
+     */
+
 
     public void menuInicial() {
         clear();

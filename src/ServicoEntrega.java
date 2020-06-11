@@ -4,7 +4,6 @@ import java.util.Objects;
 
 public class ServicoEntrega implements Serializable {
 
-    // ATRIBUTOS
 
     private Integer classificacao; // int >= 0 && int <= 5
     private EstadoEncomenda estado;
@@ -15,16 +14,19 @@ public class ServicoEntrega implements Serializable {
     private LocalDateTime dataEntregue;
     private double custo;
 
-    // CONSTRUTOR
-
+    /**
+     * Construtor
+     */
     public ServicoEntrega() {
         this.estado = EstadoEncomenda.NOVA;
         this.dataNova = LocalDateTime.now();
     }
 
 
-    // GETTERS E SETTERS
 
+    /**
+     * Metodos de instancia
+     */
     public Integer getClassificacao() {
         return classificacao;
     }
@@ -90,7 +92,7 @@ public class ServicoEntrega implements Serializable {
         this.custo = custo;
     }
 
-    @Override
+
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
@@ -105,12 +107,7 @@ public class ServicoEntrega implements Serializable {
                 Objects.equals(getDataEntregue(), that.getDataEntregue());
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(getClassificacao(), getEstado(), getDataNova(), getDataProntaASerEntregue(), getDataEmAceitacao(), getDataEmTransporte(), getDataEntregue(), getCusto());
-    }
 
-    @Override
     public String toString() {
         return "ServicoEntrega{" +
                 "classificacao=" + classificacao +

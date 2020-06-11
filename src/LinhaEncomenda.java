@@ -8,13 +8,6 @@ public class LinhaEncomenda implements Serializable {
     private double valorUnitario;
 
     /**
-     * Construtores de LinhaEncomenda.
-     *
-     * Declaracao por omissao (vazio), parametrizada
-     * e de copia.
-     */
-
-    /**
      * Construtor por omissao de LinhaEncomenda.
      */
     public LinhaEncomenda() {

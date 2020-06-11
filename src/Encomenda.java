@@ -205,7 +205,7 @@ public class Encomenda implements Comparable<Encomenda>, Serializable {
      * Muda estado de uma encomenda
      * @param novoEstado estado novo
      */
-    public void mudaEstado(EstadoEncomenda novoEstado) {
+    public void mudaEstado(EstadoEncomenda novoEstado, int minutos) {
         if (novoEstado != EstadoEncomenda.NOVA) {
             this.servicoEntrega.setEstado(novoEstado);
             switch (novoEstado) {
@@ -219,7 +219,7 @@ public class Encomenda implements Comparable<Encomenda>, Serializable {
                     this.servicoEntrega.setDataEmTransporte(LocalDateTime.now());
                     break;
                 case ENTREGUE:
-                    this.servicoEntrega.setDataEntregue(LocalDateTime.now());
+                    this.servicoEntrega.setDataEntregue(servicoEntrega.getDataNova().plusMinutes(minutos));
                     break;
             }
         }
@@ -249,8 +249,8 @@ public class Encomenda implements Comparable<Encomenda>, Serializable {
      * @param velocidadeKmHora Velocidade do transportador
      * @return Tempo total do transporte
      */
-    public int calculaTempoDeTransporteEncomenda(int tempoEsperaNaLojaMin,int distanciaTotal,int velocidadeKmHora){
-        return tempoEsperaNaLojaMin + (distanciaTotal / velocidadeKmHora);
+    public int  calculaTempoDeTransporteEncomenda(double tempoEsperaNaLojaMin,double distanciaTotal,double velocidadeKmHora){
+        return (int) (tempoEsperaNaLojaMin + (distanciaTotal / (velocidadeKmHora)) / 60);
     }
 
 }

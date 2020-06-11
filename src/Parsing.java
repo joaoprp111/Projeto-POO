@@ -6,8 +6,14 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Classe responsável pelo parsing
+ */
 public class Parsing implements Serializable {
 
+    /**
+     * Responsável pelo parsing do utilizador
+     */
     public Utilizador parseUtilizador(String input) {
         String[] campos = input.split(",");
         String id = campos[0];
@@ -18,6 +24,9 @@ public class Parsing implements Serializable {
         return new Utilizador(id, nome, gps);
     }
 
+    /**
+     * Responsável pelo parsing da loja
+     */
     public Loja parseLoja(String input) {
         String[] campos = input.split(",");
         String codigo = campos[0];
@@ -28,6 +37,9 @@ public class Parsing implements Serializable {
         return new Loja(codigo, nome, gps);
     }
 
+    /**
+     * Responsável pelo parsing do voluntário
+     */
     public Voluntario parseVoluntario(String input) {
         String[] campos = input.split(",");
         String id = campos[0];
@@ -39,6 +51,10 @@ public class Parsing implements Serializable {
         return new Voluntario(id, nome, gps, raio, false, 30.0);
     }
 
+
+    /**
+     * Responsável pelo parsing da transportadora
+     */
     public MeioTransporte parseTransportadora(String input) {
         String[] campos = input.split(",");
         String id = campos[0];
@@ -52,6 +68,9 @@ public class Parsing implements Serializable {
         return new Transportadora(id, nome, gps, raio, false, 30.0, nif, preco, 0.5, false);
     }
 
+    /**
+     * Responsável pelo parsing da encomenda
+     */
     public Encomenda parseEncomenda(String input) {
         String[] campos = input.split(",");
         String codEnc = campos[0];
@@ -74,6 +93,9 @@ public class Parsing implements Serializable {
         return e;
     }
 
+    /**
+     * Auxiliar para carregar os logs
+     */
     public List<String> lerFicheiro(String nomeFich) {
         List<String> lines = new ArrayList<>();
         try {

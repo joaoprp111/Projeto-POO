@@ -1,3 +1,6 @@
+/**
+ * Classe meio transporte de onde deriva voluntário e transportadora
+ */
 public abstract class MeioTransporte extends Entidade {
     private double raio;
     private double velocidade;
@@ -5,7 +8,7 @@ public abstract class MeioTransporte extends Entidade {
     private boolean aceitoMeds;
     private boolean certificado;
 
-    /*
+    /**
      * Construtor por omissao
      */
     public MeioTransporte() {
@@ -17,7 +20,7 @@ public abstract class MeioTransporte extends Entidade {
         this.certificado = false;
     }
 
-    /*
+    /**
      * Construtor parametrizado
      */
     public MeioTransporte(String codigo, String nome, GPS gps, double raio, boolean certificado, double velocidade) {
@@ -29,7 +32,7 @@ public abstract class MeioTransporte extends Entidade {
         this.certificado = certificado;
     }
 
-    /*
+    /**
      * Construtor por cópia
      */
     public MeioTransporte(MeioTransporte t) {
@@ -41,13 +44,8 @@ public abstract class MeioTransporte extends Entidade {
         this.certificado = t.isCertificado();
     }
 
-    /*
-     * Getters
-     */
-
     /**
      * Devolve o raio de transporte
-     *
      * @return Raio
      */
     public double getRaio() {
@@ -56,7 +54,6 @@ public abstract class MeioTransporte extends Entidade {
 
     /**
      * Devolve a velocidade do meio de transporte
-     *
      * @return Velocidade
      */
     public double getVelocidade() {
@@ -65,7 +62,6 @@ public abstract class MeioTransporte extends Entidade {
 
     /**
      * Informa se o meio de transporte está ou não disponível
-     *
      * @return true se estiver disponivel, false caso contrário
      */
     public boolean isDisponivel() {
@@ -75,7 +71,6 @@ public abstract class MeioTransporte extends Entidade {
 
     /**
      * Informa se o meio de transporte aceita fazer transporte de medicamentos
-     *
      * @return true se quiser, false caso contrário
      */
     public boolean aceitoTransporteMedicamentos() {
@@ -88,7 +83,7 @@ public abstract class MeioTransporte extends Entidade {
     }
 
 
-    /*
+    /**
      * Setters
      */
 
@@ -114,7 +109,7 @@ public abstract class MeioTransporte extends Entidade {
     }
 
 
-    @Override
+
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
@@ -127,7 +122,7 @@ public abstract class MeioTransporte extends Entidade {
                 isCertificado() == that.isCertificado();
     }
 
-    @Override
+
     public String toString() {
         return "MeioTransporte{" +
                 "raio=" + raio +

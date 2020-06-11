@@ -573,7 +573,8 @@ public class Controlador implements IControlador {
         while (opcao != 0) {
             v.funcionalidadesUtilizador();
             opcao = i.lerInt();
-            String cod;
+            LocalDate inicio, fim;
+            String cod, dataInicio = "", dataFim ="";
             Collection<LinhaEncomenda> carrinho = new ArrayList<>();
             boolean eEncomendaMedica;
             switch (opcao) {
@@ -616,7 +617,7 @@ public class Controlador implements IControlador {
                     v.showMessage(s.verEncomendasPorAceitar(codigo));
                     opcao = -1;
 
-                    if (!s.existeEncomendaPorAceitar(codigo)) {
+                    if (!s.existeEncomendaPorAceitarCodUser(codigo)) {
                         while (opcao != 0) {
                             v.showMessage("\nPressione (0) voltar > ");
                             opcao = i.lerInt();
@@ -630,7 +631,7 @@ public class Controlador implements IControlador {
                         opcao = i.lerInt();
                     }
                     if (opcao == 1) {
-                        while (opcao != 0 && !s.existeEncomendaPorAceitar(cod)) {
+                        while (opcao != 0 && !s.existeEncomendaPorAceitarCodEnc(cod)) {
                             v.showMessage("\nIntroduza o código da encomenda a aceitar ou pressione (0) voltar > ");
                             cod = i.lerString();
                             if (s.tryParseInt(cod)) {
@@ -648,7 +649,7 @@ public class Controlador implements IControlador {
                             }
                         }
                     } else {
-                        while (opcao != 0 && !s.existeEncomendaPorAceitar(cod)) {
+                        while (opcao != 0 && !s.existeEncomendaPorAceitarCodEnc(cod)) {
                             v.showMessage("\nIntroduza o código da encomenda a rejeitar ou pressione (0) voltar > ");
                             cod = i.lerString();
                             if (s.tryParseInt(cod)) {
@@ -672,9 +673,71 @@ public class Controlador implements IControlador {
                     v.user();
                     v.showMessage(s.historicoEncUtilizador(codigo));
                     opcao = -1;
-                    while (opcao != 0) {
+                    if(s.historicoEncUtilizador(codigo).equals("\nNão existe histórico de encomendas!\n")){
+                        while (opcao != 0 ) {
+                            v.showMessage("\nPressione (0) voltar > ");
+                            opcao = i.lerInt();
+                        }
+                        opcao = -1;
+                        break;
+                    }
+                    while (opcao != 0 && opcao != 1 && opcao != 2 ) {
+                        v.showMessage("\nPressione (1) filtrar por data");
+                        v.showMessage("\nPressione (2) filtrar por data e voluntário ou empresa transportadora ");
                         v.showMessage("\nPressione (0) voltar > ");
                         opcao = i.lerInt();
+                    }
+                    switch (opcao){
+                        case 1:
+                            opcao = -1;
+                            v.user();
+                            v.showMessage("Escolha a data inicial (p.ex 10/3/2020): ");
+                            while (dataInicio.length() < 8 || dataInicio.length() > 10) {
+                                v.showMessage("\nOpção > ");
+                                dataInicio = i.lerString();
+                            }
+                            v.showMessage("\nEscolha a data final (p.ex 28/2/2020): ");
+                            while (dataFim.length() < 8 || dataFim.length() > 10) {
+                                v.showMessage("\nOpção > ");
+                                dataFim = i.lerString();
+                            }
+                            inicio = s.dateInput(dataInicio);
+                            fim = s.dateInput(dataFim);
+                            v.user();
+                            v.showMessage(s.historicoEncUtilizadorFiltrado(inicio, fim, codigo, ""));
+                            while (opcao != 0) {
+                                v.showMessage("\nPressione (0) voltar > ");
+                                opcao = i.lerInt();
+                            }
+                            break;
+                        case 2:
+                            opcao = -1;
+                            v.user();
+                            String st = "";
+                            v.showMessage("\nInsira código de voluntário ou empresa transportadora > ");
+                            while (!s.existeCodMeioTransporte(st)) {
+                                v.showMessage("\nOpção > ");
+                                st = i.lerString();
+                            }
+                            v.showMessage("Escolha a data inicial (p.ex 10/3/2020): ");
+                            while (dataInicio.length() < 8 || dataInicio.length() > 10) {
+                                v.showMessage("\nOpção > ");
+                                dataInicio = i.lerString();
+                            }
+                            v.showMessage("\nEscolha a data final (p.ex 28/2/2020): ");
+                            while (dataFim.length() < 8 || dataFim.length() > 10) {
+                                v.showMessage("\nOpção > ");
+                                dataFim = i.lerString();
+                            }
+                            inicio = s.dateInput(dataInicio);
+                            fim = s.dateInput(dataFim);
+                            v.user();
+                            v.showMessage(s.historicoEncUtilizadorFiltrado(inicio, fim, codigo, st));
+                            while (opcao != 0) {
+                                v.showMessage("\nPressione (0) voltar > ");
+                                opcao = i.lerInt();
+                            }
+                            break;
                     }
                     opcao = -1;
                     break;

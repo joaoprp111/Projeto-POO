@@ -5,7 +5,7 @@ public class Loja extends Entidade implements Serializable {
     private int tempoAtendimentoPorPessoa; // em segundos
     private int pessoasEmEspera;
 
-    /*
+    /**
      * Construtor por omissão
      */
     public Loja() {
@@ -15,7 +15,7 @@ public class Loja extends Entidade implements Serializable {
         this.pessoasEmEspera = 0;
     }
 
-    /*
+    /**
      * Construtor parametrizado
      */
 
@@ -33,7 +33,7 @@ public class Loja extends Entidade implements Serializable {
         this.pessoasEmEspera = 0;
     }
 
-    /*
+    /**
      * Construtor de cópia
      */
     public Loja(Loja l) {
@@ -43,7 +43,7 @@ public class Loja extends Entidade implements Serializable {
         this.pessoasEmEspera = l.getPessoasEmEspera();
     }
 
-    /*
+    /**
      * Getters
      */
 
@@ -61,7 +61,7 @@ public class Loja extends Entidade implements Serializable {
 
 
 
-    /*
+    /**
      * Setters
      */
 
@@ -78,7 +78,6 @@ public class Loja extends Entidade implements Serializable {
     }
 
 
-    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
@@ -89,7 +88,7 @@ public class Loja extends Entidade implements Serializable {
                 getPessoasEmEspera() == loja.getPessoasEmEspera();
     }
 
-    @Override
+
     public String toString() {
         return "Loja{" +
                 "infoFilas=" + infoFilas +

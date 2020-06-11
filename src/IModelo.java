@@ -125,7 +125,9 @@ public interface IModelo {
 
     String verEncomendasPorAceitar(String codigo);
 
-    boolean existeEncomendaPorAceitar(String codigo);
+    boolean existeEncomendaPorAceitarCodUser(String codigo);
+
+    boolean existeEncomendaPorAceitarCodEnc(String codigo);
 
     void sinalizaEncomendaAceite(String codigo);
 
@@ -136,4 +138,8 @@ public interface IModelo {
     boolean existeEncomendaPorClassificar(String codigo);
 
     void classificaEncomenda(String codigo, int classificacao);
+
+    String historicoEncUtilizadorFiltrado(LocalDate inicio, LocalDate fim, String codUser, String codTransportadora);
+
+    boolean existeCodMeioTransporte(String st);
 }

@@ -16,7 +16,6 @@ public class SistemaTrazAqui implements IModelo, Serializable {
     private Collection<Encomenda> encomendas;
     private CatalogoLojas cat;
     private Contas registos;
-    private Vista v;
 
     /**
      * Construtores
@@ -28,7 +27,6 @@ public class SistemaTrazAqui implements IModelo, Serializable {
         this.encomendas = new TreeSet<>();
         this.registos = new Contas();
         this.cat = new CatalogoLojas();
-        this.v = new Vista();
     }
 
     /**
@@ -150,6 +148,9 @@ public class SistemaTrazAqui implements IModelo, Serializable {
         }
     }
 
+    /**
+     * Passa para String
+     */
     public String toString() {
         StringBuilder sb = new StringBuilder("SistemaTrazAqui{");
         sb.append("users=").append(users).append("\n");
@@ -161,6 +162,9 @@ public class SistemaTrazAqui implements IModelo, Serializable {
         return sb.toString();
     }
 
+    /**
+     * Verifica se é igual
+     */
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
@@ -319,6 +323,11 @@ public class SistemaTrazAqui implements IModelo, Serializable {
         return sb.toString();
     }
 
+    /**
+     * Recebe uma encomenda e calcula o seu custo total
+     * @param c Corrosponde a uma encomenda
+     * @return double que indica o preço total
+     */
     public double precoTotalEncomenda(Collection<LinhaEncomenda> c){
         double precoTotal = 0.0;
         for (LinhaEncomenda le : c) {
@@ -333,7 +342,6 @@ public class SistemaTrazAqui implements IModelo, Serializable {
      * @param carrinho Corrosponde a todos os produtos de uma encomenda
      * @return Um double que indica o peso do carrinho
      */
-    @Override
     public double calculaPesoCarrinho(Collection<LinhaEncomenda> carrinho) {
         return carrinho.stream()
                 .mapToDouble(LinhaEncomenda::calculaPeso).reduce(0.0, Double::sum);
@@ -455,7 +463,13 @@ public class SistemaTrazAqui implements IModelo, Serializable {
                 .orElse(null);
         if (enc == null) return null;
         else {
-            enc.mudaEstado(EstadoEncomenda.ENTREGUE);
+            Loja l =  getLojas().stream().filter(x -> x.getCodigo().equals(enc.getCodLoja())).findFirst().get();
+            MeioTransporte t = getTransportadores().stream().filter(y -> y.getCodigo().equals(enc.getTransportador())).findFirst().get();
+            Utilizador u = getUsers().stream().filter(k -> k.getCodigo().equals(enc.getCodUser())).findFirst().get();
+            double tempo = (l.getTempoAtendimentoPorPessoa() * l.getPessoasEmEspera() )* 3600; // horas
+            double distancia = distanciaTotal(t.getGps(), l.getGps(),u.getGps());
+
+            enc.mudaEstado(EstadoEncomenda.ENTREGUE, enc.calculaTempoDeTransporteEncomenda(tempo, distancia, t.getVelocidade()));
             getTransportador(codigo).setDisponivel(true);
             return enc.getCodEnc();
         }
@@ -479,7 +493,13 @@ public class SistemaTrazAqui implements IModelo, Serializable {
                 .orElse(null);
         if (enc == null) return null;
         else {
-            enc.mudaEstado(EstadoEncomenda.ENTREGUE);
+            Loja l =  getLojas().stream().filter(x -> x.getCodigo().equals(enc.getCodLoja())).findFirst().get();
+            MeioTransporte t = getTransportadores().stream().filter(y -> y.getCodigo().equals(enc.getTransportador())).findFirst().get();
+            Utilizador u = getUsers().stream().filter(k -> k.getCodigo().equals(enc.getCodUser())).findFirst().get();
+            double tempo = (l.getTempoAtendimentoPorPessoa() * l.getPessoasEmEspera() )* 3600; // horas
+            double distancia = distanciaTotal(t.getGps(), l.getGps(),u.getGps());
+
+            enc.mudaEstado(EstadoEncomenda.ENTREGUE, enc.calculaTempoDeTransporteEncomenda(tempo, distancia, t.getVelocidade()));
             return enc.getCodEnc();
         }
 
@@ -498,10 +518,7 @@ public class SistemaTrazAqui implements IModelo, Serializable {
 
         StringBuilder s = new StringBuilder();
         if (lista.size() != 0) {
-            for (Encomenda e : lista) {
-                s.append(e.toString());
-            }
-            return s.toString();
+           return imprimeUtility(lista, s);
         } else return "\nNão existe histórico de encomendas!\n";
     }
 
@@ -518,10 +535,7 @@ public class SistemaTrazAqui implements IModelo, Serializable {
 
         StringBuilder s = new StringBuilder();
         if (lista.size() != 0) {
-            for (Encomenda e : lista) {
-                s.append(e.toString());
-            }
-            return s.toString();
+            return imprimeUtility(lista,s);
         } else return "\nNão existe histórico de encomendas!\n";
     }
 
@@ -537,9 +551,28 @@ public class SistemaTrazAqui implements IModelo, Serializable {
 
         StringBuilder s = new StringBuilder();
         if (lista.size() != 0) {
+            return imprimeUtility(lista, s);
+        } else return "\nNão existe histórico de encomendas!\n";
+    }
+
+
+    /**
+     * Procura e junta numa string todas as encomendas novas e por processar de uma loja
+     * @param codigo Codigo da loja
+     * @return String com as encomendas
+     */
+    public String imprimeEncNovasLojas(String codigo) {
+        ArrayList<Encomenda> lista = getEncomendas().stream()
+                .filter(e -> e.getCodLoja().equals(codigo) &&
+                        e.getServicoEntrega().getEstado() == EstadoEncomenda.NOVA)
+                .collect(Collectors.toCollection(ArrayList::new));
+
+        StringBuilder s = new StringBuilder();
+        if (lista.size() != 0) {
             for (Encomenda e : lista) {
                 s.append("\n").append("Cod. Encomenda: ").append(e.getCodEnc()).append(" | ")
                         .append("Loja: ").append(e.getCodLoja()).append(" | ")
+                        .append("Cod. User: ").append(e.getCodUser()).append(" | ")
                         .append("Transportador: ").append(e.getTransportador()).append(" | ")
                         .append("Custo transporte: ").append(e.getServicoEntrega().getCusto()).append(" | ")
                         .append("Peso: ").append(String.format("%.2f", e.getPeso())).append(" | ")
@@ -560,28 +593,41 @@ public class SistemaTrazAqui implements IModelo, Serializable {
                 s.append("]\n");
             }
             return s.toString();
-        } else return "\nNão existe histórico de encomendas!\n";
+        } else return "\nNão existem encomendas novas!\n";
     }
 
 
     /**
-     * Procura e junta numa string todas as encomendas novas e por processar de uma loja
-     * @param codigo Codigo da loja
-     * @return String com as encomendas
+     * Recebe uma lista de encomendas e passa-as para uma String com legendas
+     * que tornem a sua leitura simples e apelativa
+     * @param lista Encomendas
+     * @param s StringBuilder
+     * @return String com ecomendas já legendadas
      */
-    public String imprimeEncNovasLojas(String codigo) {
-        ArrayList<Encomenda> lista = getEncomendas().stream()
-                .filter(e -> e.getCodLoja().equals(codigo) &&
-                        e.getServicoEntrega().getEstado() == EstadoEncomenda.NOVA)
-                .collect(Collectors.toCollection(ArrayList::new));
+    public String imprimeUtility(ArrayList<Encomenda> lista, StringBuilder s) {
+        for (Encomenda e : lista) {
+            s.append("\n").append("Cod. Encomenda: ").append(e.getCodEnc()).append(" | ")
+                    .append("Loja: ").append(e.getCodLoja()).append(" | ")
+                    .append("Transportador: ").append(e.getTransportador()).append(" | ")
+                    .append("Custo transporte: ").append(e.getServicoEntrega().getCusto()).append(" | ")
+                    .append("Peso: ").append(String.format("%.2f", e.getPeso())).append(" | ")
+                    .append("Preço:").append(String.format("%.2f", precoTotalEncomenda(e.getLinhas()))).append(" | ");
 
-        StringBuilder s = new StringBuilder();
-        if (lista.size() != 0) {
-            for (Encomenda e : lista) {
-                s.append(e.toString()).append("\n");
+            if(e.isEncomendaMedica())
+                s.append("Encomenda médica: Sim | ");
+            else
+                s.append("Encomenda médica: Não | ");
+            s.append("Estado: ").append(e.getEstado()).append(" | ")
+                    .append("Data início: ").append(e.getServicoEntrega().getDataNova()).append(" | ")
+                    .append("Data fim: ").append(e.getServicoEntrega().getDataEntregue()).append(" | ")
+                    .append("Produtos: [ ");
+
+            for(LinhaEncomenda le : e.getLinhas()){
+                s.append(le.toString());
             }
-            return s.toString();
-        } else return "\nNão existem encomendas novas!\n";
+            s.append("]\n");
+        }
+        return s.toString();
     }
 
     /**
@@ -647,13 +693,13 @@ public class SistemaTrazAqui implements IModelo, Serializable {
 
         if (codigoTransporte.charAt(0) == 'v') {
             Voluntario t = (Voluntario) getTransportador(codigoTransporte);
-            e.mudaEstado(EstadoEncomenda.EM_TRANSPORTE);
+            e.mudaEstado(EstadoEncomenda.EM_TRANSPORTE, 0);
             t.setDisponivel(false);
         }
 
         if (codigoTransporte.charAt(0) == 't') {
             Transportadora t = (Transportadora) getTransportador(codigoTransporte);
-            e.mudaEstado(EstadoEncomenda.EM_ACEITACAO);
+            e.mudaEstado(EstadoEncomenda.EM_ACEITACAO, 0);
             double distancia = distanciaTotal(t.getGps(), lojas.get(e.getCodLoja()).getGps(), users.get(e.getCodUser()).getGps());
             e.setCustoDeTransporte(distancia, e.getPeso(), t.getTaxaDistancia(), t.getTaxaPeso());
             t.setDisponivel(t.isFazVariasEnc());
@@ -803,10 +849,7 @@ public class SistemaTrazAqui implements IModelo, Serializable {
 
         StringBuilder s = new StringBuilder();
         if (lista.size() != 0) {
-            for (Encomenda e : lista) {
-                s.append(e.toString());
-            }
-            return s.toString();
+            return imprimeUtility(lista, s);
         } else return null;
     }
 
@@ -815,10 +858,9 @@ public class SistemaTrazAqui implements IModelo, Serializable {
      * Sinaliza que uma encomenda está pronta para ser recolhida por uma tranportadora
      * @param codigo Código da loja
      */
-    @Override
     public void sinalizaEncomendaProntaParaEntrega(String codigo) {
         Encomenda e = getEncomendas().stream().filter(x -> x.getCodEnc().equals(codigo)).findFirst().get();
-        e.mudaEstado(EstadoEncomenda.PRONTA_A_SER_ENTREGUE);
+        e.mudaEstado(EstadoEncomenda.PRONTA_A_SER_ENTREGUE, 0);
     }
 
 
@@ -956,7 +998,32 @@ public class SistemaTrazAqui implements IModelo, Serializable {
         StringBuilder s = new StringBuilder();
         if (lista.size() != 0) {
             for (Encomenda e : lista) {
-                s.append(e.toString()).append("\n");
+                Loja l =  getLojas().stream().filter(x -> x.getCodigo().equals(e.getCodLoja())).findFirst().get();
+                MeioTransporte t = getTransportadores().stream().filter(y -> y.getCodigo().equals(e.getTransportador())).findFirst().get();
+                Utilizador u = getUsers().stream().filter(k -> k.getCodigo().equals(e.getCodUser())).findFirst().get();
+
+                double tempo = (l.getTempoAtendimentoPorPessoa() * l.getPessoasEmEspera() )* 3600; // horas
+                double distancia = distanciaTotal(t.getGps(), l.getGps(),u.getGps());
+
+                s.append("\n").append("Cod. Encomenda: ").append(e.getCodEnc()).append(" | ")
+                        .append("Loja: ").append(e.getCodLoja()).append(" | ")
+                        .append("Transportador: ").append(e.getTransportador()).append(" | ")
+                        .append("Custo transporte: ").append(e.getServicoEntrega().getCusto()).append(" | ")
+                        .append("Tempo de entrega estimado: ")
+                            .append( e.calculaTempoDeTransporteEncomenda(tempo, distancia, t.getVelocidade())).append(" minutos | ")
+                        .append("Peso: ").append(String.format("%.2f", e.getPeso())).append(" | ")
+                        .append("Preço:").append(String.format("%.2f", precoTotalEncomenda(e.getLinhas()))).append(" | ");
+
+                if(e.isEncomendaMedica())
+                    s.append("Encomenda médica: Sim | ");
+                else
+                    s.append("Encomenda médica: Não | ");
+                s.append("Produtos: [ ");
+
+                for(LinhaEncomenda le : e.getLinhas()){
+                    s.append(le.toString());
+                }
+                s.append("]\n");
             }
             return s.toString();
         } else return "\nNão existem encomendas por aceitar.\n";
@@ -967,7 +1034,12 @@ public class SistemaTrazAqui implements IModelo, Serializable {
      * Verifica se existe uma encomenda e se está por aceitar
      * @return String com as encomendas por aceitar
      */
-    public boolean existeEncomendaPorAceitar(String codigo) {
+    public boolean existeEncomendaPorAceitarCodUser(String codigo) {
+        return encomendas.stream().anyMatch(x -> x.getCodUser().equals(codigo) &&
+                x.getEstado() == EstadoEncomenda.EM_ACEITACAO);
+    }
+
+    public boolean existeEncomendaPorAceitarCodEnc(String codigo) {
         return encomendas.stream().anyMatch(x -> x.getCodEnc().equals(codigo) &&
                 x.getEstado() == EstadoEncomenda.EM_ACEITACAO);
     }
@@ -979,7 +1051,7 @@ public class SistemaTrazAqui implements IModelo, Serializable {
      */
     public void sinalizaEncomendaAceite(String codigo) {
         Encomenda e = getEncomendas().stream().filter(x -> x.getCodEnc().equals(codigo)).findFirst().get();
-        e.mudaEstado(EstadoEncomenda.EM_TRANSPORTE);
+        e.mudaEstado(EstadoEncomenda.EM_TRANSPORTE, 0);
     }
 
 
@@ -987,10 +1059,9 @@ public class SistemaTrazAqui implements IModelo, Serializable {
      * Indica que uma encomenda foi rejeito pelo utilizador ao aceitar os custos
      * @param codigo Codigo da encomenda a mudar o estado de volta para pronta a ser entregue
      */
-    @Override
     public void sinalizaEncomendaRejeitada(String codigo) {
         Encomenda e = getEncomendas().stream().filter(x -> x.getCodEnc().equals(codigo)).findFirst().get();
-        e.mudaEstado(EstadoEncomenda.PRONTA_A_SER_ENTREGUE);
+        e.mudaEstado(EstadoEncomenda.PRONTA_A_SER_ENTREGUE, 0);
         e.setTransportador("");
     }
 
@@ -1008,10 +1079,7 @@ public class SistemaTrazAqui implements IModelo, Serializable {
 
         StringBuilder s = new StringBuilder();
         if (lista.size() != 0) {
-            for (Encomenda e : lista) {
-                s.append(e.toString()).append("\n");
-            }
-            return s.toString();
+            return imprimeUtility(lista,s);
         } else return "\nNão existem encomendas por classificar.\n";
     }
 
@@ -1036,6 +1104,47 @@ public class SistemaTrazAqui implements IModelo, Serializable {
         e.setClassificacaoDeTransporte(classificacao);
     }
 
+    /**
+     * Devolve um histórico de encomendas que cumpram os filtros dados á função
+     * @param inicio Data inicial
+     * @param fim Data final
+     * @param codUser codigo de utilizador
+     * @param codTransportadora codigo da transportadora
+     * @return String que apresenta as encomendas pretendidas
+     */
+    public String historicoEncUtilizadorFiltrado(LocalDate inicio, LocalDate fim, String codUser, String codTransportadora){
+        ArrayList<Encomenda> lista;
+        if(codTransportadora.equals("")){
+            lista = getEncomendas().stream()
+                    .filter(e -> e.getCodUser().equals(codUser) &&
+                            e.getServicoEntrega().getDataNova().isAfter(inicio.atStartOfDay()) &&
+                            e.getServicoEntrega().getDataNova().isBefore(fim.atStartOfDay())
+                    ).collect(Collectors.toCollection(ArrayList::new));
+        }
+        else {
+            lista = getEncomendas().stream()
+                    .filter(e -> e.getCodUser().equals(codUser) &&
+                            e.getServicoEntrega().getDataNova().isAfter(inicio.atStartOfDay()) &&
+                            e.getServicoEntrega().getDataNova().isBefore(fim.atStartOfDay()) &&
+                            e.getTransportador().equals(codTransportadora)
+                    ).collect(Collectors.toCollection(ArrayList::new));
+        }
+
+        StringBuilder s = new StringBuilder();
+        if (lista.size() != 0) {
+           return imprimeUtility(lista, s);
+        } else return "\nNão existe histórico de encomendas!\n";
+    }
+
+
+    /**
+     * Classifica uma encomenda
+     * @param st codigo do tranportador
+     * @return boolean que indica se existe ou não
+     */
+    public boolean existeCodMeioTransporte(String st){
+        return transportadores.containsKey(st);
+    }
 
 }
 
